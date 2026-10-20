@@ -1,0 +1,6 @@
+# 本地密钥配置，不提交
+vision_config.json
+
+__pycache__/
+.venv/
+.idea/

@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """采样参数实验：temperature / max_tokens / top_p 的真实效果
 
-对应 day03 笔记《tokens_采样_实验指南.md》第 2 节的理论，这次全部用真 API 验证：
+对应 w1day03 笔记《tokens_采样_实验指南.md》第 2 节的理论，这次全部用真 API 验证：
 - temperature：改分布形状（尖 ↔ 平），不截断候选 —— 理论上 T=0 复跑应一致，
   实测托管网关不保证确定性（见实验 1 的实测注记）
 - max_tokens：硬上限，撞上就截断 —— finish_reason 会从 "stop" 变成 "length"；
   且本模型是思考型模型，思考+回答共享这份预算（见实验 2）
 - top_p：按累计概率截断候选集（核采样）—— p 越小越保守，p 越大越发散
 
-实验设计思路（控制变量法，和 day03 的对比实验一脉相承）：
+实验设计思路（控制变量法，和 w1day03 的对比实验一脉相承）：
   实验 1  固定提示词，只变 temperature，每档跑两次看随机性
   实验 2  固定提示词与温度，只变 max_tokens（三档递增），观察截断与思考预算
   实验 3  固定 temperature=1.0，只变 top_p，隔离出核采样的独立效果
@@ -25,7 +25,7 @@ import json
 import urllib.request
 import urllib.error
 
-# Windows 终端默认 GBK，强制 UTF-8 输出防中文乱码（与 day03/day05 一致）
+# Windows 终端默认 GBK，强制 UTF-8 输出防中文乱码（与 w1day03/w1day05 一致）
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 # ---- 配置加载（同 first_llm_call.py，密钥只放 gitignore 忽略的配置文件） ----
@@ -52,7 +52,7 @@ def chat(messages, temperature=0.7, top_p=1.0, max_tokens=512):
     返回错误信息而不是 sys.exit，让实验循环能在个别调用失败时继续跑完。
 
     三个采样参数在请求体里的位置（全部可选，不传即用厂商默认）：
-      temperature —— day03：softmax(logits / T)，T 越小分布越尖
+      temperature —— w1day03：softmax(logits / T)，T 越小分布越尖
       top_p       —— 累计概率截断：候选 = 概率从高到低累加首次 ≥ p 的集合
       max_tokens  —— 生成（思考+回答）总量的硬上限
     """
@@ -151,7 +151,7 @@ print("       reasoning_content（思维链），usage.completion_tokens_details
 print("       记录思考消耗。max_tokens 不影响 prompt，只限制'思考+输出'的总生成量。")
 print("       且思考长度每次不同（同样 200 上限，有时够用有时全被思考吃掉），")
 print("       给思考型模型设 max_tokens 要留足余量。")
-print("       输出上限通常 < context window（day03：200K 上下文的模型输出可能只有 32K~64K）。")
+print("       输出上限通常 < context window（w1day03：200K 上下文的模型输出可能只有 32K~64K）。")
 
 print()
 print("=" * 62)
@@ -159,7 +159,7 @@ print("实验 3：top_p（核采样）—— 固定 temperature=1.0，只动 top
 print("=" * 62)
 # 控制变量：temperature 固定 1.0（即"不调温度"），这样观察到的差异
 # 全部来自 top_p 的候选截断，而不是两个参数混在一起的效果。
-# day03 的比喻回顾：Top-p = 按概率从高到低排队，站进队伍累计到 p 的人入选。
+# w1day03 的比喻回顾：Top-p = 按概率从高到低排队，站进队伍累计到 p 的人入选。
 P3 = "用一个比喻解释神经网络，只说一句话。"
 for p in [0.1, 0.9, 1.0]:
     # 每档跑两次，对比输出的多样性
@@ -171,7 +171,7 @@ for p in [0.1, 0.9, 1.0]:
 # 解读时注意：p=0.1 截断的是"每个位置"的候选集，不是"整句话只准一种答案"。
 # 每个 token 位置仍从剩下的少数候选里抽样，加上思考型模型内部还有一层采样，
 # 所以句子级别仍会多样 —— 截断变小 = 每步更保守，不等于全局唯一解。
-print("\n[note] day03 理论回顾：Top-p 按概率从高到低累加，首次 ≥ p 的集合就是候选。")
+print("\n[note] w1day03 理论回顾：Top-p 按概率从高到低累加，首次 ≥ p 的集合就是候选。")
 print("       p=0.1 → 可能只剩 1~2 个词；p=1.0 → 全词表都保留（只受 temperature 影响）。")
 print("       注意：p 小 ≠ 全局确定 —— 截断发生在每个 token 位置，整句仍可多样。")
 

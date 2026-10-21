@@ -1,6 +1,6 @@
 # Transformer 架构图解 — 手画 Encoder-Decoder、自注意力、残差连接、LayerNorm
 
-> 配套笔记：[attention_详解.md](../day02/attention_详解.md)（Q/K/V 与 Multi-Head 手算）
+> 配套笔记：[attention_详解.md](../w1day02/attention_详解.md)（Q/K/V 与 Multi-Head 手算）
 >
 > 本文用 ASCII 手绘图还原论文 *Attention Is All You Need* (2017) 的原始架构，
 > 用箭头标注数据流向，并回答核心问题：**为什么 Transformer 比 RNN 好？**

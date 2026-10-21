@@ -1,0 +1,1297 @@
+{
+  "meta": {
+    "generated_at": "2026-10-21T15:23:56.012164",
+    "model": "mimo-v2.6-flash",
+    "temperature": 0.2,
+    "max_tokens": 2000,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "people": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "文本中出现的人名，保留原文"
+        },
+        "dates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "文本中出现的日期/时间，保留原文写法"
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "文本中发生的事件，简短短语"
+        },
+        "summary": {
+          "type": "string",
+          "description": "一句话摘要"
+        }
+      },
+      "required": [
+        "people",
+        "dates",
+        "events",
+        "summary"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "results": [
+    {
+      "text_id": "T1",
+      "text_type": "科技发布会新闻",
+      "method": "plain",
+      "method_name": "纯 Prompt 约定",
+      "ok": true,
+      "raw": "```json\n{\n  \"人物\": [\n    {\n      \"姓名\": \"李明\",\n      \"身份\": \"星海科技创始人\"\n    },\n    {\n      \"姓名\": \"王芳\",\n      \"身份\": \"星海科技首席科学家\"\n    }\n  ],\n  \"日期\": [\n    {\n      \"日期\": \"2026年9月15日\",\n      \"相关事件\": \"星海科技在上海举办秋季发布会，正式推出新一代智能助手\"小星\"\"\n    },\n    {\n      \"日期\": \"2026年12月1日\",\n      \"相关事件\": \"小星正式开放API接口\"\n    },\n    {\n      \"日期\": \"2025年3月\",\n      \"相关事件\": \"小星项目启动研发\"\n    }\n  ],\n  \"事件\": [\n    {\n      \"事件描述\": \"星海科技在上海举办秋季发布会，推出新一代智能助手\"小星\"\",\n      \"涉及人物\": [\"李明\", \"王芳\"],\n      \"涉及日期\": [\"2026年9月15日\"]\n    },\n    {\n      \"事件描述\": \"创始人李明宣布小星将于2026年12月1日正式开放API接口\",\n      \"涉及人物\": [\"李明\"],\n      \"涉及日期\": [\"2026年12月1日\"]\n    },\n    {\n      \"事件描述\": \"小星项目从2025年3月启动研发，历时18个月，期间团队走访了200多家企业客户\",\n      \"涉及人物\": [\"王芳\"],\n      \"涉及日期\": [\"2025年3月\"]\n    }\n  ],\n  \"一句话摘要\": \"2026年9月15日，星海科技创始人李明和首席科学家王芳在上海秋季发布会上正式推出新一代智能助手\"小星\"，该项目自2025年3月启动、历时18个月研发完成，将于2026年12月1日正式开放API接口。\"\n}\n```",
+      "source": "content",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 462,
+        "prompt_tokens": 122,
+        "total_tokens": 584,
+        "completion_tokens_details": {
+          "reasoning_tokens": 32
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 64
+        }
+      },
+      "think_tokens": 32,
+      "note": "",
+      "prompt_chars": 178,
+      "metrics": {
+        "parse_stage": "failed",
+        "repairs": [
+          "去掉 Markdown 围栏",
+          "截取最外层 {…} 子串",
+          "解析失败"
+        ],
+        "data": null,
+        "parse_score": 0,
+        "schema_errors": [
+          "JSON 解析失败，无法校验"
+        ],
+        "schema_score": 20,
+        "f1_people": {},
+        "f1_dates": {},
+        "f1_events": {},
+        "avg_f1": 0.0,
+        "content_score": 0,
+        "score": 20
+      },
+      "expected": {
+        "people": [
+          "李明",
+          "王芳"
+        ],
+        "dates": [
+          "2026年9月15日",
+          "2026年12月1日",
+          "2025年3月"
+        ],
+        "events": [
+          [
+            "秋季发布会",
+            "发布会"
+          ],
+          [
+            "API接口",
+            "API"
+          ],
+          [
+            "启动研发",
+            "研发"
+          ]
+        ]
+      }
+    },
+    {
+      "text_id": "T1",
+      "text_type": "科技发布会新闻",
+      "method": "json_mode",
+      "method_name": "JSON Mode",
+      "ok": true,
+      "raw": "{\n  \"人名\": [\n    \"李明\",\n    \"王芳\"\n  ],\n  \"日期\": [\n    \"2026年9月15日\",\n    \"2026年12月1日\",\n    \"2025年3月\"\n  ],\n  \"事件\": [\n    \"星海科技在上海举办秋季发布会，正式推出新一代智能助手'小星'\",\n    \"创始人李明宣布小星将于2026年12月1日正式开放API接口\",\n    \"首席科学家王芳介绍项目从2025年3月启动研发，历时18个月\",\n    \"研发期间团队走访了200多家企业客户\"\n  ],\n  \"摘要\": \"2026年9月15日，星海科技在上海秋季发布会上由创始人李明和首席科学家王芳共同推出新一代智能助手'小星'，该项目历时18个月研发，计划于2026年12月1日正式开放API接口。\"\n}",
+      "source": "content",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 249,
+        "prompt_tokens": 122,
+        "total_tokens": 371,
+        "completion_tokens_details": {
+          "reasoning_tokens": 32
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 64
+        }
+      },
+      "think_tokens": 32,
+      "note": "",
+      "prompt_chars": 178,
+      "metrics": {
+        "parse_stage": "raw",
+        "repairs": [],
+        "data": {
+          "人名": [
+            "李明",
+            "王芳"
+          ],
+          "日期": [
+            "2026年9月15日",
+            "2026年12月1日",
+            "2025年3月"
+          ],
+          "事件": [
+            "星海科技在上海举办秋季发布会，正式推出新一代智能助手'小星'",
+            "创始人李明宣布小星将于2026年12月1日正式开放API接口",
+            "首席科学家王芳介绍项目从2025年3月启动研发，历时18个月",
+            "研发期间团队走访了200多家企业客户"
+          ],
+          "摘要": "2026年9月15日，星海科技在上海秋季发布会上由创始人李明和首席科学家王芳共同推出新一代智能助手'小星'，该项目历时18个月研发，计划于2026年12月1日正式开放API接口。"
+        },
+        "parse_score": 40,
+        "schema_errors": [
+          "$: 缺少 required 字段 people",
+          "$: 缺少 required 字段 dates",
+          "$: 缺少 required 字段 events",
+          "$: 缺少 required 字段 summary",
+          "$: Schema 之外的多余字段 人名",
+          "$: Schema 之外的多余字段 日期",
+          "$: Schema 之外的多余字段 事件",
+          "$: Schema 之外的多余字段 摘要"
+        ],
+        "schema_score": 0,
+        "f1_people": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "f1_dates": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "f1_events": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "avg_f1": 0.0,
+        "content_score": 0,
+        "score": 40
+      },
+      "expected": {
+        "people": [
+          "李明",
+          "王芳"
+        ],
+        "dates": [
+          "2026年9月15日",
+          "2026年12月1日",
+          "2025年3月"
+        ],
+        "events": [
+          [
+            "秋季发布会",
+            "发布会"
+          ],
+          [
+            "API接口",
+            "API"
+          ],
+          [
+            "启动研发",
+            "研发"
+          ]
+        ]
+      }
+    },
+    {
+      "text_id": "T1",
+      "text_type": "科技发布会新闻",
+      "method": "schema_prompt",
+      "method_name": "Schema 约束 Prompt",
+      "ok": true,
+      "raw": "{\"type\":\"object\",\"properties\":{\"people\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"description\":\"文本中出现的人名，保留原文\"},\"dates\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"description\":\"文本中出现的日期/时间，保留原文写法\"},\"events\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"description\":\"文本中发生的事件，简短短语\"},\"summary\":{\"type\":\"string\",\"description\":\"一句话摘要\"}},\"required\":[\"people\",\"dates\",\"events\",\"summary\"],\"additionalProperties\":false}",
+      "source": "content",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 115,
+        "prompt_tokens": 514,
+        "total_tokens": 629,
+        "completion_tokens_details": {
+          "reasoning_tokens": 6
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 448
+        }
+      },
+      "think_tokens": 6,
+      "note": "",
+      "prompt_chars": 1143,
+      "metrics": {
+        "parse_stage": "raw",
+        "repairs": [],
+        "data": {
+          "type": "object",
+          "properties": {
+            "people": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "文本中出现的人名，保留原文"
+            },
+            "dates": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "文本中出现的日期/时间，保留原文写法"
+            },
+            "events": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "文本中发生的事件，简短短语"
+            },
+            "summary": {
+              "type": "string",
+              "description": "一句话摘要"
+            }
+          },
+          "required": [
+            "people",
+            "dates",
+            "events",
+            "summary"
+          ],
+          "additionalProperties": false
+        },
+        "parse_score": 40,
+        "schema_errors": [
+          "$: 缺少 required 字段 people",
+          "$: 缺少 required 字段 dates",
+          "$: 缺少 required 字段 events",
+          "$: 缺少 required 字段 summary",
+          "$: Schema 之外的多余字段 type",
+          "$: Schema 之外的多余字段 properties",
+          "$: Schema 之外的多余字段 required",
+          "$: Schema 之外的多余字段 additionalProperties"
+        ],
+        "schema_score": 0,
+        "f1_people": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "f1_dates": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "f1_events": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "avg_f1": 0.0,
+        "content_score": 0,
+        "score": 40
+      },
+      "expected": {
+        "people": [
+          "李明",
+          "王芳"
+        ],
+        "dates": [
+          "2026年9月15日",
+          "2026年12月1日",
+          "2025年3月"
+        ],
+        "events": [
+          [
+            "秋季发布会",
+            "发布会"
+          ],
+          [
+            "API接口",
+            "API"
+          ],
+          [
+            "启动研发",
+            "研发"
+          ]
+        ]
+      }
+    },
+    {
+      "text_id": "T1",
+      "text_type": "科技发布会新闻",
+      "method": "function_calling",
+      "method_name": "Function Calling",
+      "ok": true,
+      "raw": "{\"people\": [\"李明\", \"王芳\"], \"dates\": [\"2026年9月15日\", \"2026年12月1日\", \"2025年3月\"], \"events\": [\"星海科技在上海举办秋季发布会并推出新一代智能助手“小星”\", \"李明宣布小星将于2026年12月1日开放API接口\", \"王芳介绍项目自2025年3月启动研发，历时18个月，走访200多家企业客户\"], \"summary\": \"2026年9月15日，星海科技在秋季发布会上推出智能助手“小星”，创始人李明宣布其API将于2026年12月1日开放，首席科学家王芳介绍了历时18个月的研发历程。\"}",
+      "source": "tool_calls",
+      "finish_reason": "tool_calls",
+      "usage": {
+        "completion_tokens": 226,
+        "prompt_tokens": 322,
+        "total_tokens": 548,
+        "completion_tokens_details": {
+          "reasoning_tokens": 23
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        }
+      },
+      "think_tokens": 23,
+      "note": "",
+      "prompt_chars": 178,
+      "metrics": {
+        "parse_stage": "raw",
+        "repairs": [],
+        "data": {
+          "people": [
+            "李明",
+            "王芳"
+          ],
+          "dates": [
+            "2026年9月15日",
+            "2026年12月1日",
+            "2025年3月"
+          ],
+          "events": [
+            "星海科技在上海举办秋季发布会并推出新一代智能助手“小星”",
+            "李明宣布小星将于2026年12月1日开放API接口",
+            "王芳介绍项目自2025年3月启动研发，历时18个月，走访200多家企业客户"
+          ],
+          "summary": "2026年9月15日，星海科技在秋季发布会上推出智能助手“小星”，创始人李明宣布其API将于2026年12月1日开放，首席科学家王芳介绍了历时18个月的研发历程。"
+        },
+        "parse_score": 40,
+        "schema_errors": [],
+        "schema_score": 30,
+        "f1_people": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "f1_dates": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "f1_events": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "avg_f1": 1.0,
+        "content_score": 30,
+        "score": 100
+      },
+      "expected": {
+        "people": [
+          "李明",
+          "王芳"
+        ],
+        "dates": [
+          "2026年9月15日",
+          "2026年12月1日",
+          "2025年3月"
+        ],
+        "events": [
+          [
+            "秋季发布会",
+            "发布会"
+          ],
+          [
+            "API接口",
+            "API"
+          ],
+          [
+            "启动研发",
+            "研发"
+          ]
+        ]
+      }
+    },
+    {
+      "text_id": "T2",
+      "text_type": "体育赛事新闻",
+      "method": "plain",
+      "method_name": "纯 Prompt 约定",
+      "ok": true,
+      "raw": "```json\n{\n  \"人名\": [\n    \"陈昊\",\n    \"佐藤健\",\n    \"刘国栋\"\n  ],\n  \"日期\": [\n    \"2026年6月20日晚\",\n    \"2027年8月\",\n    \"2026年7月10日\"\n  ],\n  \"事件\": [\n    \"亚洲青年田径锦标赛在日本大阪开幕\",\n    \"陈昊在男子110米栏决赛中以13秒18夺冠\",\n    \"佐藤健以13秒35获得银牌\",\n    \"陈昊表示下一个目标是2027年8月的大邱世锦赛\",\n    \"全队将于2026年7月10日返回北京封闭集训\"\n  ],\n  \"一句话摘要\": \"2026年6月20日，亚洲青年田径锦标赛在日本大阪开幕，中国选手陈昊以13秒18夺得男子110米栏冠军，主教练刘国栋宣布全队将于7月10日返回北京封闭集训，陈昊则将目光投向2027年8月的大邱世锦赛。\"\n}\n```",
+      "source": "content",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 287,
+        "prompt_tokens": 137,
+        "total_tokens": 424,
+        "completion_tokens_details": {
+          "reasoning_tokens": 30
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "think_tokens": 30,
+      "note": "",
+      "prompt_chars": 181,
+      "metrics": {
+        "parse_stage": "fenced",
+        "repairs": [
+          "去掉 Markdown 围栏"
+        ],
+        "data": {
+          "人名": [
+            "陈昊",
+            "佐藤健",
+            "刘国栋"
+          ],
+          "日期": [
+            "2026年6月20日晚",
+            "2027年8月",
+            "2026年7月10日"
+          ],
+          "事件": [
+            "亚洲青年田径锦标赛在日本大阪开幕",
+            "陈昊在男子110米栏决赛中以13秒18夺冠",
+            "佐藤健以13秒35获得银牌",
+            "陈昊表示下一个目标是2027年8月的大邱世锦赛",
+            "全队将于2026年7月10日返回北京封闭集训"
+          ],
+          "一句话摘要": "2026年6月20日，亚洲青年田径锦标赛在日本大阪开幕，中国选手陈昊以13秒18夺得男子110米栏冠军，主教练刘国栋宣布全队将于7月10日返回北京封闭集训，陈昊则将目光投向2027年8月的大邱世锦赛。"
+        },
+        "parse_score": 25,
+        "schema_errors": [
+          "$: 缺少 required 字段 people",
+          "$: 缺少 required 字段 dates",
+          "$: 缺少 required 字段 events",
+          "$: 缺少 required 字段 summary",
+          "$: Schema 之外的多余字段 人名",
+          "$: Schema 之外的多余字段 日期",
+          "$: Schema 之外的多余字段 事件",
+          "$: Schema 之外的多余字段 一句话摘要"
+        ],
+        "schema_score": 0,
+        "f1_people": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "f1_dates": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "f1_events": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "avg_f1": 0.0,
+        "content_score": 0,
+        "score": 25
+      },
+      "expected": {
+        "people": [
+          "陈昊",
+          "佐藤健",
+          "刘国栋"
+        ],
+        "dates": [
+          "2026年6月20日",
+          "2027年8月",
+          "2026年7月10日"
+        ],
+        "events": [
+          [
+            "田径锦标赛开幕",
+            "锦标赛",
+            "开幕"
+          ],
+          [
+            "13秒18夺冠",
+            "13秒18"
+          ],
+          [
+            "返回北京集训",
+            "集训"
+          ]
+        ]
+      }
+    },
+    {
+      "text_id": "T2",
+      "text_type": "体育赛事新闻",
+      "method": "json_mode",
+      "method_name": "JSON Mode",
+      "ok": true,
+      "raw": "{\"人名\":[\"陈昊\",\"佐藤健\",\"刘国栋\"],\"日期\":[\"2026年6月20日\",\"2027年8月\",\"2026年7月10日\"],\"事件\":[\"亚洲青年田径锦标赛在日本大阪开幕\",\"陈昊在男子110米栏决赛中以13秒18夺冠\",\"佐藤健获得银牌\",\"全队将于2026年7月10日返回北京封闭集训\"],\"摘要\":\"2026年6月20日，亚洲青年田径锦标赛在大阪开幕，中国选手陈昊以13秒18夺得男子110米栏冠军，日本选手佐藤健获银牌，赛后陈昊将目标锁定2027年大邱世锦赛，中国队将于7月返回北京集训。\"}",
+      "source": "content",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 214,
+        "prompt_tokens": 137,
+        "total_tokens": 351,
+        "completion_tokens_details": {
+          "reasoning_tokens": 32
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "think_tokens": 32,
+      "note": "",
+      "prompt_chars": 181,
+      "metrics": {
+        "parse_stage": "raw",
+        "repairs": [],
+        "data": {
+          "人名": [
+            "陈昊",
+            "佐藤健",
+            "刘国栋"
+          ],
+          "日期": [
+            "2026年6月20日",
+            "2027年8月",
+            "2026年7月10日"
+          ],
+          "事件": [
+            "亚洲青年田径锦标赛在日本大阪开幕",
+            "陈昊在男子110米栏决赛中以13秒18夺冠",
+            "佐藤健获得银牌",
+            "全队将于2026年7月10日返回北京封闭集训"
+          ],
+          "摘要": "2026年6月20日，亚洲青年田径锦标赛在大阪开幕，中国选手陈昊以13秒18夺得男子110米栏冠军，日本选手佐藤健获银牌，赛后陈昊将目标锁定2027年大邱世锦赛，中国队将于7月返回北京集训。"
+        },
+        "parse_score": 40,
+        "schema_errors": [
+          "$: 缺少 required 字段 people",
+          "$: 缺少 required 字段 dates",
+          "$: 缺少 required 字段 events",
+          "$: 缺少 required 字段 summary",
+          "$: Schema 之外的多余字段 人名",
+          "$: Schema 之外的多余字段 日期",
+          "$: Schema 之外的多余字段 事件",
+          "$: Schema 之外的多余字段 摘要"
+        ],
+        "schema_score": 0,
+        "f1_people": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "f1_dates": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "f1_events": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "avg_f1": 0.0,
+        "content_score": 0,
+        "score": 40
+      },
+      "expected": {
+        "people": [
+          "陈昊",
+          "佐藤健",
+          "刘国栋"
+        ],
+        "dates": [
+          "2026年6月20日",
+          "2027年8月",
+          "2026年7月10日"
+        ],
+        "events": [
+          [
+            "田径锦标赛开幕",
+            "锦标赛",
+            "开幕"
+          ],
+          [
+            "13秒18夺冠",
+            "13秒18"
+          ],
+          [
+            "返回北京集训",
+            "集训"
+          ]
+        ]
+      }
+    },
+    {
+      "text_id": "T2",
+      "text_type": "体育赛事新闻",
+      "method": "schema_prompt",
+      "method_name": "Schema 约束 Prompt",
+      "ok": true,
+      "raw": "{\n  \"people\": [\n    \"陈昊\",\n    \"佐藤健\",\n    \"刘国栋\"\n  ],\n  \"dates\": [\n    \"2026年6月20日晚\",\n    \"2027年8月\",\n    \"2026年7月10日\"\n  ],\n  \"events\": [\n    \"亚洲青年田径锦标赛在日本大阪开幕\",\n    \"陈昊男子110米栏夺冠\",\n    \"佐藤健获得银牌\",\n    \"陈昊表示目标锁定大邱世锦赛\",\n    \"全队返回北京封闭集训\"\n  ],\n  \"summary\": \"2026年6月20日晚亚洲青年田径锦标赛在大阪开幕，中国选手陈昊以13秒18夺得男子110米栏冠军，日本选手佐藤健获银牌，陈昊表示下一个目标是2027年8月大邱世锦赛，全队将于2026年7月10日返回北京封闭集训。\"\n}",
+      "source": "content",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 234,
+        "prompt_tokens": 529,
+        "total_tokens": 763,
+        "completion_tokens_details": {
+          "reasoning_tokens": 10
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 512
+        }
+      },
+      "think_tokens": 10,
+      "note": "",
+      "prompt_chars": 1146,
+      "metrics": {
+        "parse_stage": "raw",
+        "repairs": [],
+        "data": {
+          "people": [
+            "陈昊",
+            "佐藤健",
+            "刘国栋"
+          ],
+          "dates": [
+            "2026年6月20日晚",
+            "2027年8月",
+            "2026年7月10日"
+          ],
+          "events": [
+            "亚洲青年田径锦标赛在日本大阪开幕",
+            "陈昊男子110米栏夺冠",
+            "佐藤健获得银牌",
+            "陈昊表示目标锁定大邱世锦赛",
+            "全队返回北京封闭集训"
+          ],
+          "summary": "2026年6月20日晚亚洲青年田径锦标赛在大阪开幕，中国选手陈昊以13秒18夺得男子110米栏冠军，日本选手佐藤健获银牌，陈昊表示下一个目标是2027年8月大邱世锦赛，全队将于2026年7月10日返回北京封闭集训。"
+        },
+        "parse_score": 40,
+        "schema_errors": [],
+        "schema_score": 30,
+        "f1_people": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "f1_dates": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "f1_events": {
+          "precision": 0.4,
+          "recall": 0.667,
+          "f1": 0.5
+        },
+        "avg_f1": 0.833,
+        "content_score": 25,
+        "score": 95
+      },
+      "expected": {
+        "people": [
+          "陈昊",
+          "佐藤健",
+          "刘国栋"
+        ],
+        "dates": [
+          "2026年6月20日",
+          "2027年8月",
+          "2026年7月10日"
+        ],
+        "events": [
+          [
+            "田径锦标赛开幕",
+            "锦标赛",
+            "开幕"
+          ],
+          [
+            "13秒18夺冠",
+            "13秒18"
+          ],
+          [
+            "返回北京集训",
+            "集训"
+          ]
+        ]
+      }
+    },
+    {
+      "text_id": "T2",
+      "text_type": "体育赛事新闻",
+      "method": "function_calling",
+      "method_name": "Function Calling",
+      "ok": true,
+      "raw": "{\"people\": [\"陈昊\", \"佐藤健\", \"刘国栋\"], \"dates\": [\"2026年6月20日晚\", \"2026年7月10日\", \"2027年8月\"], \"events\": [\"亚洲青年田径锦标赛在大阪开幕\", \"陈昊男子110米栏夺冠\", \"佐藤健获银牌\", \"全队返回北京封闭集训\"], \"summary\": \"2026年亚洲青年田径锦标赛大阪开幕，中国选手陈昊以13秒18夺得男子110米栏冠军，日本选手佐藤健获银牌，中国队将于7月返回北京集训。\"}",
+      "source": "tool_calls",
+      "finish_reason": "tool_calls",
+      "usage": {
+        "completion_tokens": 197,
+        "prompt_tokens": 337,
+        "total_tokens": 534,
+        "completion_tokens_details": {
+          "reasoning_tokens": 23
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 320
+        }
+      },
+      "think_tokens": 23,
+      "note": "",
+      "prompt_chars": 181,
+      "metrics": {
+        "parse_stage": "raw",
+        "repairs": [],
+        "data": {
+          "people": [
+            "陈昊",
+            "佐藤健",
+            "刘国栋"
+          ],
+          "dates": [
+            "2026年6月20日晚",
+            "2026年7月10日",
+            "2027年8月"
+          ],
+          "events": [
+            "亚洲青年田径锦标赛在大阪开幕",
+            "陈昊男子110米栏夺冠",
+            "佐藤健获银牌",
+            "全队返回北京封闭集训"
+          ],
+          "summary": "2026年亚洲青年田径锦标赛大阪开幕，中国选手陈昊以13秒18夺得男子110米栏冠军，日本选手佐藤健获银牌，中国队将于7月返回北京集训。"
+        },
+        "parse_score": 40,
+        "schema_errors": [],
+        "schema_score": 30,
+        "f1_people": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "f1_dates": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "f1_events": {
+          "precision": 0.5,
+          "recall": 0.667,
+          "f1": 0.571
+        },
+        "avg_f1": 0.857,
+        "content_score": 26,
+        "score": 96
+      },
+      "expected": {
+        "people": [
+          "陈昊",
+          "佐藤健",
+          "刘国栋"
+        ],
+        "dates": [
+          "2026年6月20日",
+          "2027年8月",
+          "2026年7月10日"
+        ],
+        "events": [
+          [
+            "田径锦标赛开幕",
+            "锦标赛",
+            "开幕"
+          ],
+          [
+            "13秒18夺冠",
+            "13秒18"
+          ],
+          [
+            "返回北京集训",
+            "集训"
+          ]
+        ]
+      }
+    },
+    {
+      "text_id": "T3",
+      "text_type": "历史事件段落（含干扰信息）",
+      "method": "plain",
+      "method_name": "纯 Prompt 约定",
+      "ok": true,
+      "raw": "```json\n{\n  \"人名\": [\n    \"傅斯年\",\n    \"王尽美\",\n    \"毛泽东\"\n  ],\n  \"日期\": [\n    \"1919年5月4日\",\n    \"1921年7月\",\n    \"1935年1月\"\n  ],\n  \"事件\": [\n    \"五四运动\",\n    \"中国共产党第一次全国代表大会召开\",\n    \"遵义会议召开\"\n  ],\n  \"一句话摘要\": \"本文记述了从1919年五四运动、1921年中共一大召开到1935年遵义会议确立毛泽东领导地位这三个关键历史事件及其涉及的重要人物。\"\n}\n```",
+      "source": "content",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 308,
+        "prompt_tokens": 109,
+        "total_tokens": 417,
+        "completion_tokens_details": {
+          "reasoning_tokens": 161
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 64
+        }
+      },
+      "think_tokens": 161,
+      "note": "",
+      "prompt_chars": 156,
+      "metrics": {
+        "parse_stage": "fenced",
+        "repairs": [
+          "去掉 Markdown 围栏"
+        ],
+        "data": {
+          "人名": [
+            "傅斯年",
+            "王尽美",
+            "毛泽东"
+          ],
+          "日期": [
+            "1919年5月4日",
+            "1921年7月",
+            "1935年1月"
+          ],
+          "事件": [
+            "五四运动",
+            "中国共产党第一次全国代表大会召开",
+            "遵义会议召开"
+          ],
+          "一句话摘要": "本文记述了从1919年五四运动、1921年中共一大召开到1935年遵义会议确立毛泽东领导地位这三个关键历史事件及其涉及的重要人物。"
+        },
+        "parse_score": 25,
+        "schema_errors": [
+          "$: 缺少 required 字段 people",
+          "$: 缺少 required 字段 dates",
+          "$: 缺少 required 字段 events",
+          "$: 缺少 required 字段 summary",
+          "$: Schema 之外的多余字段 人名",
+          "$: Schema 之外的多余字段 日期",
+          "$: Schema 之外的多余字段 事件",
+          "$: Schema 之外的多余字段 一句话摘要"
+        ],
+        "schema_score": 0,
+        "f1_people": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "f1_dates": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "f1_events": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "avg_f1": 0.0,
+        "content_score": 0,
+        "score": 25
+      },
+      "expected": {
+        "people": [
+          "傅斯年",
+          "王尽美",
+          "毛泽东"
+        ],
+        "dates": [
+          "1919年5月4日",
+          "1921年7月",
+          "1935年1月"
+        ],
+        "events": [
+          [
+            "五四运动",
+            "五四"
+          ],
+          [
+            "一大",
+            "全国代表大会",
+            "中共一"
+          ],
+          [
+            "遵义会议"
+          ]
+        ]
+      }
+    },
+    {
+      "text_id": "T3",
+      "text_type": "历史事件段落（含干扰信息）",
+      "method": "json_mode",
+      "method_name": "JSON Mode",
+      "ok": true,
+      "raw": "{\"人名\": [\"傅斯年\", \"王尽美\", \"毛泽东\"], \"日期\": [\"1919年5月4日\", \"1921年7月\", \"1935年1月\"], \"事件\": [\"五四运动\", \"中国共产党第一次全国代表大会\", \"遵义会议\"], \"摘要\": \"本文记述了1919年五四运动、1921年中共一大召开以及1935年遵义会议确立毛泽东领导地位这三个重大历史事件及相关人物。\"}",
+      "source": "content",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 299,
+        "prompt_tokens": 109,
+        "total_tokens": 408,
+        "completion_tokens_details": {
+          "reasoning_tokens": 186
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 64
+        }
+      },
+      "think_tokens": 186,
+      "note": "",
+      "prompt_chars": 156,
+      "metrics": {
+        "parse_stage": "raw",
+        "repairs": [],
+        "data": {
+          "人名": [
+            "傅斯年",
+            "王尽美",
+            "毛泽东"
+          ],
+          "日期": [
+            "1919年5月4日",
+            "1921年7月",
+            "1935年1月"
+          ],
+          "事件": [
+            "五四运动",
+            "中国共产党第一次全国代表大会",
+            "遵义会议"
+          ],
+          "摘要": "本文记述了1919年五四运动、1921年中共一大召开以及1935年遵义会议确立毛泽东领导地位这三个重大历史事件及相关人物。"
+        },
+        "parse_score": 40,
+        "schema_errors": [
+          "$: 缺少 required 字段 people",
+          "$: 缺少 required 字段 dates",
+          "$: 缺少 required 字段 events",
+          "$: 缺少 required 字段 summary",
+          "$: Schema 之外的多余字段 人名",
+          "$: Schema 之外的多余字段 日期",
+          "$: Schema 之外的多余字段 事件",
+          "$: Schema 之外的多余字段 摘要"
+        ],
+        "schema_score": 0,
+        "f1_people": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "f1_dates": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "f1_events": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "avg_f1": 0.0,
+        "content_score": 0,
+        "score": 40
+      },
+      "expected": {
+        "people": [
+          "傅斯年",
+          "王尽美",
+          "毛泽东"
+        ],
+        "dates": [
+          "1919年5月4日",
+          "1921年7月",
+          "1935年1月"
+        ],
+        "events": [
+          [
+            "五四运动",
+            "五四"
+          ],
+          [
+            "一大",
+            "全国代表大会",
+            "中共一"
+          ],
+          [
+            "遵义会议"
+          ]
+        ]
+      }
+    },
+    {
+      "text_id": "T3",
+      "text_type": "历史事件段落（含干扰信息）",
+      "method": "schema_prompt",
+      "method_name": "Schema 约束 Prompt",
+      "ok": true,
+      "raw": "{\"people\":[\"傅斯年\",\"王尽美\",\"毛泽东\"],\"dates\":[\"1919年5月4日\",\"1921年7月\",\"1935年1月\"],\"events\":[\"五四运动爆发\",\"学生游行，傅斯年担任游行总指挥\",\"中国共产党第一次全国代表大会在上海召开\",\"遵义会议召开，确立毛泽东领导地位\"],\"summary\":\"文本记述了1919年五四运动、1921年中共一大召开及1935年遵义会议等中国近代重要历史事件。\"}",
+      "source": "content",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 197,
+        "prompt_tokens": 501,
+        "total_tokens": 698,
+        "completion_tokens_details": {
+          "reasoning_tokens": 80
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 448
+        }
+      },
+      "think_tokens": 80,
+      "note": "",
+      "prompt_chars": 1121,
+      "metrics": {
+        "parse_stage": "raw",
+        "repairs": [],
+        "data": {
+          "people": [
+            "傅斯年",
+            "王尽美",
+            "毛泽东"
+          ],
+          "dates": [
+            "1919年5月4日",
+            "1921年7月",
+            "1935年1月"
+          ],
+          "events": [
+            "五四运动爆发",
+            "学生游行，傅斯年担任游行总指挥",
+            "中国共产党第一次全国代表大会在上海召开",
+            "遵义会议召开，确立毛泽东领导地位"
+          ],
+          "summary": "文本记述了1919年五四运动、1921年中共一大召开及1935年遵义会议等中国近代重要历史事件。"
+        },
+        "parse_score": 40,
+        "schema_errors": [],
+        "schema_score": 30,
+        "f1_people": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "f1_dates": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "f1_events": {
+          "precision": 0.75,
+          "recall": 1.0,
+          "f1": 0.857
+        },
+        "avg_f1": 0.952,
+        "content_score": 29,
+        "score": 99
+      },
+      "expected": {
+        "people": [
+          "傅斯年",
+          "王尽美",
+          "毛泽东"
+        ],
+        "dates": [
+          "1919年5月4日",
+          "1921年7月",
+          "1935年1月"
+        ],
+        "events": [
+          [
+            "五四运动",
+            "五四"
+          ],
+          [
+            "一大",
+            "全国代表大会",
+            "中共一"
+          ],
+          [
+            "遵义会议"
+          ]
+        ]
+      }
+    },
+    {
+      "text_id": "T3",
+      "text_type": "历史事件段落（含干扰信息）",
+      "method": "function_calling",
+      "method_name": "Function Calling",
+      "ok": true,
+      "raw": "{\"people\": [\"傅斯年\", \"王尽美\", \"毛泽东\"], \"dates\": [\"1919年5月4日\", \"1921年7月\", \"1935年1月\"], \"events\": [\"五四运动爆发，傅斯年任游行总指挥\", \"中国共产党第一次全国代表大会在上海召开\", \"遵义会议召开，确立毛泽东在党中央的领导地位\"], \"summary\": \"文本记述了从1919年五四运动、1921年中共一大到1935年遵义会议的中国近现代重要历史事件及相关人物。\"}",
+      "source": "tool_calls",
+      "finish_reason": "tool_calls",
+      "usage": {
+        "completion_tokens": 168,
+        "prompt_tokens": 309,
+        "total_tokens": 477,
+        "completion_tokens_details": {
+          "reasoning_tokens": 13
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 256
+        }
+      },
+      "think_tokens": 13,
+      "note": "",
+      "prompt_chars": 156,
+      "metrics": {
+        "parse_stage": "raw",
+        "repairs": [],
+        "data": {
+          "people": [
+            "傅斯年",
+            "王尽美",
+            "毛泽东"
+          ],
+          "dates": [
+            "1919年5月4日",
+            "1921年7月",
+            "1935年1月"
+          ],
+          "events": [
+            "五四运动爆发，傅斯年任游行总指挥",
+            "中国共产党第一次全国代表大会在上海召开",
+            "遵义会议召开，确立毛泽东在党中央的领导地位"
+          ],
+          "summary": "文本记述了从1919年五四运动、1921年中共一大到1935年遵义会议的中国近现代重要历史事件及相关人物。"
+        },
+        "parse_score": 40,
+        "schema_errors": [],
+        "schema_score": 30,
+        "f1_people": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "f1_dates": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "f1_events": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "avg_f1": 1.0,
+        "content_score": 30,
+        "score": 100
+      },
+      "expected": {
+        "people": [
+          "傅斯年",
+          "王尽美",
+          "毛泽东"
+        ],
+        "dates": [
+          "1919年5月4日",
+          "1921年7月",
+          "1935年1月"
+        ],
+        "events": [
+          [
+            "五四运动",
+            "五四"
+          ],
+          [
+            "一大",
+            "全国代表大会",
+            "中共一"
+          ],
+          [
+            "遵义会议"
+          ]
+        ]
+      }
+    }
+  ],
+  "aggregate": [
+    {
+      "method": "plain",
+      "method_name": "纯 Prompt 约定",
+      "n_ok": 3,
+      "n_api_error": 0,
+      "parse_raw": 0,
+      "parse_fenced": 2,
+      "parse_extracted": 0,
+      "parse_failed": 1,
+      "schema_pass": 0,
+      "avg_f1_people": 0.0,
+      "avg_f1_dates": 0.0,
+      "avg_f1_events": 0.0,
+      "avg_score": 23.3,
+      "avg_prompt": 123,
+      "avg_completion": 352,
+      "tool_call_rate": 0.0
+    },
+    {
+      "method": "json_mode",
+      "method_name": "JSON Mode",
+      "n_ok": 3,
+      "n_api_error": 0,
+      "parse_raw": 3,
+      "parse_fenced": 0,
+      "parse_extracted": 0,
+      "parse_failed": 0,
+      "schema_pass": 0,
+      "avg_f1_people": 0.0,
+      "avg_f1_dates": 0.0,
+      "avg_f1_events": 0.0,
+      "avg_score": 40.0,
+      "avg_prompt": 123,
+      "avg_completion": 254,
+      "tool_call_rate": 0.0
+    },
+    {
+      "method": "schema_prompt",
+      "method_name": "Schema 约束 Prompt",
+      "n_ok": 3,
+      "n_api_error": 0,
+      "parse_raw": 3,
+      "parse_fenced": 0,
+      "parse_extracted": 0,
+      "parse_failed": 0,
+      "schema_pass": 2,
+      "avg_f1_people": 0.667,
+      "avg_f1_dates": 0.667,
+      "avg_f1_events": 0.452,
+      "avg_score": 78.0,
+      "avg_prompt": 515,
+      "avg_completion": 182,
+      "tool_call_rate": 0.0
+    },
+    {
+      "method": "function_calling",
+      "method_name": "Function Calling",
+      "n_ok": 3,
+      "n_api_error": 0,
+      "parse_raw": 3,
+      "parse_fenced": 0,
+      "parse_extracted": 0,
+      "parse_failed": 0,
+      "schema_pass": 3,
+      "avg_f1_people": 1.0,
+      "avg_f1_dates": 1.0,
+      "avg_f1_events": 0.857,
+      "avg_score": 98.7,
+      "avg_prompt": 323,
+      "avg_completion": 197,
+      "tool_call_rate": 1.0
+    }
+  ]
+}

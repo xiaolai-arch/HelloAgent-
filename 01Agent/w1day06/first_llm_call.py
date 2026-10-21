@@ -2,9 +2,9 @@
 """第一次 LLM API 调用：从零跑通 chat/completions
 
 这一天把前几天的"纸面知识"落到真正的 API 上：
-- 你敲的每一个 token（day03）最终都通过 messages 数组发给模型
-- 模型每生成一个 token，都是在词表概率分布上采样一次（day03 温度/Top-p）
-- 多模态（day05）只是 content 里多了一种 image_url part，接口形状完全一样
+- 你敲的每一个 token（w1day03）最终都通过 messages 数组发给模型
+- 模型每生成一个 token，都是在词表概率分布上采样一次（w1day03 温度/Top-p）
+- 多模态（w1day05）只是 content 里多了一种 image_url part，接口形状完全一样
 
 三个实验：
   实验 1  一问一答，认识请求/响应的完整结构
@@ -24,13 +24,13 @@ import urllib.request
 import urllib.error
 
 # Windows 终端默认编码是 GBK，打印中文/emoji 会抛 UnicodeEncodeError。
-# 统一把 stdout 换成 UTF-8 且不炸的包装（day03/day05 脚本同样处理）。
+# 统一把 stdout 换成 UTF-8 且不炸的包装（w1day03/w1day05 脚本同样处理）。
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 # ---- 配置加载 ---------------------------------------------------------------
-# 策略：配置文件优先，环境变量兜底（与 day05 保持一致，两个脚本可互换使用）。
+# 策略：配置文件优先，环境变量兜底（与 w1day05 保持一致，两个脚本可互换使用）。
 # 安全原则：API Key 绝不硬编码进 .py —— 脚本要提交 git，而密钥只能待在
-# 被 .gitignore 忽略的 vision_config.json 里（这也是 day05 那条 gitignore 的意义）。
+# 被 .gitignore 忽略的 vision_config.json 里（这也是 w1day05 那条 gitignore 的意义）。
 CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../vision_config.json")
 
 _cfg = {}
@@ -59,7 +59,7 @@ def chat(messages, model=None, temperature=0.7, max_tokens=512):
     请求体只有四个核心字段：
       model       —— 用哪个模型
       messages    —— 对话历史（role + content 的数组，这就是"上下文"的全部实体）
-      temperature —— 采样温度（day03：softmax(logits / T)，改分布形状）
+      temperature —— 采样温度（w1day03：softmax(logits / T)，改分布形状）
       max_tokens  —— 生成侧 token 上限（思考型模型 = 思考+回答共享的总预算）
 
     返回值：解析后的响应 JSON（dict），结构见实验 1 的逐字段打印。
@@ -115,7 +115,7 @@ print(f"\n[fields  ] finish_reason={resp['choices'][0]['finish_reason']!r}"
 print(f"[fields  ] id={resp.get('id')}  model={resp.get('model')}")
 u = resp["usage"]
 # 计费与预算的核心：prompt_tokens（你发出去的，含 system/历史）+
-# completion_tokens（模型生成的）= total_tokens。day03 数过的 token 在这里变现。
+# completion_tokens（模型生成的）= total_tokens。w1day03 数过的 token 在这里变现。
 # 思考型模型的 completion 里还细分出 reasoning_tokens（内部思维链消耗）。
 think = u.get("completion_tokens_details", {}).get("reasoning_tokens", 0)
 print(f"[usage   ] prompt={u['prompt_tokens']}  completion={u['completion_tokens']}"
@@ -179,5 +179,5 @@ print("小结：第一次调用你真正需要记住的四件事")
 print("=" * 62)
 print("1. 端点是 POST {base_url}/chat/completions，鉴权头 Authorization: Bearer <key>")
 print("2. 一切输入都在 messages 数组里；多轮=重发全部历史，接口本身无状态")
-print("3. usage 里的 prompt/completion tokens 就是 day03 数过的那些，直接决定费用")
+print("3. usage 里的 prompt/completion tokens 就是 w1day03 数过的那些，直接决定费用")
 print("4. finish_reason 告诉你模型是说完了(stop)还是被 max_tokens 掐断(length)")

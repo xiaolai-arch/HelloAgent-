@@ -35,7 +35,8 @@ import datetime
 import urllib.request
 import urllib.error
 
-# Windows 终端默认 GBK，强制 UTF-8 输出，避免中文乱码
+# Windows 终端默认 GBK，直接 print 中文/emoji 可能抛 UnicodeEncodeError。
+# 换成 UTF-8 包装并 errors="replace"，保证实验不会因为终端编码中断。
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 # __file__ 是当前脚本路径；统一用绝对路径拼资源，避免从不同目录运行时找不到模板。

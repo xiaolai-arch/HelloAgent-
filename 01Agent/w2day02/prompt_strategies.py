@@ -38,6 +38,7 @@ import urllib.error
 # Windows 终端默认 GBK，强制 UTF-8 输出，避免中文乱码
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
+# __file__ 是当前脚本路径；统一用绝对路径拼资源，避免从不同目录运行时找不到模板。
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(BASE_DIR, "../../vision_config.json")
 PROMPT_DIR = os.path.join(BASE_DIR, "prompts")
@@ -46,23 +47,31 @@ REPORT_PATH = os.path.join(BASE_DIR, "prompt_strategies_report.md")
 RESULT_PATH = os.path.join(BASE_DIR, "prompt_strategies_result.json")
 
 # ---- 配置加载（与 first_llm_call.py 一致：配置文件优先，环境变量兜底）----
+# 密钥只放在被 .gitignore 忽略的 vision_config.json 或环境变量里，脚本本身可安全提交。
 _cfg = {}
 if os.path.exists(CONFIG_PATH):
     with open(CONFIG_PATH, "r", encoding="utf-8") as f:
         _cfg = json.load(f)
 
+# .rstrip("/") 防止 base_url 末尾多一个 /，拼出 ".../v1//chat/completions"。
 BASE_URL = (_cfg.get("base_url") or os.environ.get("COPILOT_PROVIDER_BASE_URL", "")).rstrip("/")
 API_KEY = _cfg.get("api_key") or os.environ.get("COPILOT_PROVIDER_API_KEY", "")
+# 配置文件没写 model 时的兜底；当前网关使用 mimo-v2.6-flash。
 MODEL = _cfg.get("model", "mimo-v2.6-flash")
 
 if not BASE_URL or not API_KEY:
     sys.exit(f"[config] 缺少网关配置。请创建 {CONFIG_PATH}，或设置环境变量 "
              "COPILOT_PROVIDER_BASE_URL / COPILOT_PROVIDER_API_KEY")
 
+# 数学题要的是稳定复现，不是创意：0.2 让采样更接近概率最高的路径，
+# 三种策略必须用同一温度，否则正确率差异可能来自随机性而不是 Prompt。
 TEMPERATURE = 0.2
+# 2000 是“思考 + 可见回答”的总预算；步骤写得长或模型思考久时可能撞到上限，
+# 所以报告里要同时看 finish_reason，不能只看答案对不对。
 MAX_TOKENS = 2000
 
-# 三种策略：名称 → 模板文件
+# 三种策略：名称 → 模板文件。
+# 列表顺序决定终端打印/报告里策略的展示顺序；运行顺序是“题目外层、策略内层”。
 STRATEGIES = [
     ("Zero-shot", "zero_shot.md"),
     ("Few-shot", "few_shot.md"),
@@ -71,38 +80,48 @@ STRATEGIES = [
 
 
 def load_text(path):
+    # 统一 UTF-8 读取，并去掉文件末尾换行，避免模板末尾多出空白影响 token 统计。
     with open(path, "r", encoding="utf-8") as f:
         return f.read().strip()
 
 
 def render_prompt(template, question):
     """模板统一用 {{QUESTION}} 占位，避免 str.format 与正文花括号冲突。"""
+    # 这里故意不用 str.format：模板里可能有 JSON、代码块或数学花括号，
+    # str.format 会把它们当占位符而报错；简单 replace 只替换我们约定的标记。
     return template.replace("{{QUESTION}}", question)
 
 
+# 题目在启动时一次性载入；expected 是标准答案，用于自动判分。
 QUESTIONS = json.loads(load_text(QUESTIONS_PATH))
+# 三种模板也只读一次，避免 12 次调用反复读磁盘；键是策略名，值是模板正文。
 PROMPTS = {name: load_text(os.path.join(PROMPT_DIR, fname))
            for name, fname in STRATEGIES}
 
 
 def chat(messages, temperature=TEMPERATURE, max_tokens=MAX_TOKENS):
     """OpenAI 兼容 POST /chat/completions，返回 (resp, error_msg)。"""
+    # 只发四个核心字段：模型、消息数组、温度、生成上限。
+    # 本实验不使用 system，messages 里只有一条 user，确保差异只来自三种 Prompt 模板。
     payload = {
         "model": MODEL,
         "messages": messages,
         "temperature": temperature,
         "max_tokens": max_tokens,
     }
+    # HTTP body 是字节流；显式 UTF-8 才能安全传中文题目和中文回答。
     body = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(
-        BASE_URL + "/chat/completions",
-        data=body,
-        headers={"Authorization": "Bearer " + API_KEY,
-                 "Content-Type": "application/json"})
+        BASE_URL + "/chat/completions",  # OpenAI 兼容网关的标准端点
+        data=body,                       # 带 data 即自动变为 POST
+        headers={"Authorization": "Bearer " + API_KEY,  # 密钥放请求头，不进 URL
+                 "Content-Type": "application/json"})   # 告诉网关 body 是 JSON
     try:
+        # 思考型模型可能先推理十几秒；180s 给足余量，避免误判为网络失败。
         with urllib.request.urlopen(req, timeout=180) as r:
             return json.load(r), None
     except urllib.error.HTTPError as e:
+        # 错误体只截前 500 字符，足够定位 401/429/400；不中断整个实验。
         detail = e.read().decode("utf-8", errors="replace")[:500]
         return None, f"HTTP {e.code}: {detail}"
     except Exception as e:
@@ -111,6 +130,8 @@ def chat(messages, temperature=TEMPERATURE, max_tokens=MAX_TOKENS):
 
 def ask(prompt):
     """单条 user 消息发一次请求，只取用户可见的 content。"""
+    # 关键控制变量：这里不传 system。三种策略的差异只能来自 prompt 本身，
+    # 否则 system 里的额外指令会污染“Zero-shot vs Few-shot vs CoT”的对比。
     resp, err = chat([{"role": "user", "content": prompt}])
     if err:
         return {"ok": False, "error": err, "content": "", "usage": {}}
@@ -118,8 +139,11 @@ def ask(prompt):
     choice = resp["choices"][0]
     return {
         "ok": True,
+        # 只取 content，不取 reasoning_content：思维链是内部草稿，
+        # 混进判分文本可能让“答案提取”误抓中间数字。
         "content": choice["message"].get("content") or "",
         "finish_reason": choice.get("finish_reason", "?"),
+        # 原样保留 usage，后面要对比三种策略的 token 成本。
         "usage": resp.get("usage", {}),
         "response_id": resp.get("id"),
     }

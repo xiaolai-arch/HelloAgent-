@@ -174,6 +174,7 @@ def evaluate(text):
 
 
 def fmt_bool(v):
+    # 终端和报告里用 emoji 代替 True/False，扫一眼就能看出命中情况。
     return "✅" if v else "❌"
 
 
@@ -235,6 +236,7 @@ def run_experiment():
 
 def build_summary(results):
     """生成 markdown 汇总表。"""
+    # 每个结果一行，失败行也保留；列与 evaluate() 返回的字段一一对应。
     header = ("| 组别 | 轮次 | 结构 | 表格 | 类比边界 | 自测 | Q/K/V | "
               "中文字数 | prompt | completion | 思考 | finish_reason |")
     sep = "|---|---|---|---|---|---|---|---|---|---|---|---|"
@@ -255,8 +257,11 @@ def build_summary(results):
 
 
 def write_report(results):
+    # 报告完全由 results 生成，不手写结论数字；重跑脚本即可复现同一套结构。
     os.makedirs(os.path.dirname(REPORT_PATH), exist_ok=True)
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # 先放量化表和指标说明，再附两组全文：读者可以先看指标，再核对原文，
+    # 避免只给结论不给证据。
     lines = [
         "# LangGPT 结构化 Prompt 对比实验报告",
         "",
@@ -286,6 +291,7 @@ def write_report(results):
         "",
     ]
 
+    # 失败结果也写进报告，否则“少了一次调用”会被读者忽略。
     for r in results:
         lines.append(f"### {r['condition']} · 第 {r['round']} 次")
         lines.append("")
@@ -304,10 +310,12 @@ def write_report(results):
 
 def main():
     print(f"[config] 网关: {BASE_URL}  模型: {MODEL}")
+    # 打印模板字符数，便于确认加载到的是完整文件，而不是空文件或旧版本。
     print(f"[setup ] 普通 Prompt {len(PLAIN_PROMPT)} 字符 | "
-          f"结构化 Prompt {len(STRUCTURED_PROMPT)} 字符 | "  # 计算langgpt_llm_coach.md文件里面的字符数量
+          f"结构化 Prompt {len(STRUCTURED_PROMPT)} 字符 | "
           f"temperature={TEMPERATURE} rounds={ROUNDS}")
 
+    # 先跑实验拿到全部结果，再统一打印/写文件；中途失败也保留记录。
     results = run_experiment()
 
     print("\n" + "=" * 62)
@@ -316,6 +324,8 @@ def main():
     print(build_summary(results))
 
     write_report(results)
+    # JSON 里连问题、普通 Prompt、结构化模板字符数和全部响应一起存档：
+    # 以后只看到报告时，也能还原“当时到底怎么问的”。
     with open(RESULT_PATH, "w", encoding="utf-8") as f:
         json.dump({
             "generated_at": datetime.datetime.now().isoformat(timespec="seconds"),

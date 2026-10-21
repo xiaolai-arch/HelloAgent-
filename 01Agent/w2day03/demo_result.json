@@ -1,0 +1,93 @@
+{
+  "generated_at": "2026-10-21T15:05:29",
+  "model": "mimo-v2.6-flash",
+  "temperature": 0.2,
+  "max_tokens": 3000,
+  "system_prompt_chars": 2522,
+  "user_prompt": "请审查下面这段 Python 代码，找出会在生产环境造成问题的地方。\n\n<context>\n- Python 3.11\n- FastAPI 0.110\n- SQLite（生产环境计划迁移到 PostgreSQL）\n- 公网接口，预计 QPS 200\n- 代码将合并到主分支\n</context>\n\n<code>\n```python\nimport sqlite3\nimport logging\nfrom fastapi import FastAPI\n\napp = FastAPI()\nDB_PATH = \"app.db\"\nAPI_KEY = \"sk-live-1234567890abcdef\"\nlogger = logging.getLogger(__name__)\n\n\n@app.get(\"/users\")\ndef search_users(name: str = \"\", limit: int = 100):\n    conn = sqlite3.connect(DB_PATH)\n    cursor = conn.cursor()\n    query = (\n        f\"SELECT id, name, email, password_hash FROM users \"\n        f\"WHERE name LIKE '%{name}%' LIMIT {limit}\"\n    )\n    try:\n        cursor.execute(query)\n        rows = cursor.fetchall()\n        logger.info(\"query=%s rows=%s\", query, rows)\n        return {\"users\": rows}\n    except Exception:\n        return {\"users\": []}\n    finally:\n        conn.close()\n```\n</code>\n",
+  "buggy_code": "import sqlite3\nimport logging\nfrom fastapi import FastAPI\n\napp = FastAPI()\nDB_PATH = \"app.db\"\nAPI_KEY = \"sk-live-1234567890abcdef\"\nlogger = logging.getLogger(__name__)\n\n\n@app.get(\"/users\")\ndef search_users(name: str = \"\", limit: int = 100):\n    conn = sqlite3.connect(DB_PATH)\n    cursor = conn.cursor()\n    query = (\n        f\"SELECT id, name, email, password_hash FROM users \"\n        f\"WHERE name LIKE '%{name}%' LIMIT {limit}\"\n    )\n    try:\n        cursor.execute(query)\n        rows = cursor.fetchall()\n        logger.info(\"query=%s rows=%s\", query, rows)\n        return {\"users\": rows}\n    except Exception:\n        return {\"users\": []}\n    finally:\n        conn.close()\n",
+  "results": [
+    {
+      "condition": "无 System（普通提问）",
+      "ok": true,
+      "content": "# 生产环境代码审查报告\n\n## 🔴 严重（Critical）\n\n### 1. SQL 注入漏洞\n```python\n# 当前代码 —— 用户输入直接拼接进 SQL\nquery = (\n    f\"SELECT id, name, email, password_hash FROM users \"\n    f\"WHERE name LIKE '%{name}%' LIMIT {limit}\"\n)\ncursor.execute(query)\n```\n攻击者只需传入 `name=xxx%' OR '1'='1` 即可**绕过查询条件、拖库**。`limit` 同样可被注入（传入 `limit=100; DROP TABLE users--`，SQLite 多语句默认禁止，但这是靠运气不是靠防御）。\n\n**修复：**\n```python\n# ✅ 参数化查询\nquery = \"SELECT id, name, email FROM users WHERE name LIKE ? LIMIT ?\"\ncursor.execute(query, (f\"%{name}%\", limit))\n```\n\n---\n\n### 2. 敏感字段 `password_hash` 泄露\n```python\nquery = \"SELECT id, name, email, password_hash FROM users ...\"\n# 直接返回给客户端\nreturn {\"users\": rows}\n```\n`password_hash` 不应出现在任何 API 响应中。即便只是哈希，也存在**离线爆破/彩虹表**风险，且属于不必要的信息暴露。\n\n**修复：** 从 SELECT 列表中移除 `password_hash`。\n\n---\n\n### 3. API 密钥硬编码在源码中\n```python\nAPI_KEY = \"sk-live-1234567890abcdef\"\n```\n该值将被提交到主分支，**通过 Git 历史永久泄露**。密钥应通过环境变量或密钥管理服务注入。\n\n**修复：**\n```python\nimport os\nAPI_KEY = os.environ[\"API_KEY\"]  # 部署时注入\n```\n\n---\n\n## 🟠 高（High）\n\n### 4. 每次请求新建连接 + 同步 SQLite —— 无法承载 QPS 200\n```python\nconn = sqlite3.connect(DB_PATH)   # 每个请求都开新连接\n```\n- **SQLite 是单文件数据库**，写操作串行化，连接建立/销毁开销在高并发下成为瓶颈。\n- **同步 I/O 阻塞事件循环**。FastAPI 的 `def` 路径会在线程池中执行，但线程池默认 40 个线程，QPS 200 + 慢查询可能耗尽线程，导致请求排队甚至超时。\n- 迁移到 PostgreSQL 后，应当使用**连接池**（如 `SQLAlchemy + asyncpg` 或 `psycopg_pool`），而非每次新建连接。\n\n**修复方向：**\n```python\n# 使用连接池 + 异步驱动\nfrom sqlalchemy.ext.asyncio import create_async_engine\nengine = create_async_engine(DATABASE_URL, pool_size=10, max_overflow=20)\n```\n\n---\n\n### 5. `except Exception` 静默吞掉所有错误\n```python\nexcept Exception:\n    return {\"users\": []}\n```\n- 连接失败、磁盘满、SQL 语法错误……全部返回空结果，**运维无法感知故障**。\n- 对客户端来说，「搜索结果为空」和「服务故障」不可区分。\n- 未记录日志，`logger` 声明了但此分支完全未使用。\n\n**修复：**\n```python\nexcept sqlite3.Error:\n    logger.exception(\"query failed\")   # 记录堆栈\n    raise HTTPException(status_code=500, detail=\"database error\")\n```\n\n---\n\n### 6. 敏感数据记录到日志\n```python\nlogger.info(\"query=%s rows=%s\", query, rows)\n```\n- `rows` 包含用户邮箱等 PII（个人可识别信息），写入日志违反 **GDPR / 等保** 要求。\n- 日志级别为 `INFO`，生产环境可能全量输出。\n\n**修复：** 只记录行数，不记录数据内容；或使用 `logger.debug` 且脱敏。\n\n---\n\n## 🟡 中（Medium）\n\n### 7. `limit` 未做上下界校验\n```python\ndef search_users(name: str = \"\", limit: int = 100):\n```\n- `limit=1000000` → 一次查询返回全部用户，可能 OOM。\n- `limit=0` 或 `limit=-1` → 语义不明（SQLite 中 `LIMIT -1` = 不限制）。\n- 应加入 `ge=1, le=500` 等 Pydantic 约束。\n\n### 8. `finally: conn.close()` 可靠性\n在正常路径没问题，但如果 `sqlite3.connect()` 本身抛异常（文件被锁、路径不存在），`conn` 未赋值，`finally` 中 `conn.close()` 会触发 `NameError`，**掩盖原始错误**。\n\n**修复：**\n```python\nconn = None\ntry:\n    conn = sqlite3.connect(DB_PATH)\n    ...\nfinally:\n    if conn:\n        conn.close()\n```\n\n### 9. 缺少输入长度限制\n`name` 参数无长度限制，过长的输入会使 `LIKE '%...%'` 退化为全表扫描（索引失效），在 PostgreSQL 迁移后同样存在性能问题。\n\n---\n\n## 📋 汇总\n\n| # | 严重度 | 问题 | 影响 |\n|---|--------|------|------|\n| 1 | 🔴 严重 | SQL 注入 | 数据泄露、任意操作 |\n| 2 | 🔴 严重 | 返回 password_hash | 凭据哈希泄露 |\n| 3 | 🔴 严重 | 密钥硬编码 | 密钥通过 Git 永久泄露 |\n| 4 | 🟠 高 | 无连接池 + 同步 I/O | QPS 200 下线程耗尽 |\n| 5 | 🟠 高 | 静默吞异常 | 故障不可感知 |\n| 6 | 🟠 高 | PII 记入日志 | 合规违规 |\n| 7 | 🟡 中 | limit 无边界 | OOM / 慢查询 |\n| 8 | 🟡 中 | finally 中 NameError | 掩盖真实错误 |\n| 9 | 🟡 中 | 输入无长度限制 | 索引失效、性能退化 |\n\n> **合并前必须修复：** #1 #2 #3（安全），#4 #5（可靠性）。其余可作为同一批次的技术债处理。",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 1485,
+        "prompt_tokens": 269,
+        "total_tokens": 1754,
+        "completion_tokens_details": {
+          "reasoning_tokens": 11
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "think_tokens": 11,
+      "metrics": {
+        "sections": 0,
+        "section_names": [],
+        "has_table": true,
+        "has_blocker": false,
+        "has_major": false,
+        "has_minor": false,
+        "has_nit": false,
+        "sql_injection": true,
+        "secret_detected": true,
+        "password_detected": true,
+        "broad_except": true,
+        "secret_leaked": true,
+        "secret_masked": false,
+        "test_cases": 2,
+        "has_tests": false,
+        "has_pending": false,
+        "chinese_chars": 733,
+        "score": 30.0
+      },
+      "system_prompt_chars": 0
+    },
+    {
+      "condition": "有 System（专业角色）",
+      "ok": true,
+      "content": "## 结论\n\n`Request changes`\n\n存在多个 `Blocker`：SQL 注入、硬编码密钥、返回密码哈希，任何一项都足以在生产环境造成安全事故，必须修复后才能合并。\n\n---\n\n## 风险摘要\n\n| 级别 | 数量 | 是否阻塞合并 |\n|------|------|-------------|\n| Blocker | 3 | 是 |\n| Major | 3 | 否（应尽快修复） |\n| Minor | 1 | 否 |\n\n---\n\n## 问题清单\n\n### Blocker\n\n**1. SQL 注入（`name` 参数）**\n- **位置**：`search_users` 函数，SQL 拼接处\n- **问题**：`name` 通过 f-string 直接拼入 SQL 语句，未使用参数化查询。\n- **影响**：攻击者传入 `name=' OR 1=1 --` 即可绕过过滤、读取全表数据；传入 `'; DROP TABLE users; --` 可删除数据。这是公网接口，风险极高。\n- **修复**：使用参数化查询：\n  ```python\n  cursor.execute(\n      \"SELECT id, name, email FROM users WHERE name LIKE ? LIMIT ?\",\n      (f\"%{name}%\", limit),\n  )\n  ```\n- **依据**：OWASP SQL Injection 规则；Python `sqlite3` 模块官方文档明确建议使用 `?` 占位符。\n\n---\n\n**2. 硬编码 API 密钥**\n- **位置**：模块级变量 `API_KEY = \"sk-live-...\"`\n- **问题**：密钥以明文写死在源代码中，代码合并到主分支后将进入版本历史，所有有仓库读权限的人（以及 CI/CD、日志系统、备份）均可看到。\n- **影响**：密钥泄露，攻击者可冒用身份调用外部服务。\n- **修复**：从环境变量读取：\n  ```python\n  API_KEY = os.environ[\"API_KEY\"]\n  ```\n  并立即在密钥管理平台轮换（rotate）此密钥，因为它已经暴露。\n- **依据**：OWASP Secrets Management；代码进入 Git 历史后无法真正删除。\n\n---\n\n**3. 返回 `password_hash` 字段**\n- **位置**：SQL `SELECT` 列 / API 响应体\n- **问题**：查询了 `password_hash` 并原样返回给调用方。\n- **影响**：任何能调用此接口的人都拿到了所有用户的密码哈希，配合离线破解（hashcat / john）可还原明文密码，属于用户数据泄露。\n- **修复**：从 SELECT 列表中移除：\n  ```python\n  cursor.execute(\"SELECT id, name, email FROM users ...\")\n  ```\n  同时删除日志中的 rows 输出（见下方 Major-4）。\n- **依据**：最小权限原则 / OWASP API Security — 敏感数据暴露。\n\n---\n\n### Major\n\n**4. 日志中记录完整 SQL 和全部行数据（含敏感字段）**\n- **位置**：`logger.info(\"query=%s rows=%s\", query, rows)`\n- **问题**：将包含用户输入的原始 SQL 语句和包含 email、password_hash 的全部行写入日志。\n- **影响**：日志系统通常权限较宽，等于把密码哈希扩散到更多系统；同时 SQL 中的用户输入也被记录，可能造成二次注入（日志被其他系统读取时）。\n- **修复**：\n  ```python\n  # 只记录不带用户数据的元信息\n  logger.info(\"search_users matched %d rows\", len(rows))\n  ```\n\n---\n\n**5. 吞掉所有异常，不记录、不区分**\n- **位置**：`except Exception: return {\"users\": []}`\n- **问题**：任何异常（数据库锁、磁盘满、schema 错误）都被静默吞掉，调用方得到空结果与\"没有匹配\"无法区分。\n- **影响**：生产故障时无法定位问题；数据错误被当作正常情况掩盖。\n- **修复**：\n  ```python\n  except sqlite3.Error:\n      logger.exception(\"search_users query failed\")\n      raise HTTPException(status_code=500, detail=\"Internal error\")\n  ```\n\n---\n\n**6. `limit` 参数无上限约束**\n- **位置**：函数签名 `limit: int = 100`\n- **问题**：未指定 `ge`/`le` 约束，调用方可传 `limit=10**9`。\n- **影响**：单次请求返回百万级行，内存暴涨导致 OOM，构成 DoS 向量。\n- **修复**：\n  ```python\n  from fastapi import Query\n  def search_users(name: str = \"\", limit: int = Query(100, ge=1, le=500)):\n  ```\n\n---\n\n### Minor\n\n**7. 每次请求新建 SQLite 连接，QPS 200 下可能成为瓶颈**\n- **位置**：`sqlite3.connect(DB_PATH)` 在请求处理函数内\n- **问题**：每次请求建立/销毁连接，SQLite 写锁在高并发下竞争激烈；且 SQLite 不支持多进程并发写。\n- **影响**：QPS 200 时可能出现 `database is locked` 错误和延迟升高。迁移 PostgreSQL 后此问题消失，但当前阶段需要注意。\n- **修复**：至少使用 `check_same_thread=False` + 连接池，或使用 `sqlalchemy` 作为抽象层以便无缝切换数据库。\n\n---\n\n## 建议补充的测试\n\n```text\n场景 → 输入 → 期望结果\nSQL 注入防护 → name=\"' OR 1=1 --\" → 返回空列表或合法结果，不返回全部行\n参数化验证 → name=\"Robert'; DROP TABLE users;--\" → 数据库表仍存在，无异常\nlimit 上限 → limit=999999 → HTTP 422（FastAPI 参数校验拦截）\n响应不含敏感字段 → 正常请求 → 响应 JSON 中无 password_hash 键\n异常可观测性 → 断开数据库文件 → 返回 HTTP 500 且日志中有 exception 记录\n```\n\n---\n\n## 待确认\n\n1. **API_KEY 的实际用途**：当前代码中定义了 `API_KEY` 但未使用。它是给未来的中间件/认证用，还是被遗漏了？如果后续要用于鉴权，还需确认认证逻辑是否也存在缺陷。\n2. **password_hash 的来源和算法**：如果哈希算法本身足够强（如 argon2id + 盐），泄露哈希不等于泄露明文——但这不改变\"不应返回 password_hash\"的结论，只是影响事件严重程度评级。\n3. **是否已有其他分支/历史提交包含此密钥**：如果是，必须轮换密钥并考虑用 `git filter-branch` / BFG 清理历史。",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 2113,
+        "prompt_tokens": 1772,
+        "total_tokens": 3885,
+        "completion_tokens_details": {
+          "reasoning_tokens": 581
+        },
+        "prompt_tokens_details": null
+      },
+      "think_tokens": 581,
+      "metrics": {
+        "sections": 5,
+        "section_names": [
+          "结论",
+          "风险摘要",
+          "问题清单",
+          "建议补充的测试",
+          "待确认"
+        ],
+        "has_table": true,
+        "has_blocker": true,
+        "has_major": true,
+        "has_minor": true,
+        "has_nit": false,
+        "sql_injection": true,
+        "secret_detected": true,
+        "password_detected": true,
+        "broad_except": true,
+        "secret_leaked": false,
+        "secret_masked": false,
+        "test_cases": 12,
+        "has_tests": true,
+        "has_pending": true,
+        "chinese_chars": 1007,
+        "score": 100.0
+      },
+      "system_prompt_chars": 2522
+    }
+  ]
+}

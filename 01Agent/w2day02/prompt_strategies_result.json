@@ -1,0 +1,472 @@
+{
+  "generated_at": "2026-10-21T14:58:32",
+  "model": "mimo-v2.6-flash",
+  "temperature": 0.2,
+  "max_tokens": 2000,
+  "questions": [
+    {
+      "id": "Q1",
+      "type": "两集合 · 求交集",
+      "question": "某公司有 120 名员工，其中 75% 会英语，60% 会日语，20% 两种语言都不会。问两种语言都会的员工有多少人？",
+      "expected": 66,
+      "unit": "人"
+    },
+    {
+      "id": "Q2",
+      "type": "两集合 · 求交集（逆向）",
+      "question": "一个班有 50 名学生，其中 28 人喜欢数学，22 人喜欢物理，10 人两科都不喜欢。问两科都喜欢的有多少人？",
+      "expected": 10,
+      "unit": "人"
+    },
+    {
+      "id": "Q3",
+      "type": "三集合 · 容斥原理",
+      "question": "某年级有 100 名学生，48 人参加数学竞赛，40 人参加物理竞赛，32 人参加化学竞赛；10 人同时参加数学和物理，8 人同时参加数学和化学，6 人同时参加物理和化学，3 人三门都参加。问至少参加一门竞赛的有多少人？",
+      "expected": 99,
+      "unit": "人"
+    },
+    {
+      "id": "Q4",
+      "type": "三集合 · 只参加一门（语义陷阱）",
+      "question": "某班有 50 名学生，30 人参加数学竞赛，25 人参加物理竞赛，20 人参加化学竞赛；12 人同时参加数学和物理，10 人同时参加数学和化学，8 人同时参加物理和化学，5 人三门都参加。问只参加一门竞赛的有多少人？",
+      "expected": 30,
+      "unit": "人"
+    }
+  ],
+  "prompts": {
+    "Zero-shot": "{{QUESTION}}",
+    "Few-shot": "请参考下面的示例回答问题。\n\n示例 1\n问题：某班有 40 名学生，其中 25 人喜欢篮球，20 人喜欢足球，8 人两项都喜欢。问至少喜欢一项的有多少人？\n答案：37\n\n示例 2\n问题：某公司有 60 名员工，其中 30 人会英语，25 人会日语，10 人两种语言都不会。问两种语言都会的有多少人？\n答案：5\n\n现在请回答：\n问题：{{QUESTION}}\n答案：",
+    "Chain-of-Thought": "请逐步思考，按下面的步骤回答：\n1. 明确题目中的已知条件和要求的量；\n2. 写出用到的关系或公式；\n3. 代入数值，逐步计算；\n4. 最后一行用“答案：X”的格式给出最终结果。\n\n问题：{{QUESTION}}"
+  },
+  "results": [
+    {
+      "question_id": "Q1",
+      "question_type": "两集合 · 求交集",
+      "question": "某公司有 120 名员工，其中 75% 会英语，60% 会日语，20% 两种语言都不会。问两种语言都会的员工有多少人？",
+      "expected": 66,
+      "strategy": "Zero-shot",
+      "ok": true,
+      "content": "# 求两种语言都会的员工人数\n\n## 已知条件\n\n| 条件 | 百分比 | 人数 |\n|------|--------|------|\n| 总人数 | 100% | 120 人 |\n| 会英语 | 75% | 90 人 |\n| 会日语 | 60% | 72 人 |\n| 两种都不会 | 20% | 24 人 |\n\n## 解题过程\n\n**第一步：** 求至少会一种语言的比例：\n\n$$100\\% - 20\\% = 80\\%$$\n\n**第二步：** 根据**容斥原理**：\n\n$$\\text{会英语} + \\text{会日语} - \\text{两种都会} = \\text{至少会一种}$$\n\n$$75\\% + 60\\% - \\text{两种都会} = 80\\%$$\n\n**第三步：** 解出两种都会的比例：\n\n$$\\text{两种都会} = 75\\% + 60\\% - 80\\% = 55\\%$$\n\n**第四步：** 换算为人数：\n\n$$120 \\times 55\\% = \\boxed{66 \\text{ 人}}$$",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 480,
+        "prompt_tokens": 51,
+        "total_tokens": 531,
+        "completion_tokens_details": {
+          "reasoning_tokens": 184
+        },
+        "prompt_tokens_details": null
+      },
+      "think_tokens": 184,
+      "metrics": {
+        "answer": 66.0,
+        "correct": true,
+        "has_steps": true,
+        "has_formula": true,
+        "format_ok": false,
+        "score": 90,
+        "chinese_chars": 112,
+        "answer_chars": 357
+      },
+      "prompt_chars": 59
+    },
+    {
+      "question_id": "Q1",
+      "question_type": "两集合 · 求交集",
+      "question": "某公司有 120 名员工，其中 75% 会英语，60% 会日语，20% 两种语言都不会。问两种语言都会的员工有多少人？",
+      "expected": 66,
+      "strategy": "Few-shot",
+      "ok": true,
+      "content": "**答案：66**\n\n**解题过程：**\n\n设全集为 120 名员工。\n\n- 会英语的：120 × 75% = **90 人**\n- 会日语的：120 × 60% = **72 人**\n- 两种都不会的：120 × 20% = **24 人**\n\n因此，**至少会一种语言**的人数为：\n\n$$120 - 24 = 96 \\text{ 人}$$\n\n根据容斥原理：\n\n$$\\text{两种都会} = \\text{会英语} + \\text{会日语} - \\text{至少会一种}$$\n\n$$= 90 + 72 - 96 = \\boxed{66} \\text{ 人}$$",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 264,
+        "prompt_tokens": 172,
+        "total_tokens": 436,
+        "completion_tokens_details": {
+          "reasoning_tokens": 79
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      },
+      "think_tokens": 79,
+      "metrics": {
+        "answer": 66.0,
+        "correct": true,
+        "has_steps": false,
+        "has_formula": true,
+        "format_ok": true,
+        "score": 80,
+        "chinese_chars": 66,
+        "answer_chars": 223
+      },
+      "prompt_chars": 229
+    },
+    {
+      "question_id": "Q1",
+      "question_type": "两集合 · 求交集",
+      "question": "某公司有 120 名员工，其中 75% 会英语，60% 会日语，20% 两种语言都不会。问两种语言都会的员工有多少人？",
+      "expected": 66,
+      "strategy": "Chain-of-Thought",
+      "ok": true,
+      "content": "## 解题步骤\n\n### 第一步：明确已知条件和要求的量\n\n| 已知条件 | 数值 |\n|---------|------|\n| 总员工数 | 120 人 |\n| 会英语的比例 | 75% |\n| 会日语的比例 | 60% |\n| 两种都不会的比例 | 20% |\n\n**要求：** 两种语言都会的员工有多少人？\n\n---\n\n### 第二步：写出用到的关系公式\n\n利用**容斥原理（集合的包含排斥公式）**：\n\n$$P(\\text{英语} \\cup \\text{日语}) = P(\\text{英语}) + P(\\text{日语}) - P(\\text{都会})$$\n\n其中，\"至少会一种语言\"的比例为：\n\n$$P(\\text{英语} \\cup \\text{日语}) = 1 - P(\\text{都不会})$$\n\n---\n\n### 第三步：代入数值，逐步计算\n\n**① 先求\"至少会一种语言\"的比例：**\n\n$$P(\\text{英语} \\cup \\text{日语}) = 1 - 20\\% = 80\\%$$\n\n**② 代入容斥公式，求\"两种都会\"的比例：**\n\n$$80\\% = 75\\% + 60\\% - P(\\text{都会})$$\n\n$$P(\\text{都会}) = 75\\% + 60\\% - 80\\% = 55\\%$$\n\n**③ 求\"两种都会\"的人数：**\n\n$$120 \\times 55\\% = 120 \\times 0.55 = 66 \\text{ 人}$$\n\n---\n\n答案：66",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 566,
+        "prompt_tokens": 115,
+        "total_tokens": 681,
+        "completion_tokens_details": {
+          "reasoning_tokens": 178
+        },
+        "prompt_tokens_details": null
+      },
+      "think_tokens": 178,
+      "metrics": {
+        "answer": 66.0,
+        "correct": true,
+        "has_steps": true,
+        "has_formula": true,
+        "format_ok": true,
+        "score": 100,
+        "chinese_chars": 177,
+        "answer_chars": 528
+      },
+      "prompt_chars": 153
+    },
+    {
+      "question_id": "Q2",
+      "question_type": "两集合 · 求交集（逆向）",
+      "question": "一个班有 50 名学生，其中 28 人喜欢数学，22 人喜欢物理，10 人两科都不喜欢。问两科都喜欢的有多少人？",
+      "expected": 10,
+      "strategy": "Zero-shot",
+      "ok": true,
+      "content": "# 两科都喜欢的人数\n\n## 基本信息\n\n| 类别 | 人数 |\n|------|------|\n| 全班总人数 | 50 人 |\n| 喜欢数学 | 28 人 |\n| 喜欢物理 | 22 人 |\n| 两科都不喜欢 | 10 人 |\n\n## 解题过程\n\n**第一步：** 求至少喜欢一科的人数\n\n$$\\text{至少喜欢一科} = 50 - 10 = 40 \\text{（人）}$$\n\n**第二步：** 利用容斥原理求两科都喜欢的人数\n\n$$|\\text{数学} \\cup \\text{物理}| = |\\text{数学}| + |\\text{物理}| - |\\text{数学} \\cap \\text{物理}|$$\n\n$$40 = 28 + 22 - \\text{两科都喜欢}$$\n\n$$\\text{两科都喜欢} = 28 + 22 - 40 = \\boxed{10} \\text{（人）}$$",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 361,
+        "prompt_tokens": 49,
+        "total_tokens": 410,
+        "completion_tokens_details": {
+          "reasoning_tokens": 117
+        },
+        "prompt_tokens_details": null
+      },
+      "think_tokens": 117,
+      "metrics": {
+        "answer": 10.0,
+        "correct": true,
+        "has_steps": true,
+        "has_formula": true,
+        "format_ok": false,
+        "score": 90,
+        "chinese_chars": 104,
+        "answer_chars": 311
+      },
+      "prompt_chars": 56
+    },
+    {
+      "question_id": "Q2",
+      "question_type": "两集合 · 求交集（逆向）",
+      "question": "一个班有 50 名学生，其中 28 人喜欢数学，22 人喜欢物理，10 人两科都不喜欢。问两科都喜欢的有多少人？",
+      "expected": 10,
+      "strategy": "Few-shot",
+      "ok": true,
+      "content": "**答案：10**\n\n**解题过程：**\n\n根据容斥原理：\n\n- 至少喜欢一科的人数 = 总人数 − 两科都不喜欢的人数 = 50 − 10 = **40 人**\n- 利用容斥公式：喜欢数学 + 喜欢物理 − 两科都喜欢 = 至少喜欢一科\n- 28 + 22 − 两科都喜欢 = 40\n- 两科都喜欢 = **50 − 40 = 10 人**",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 184,
+        "prompt_tokens": 170,
+        "total_tokens": 354,
+        "completion_tokens_details": {
+          "reasoning_tokens": 62
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 64
+        }
+      },
+      "think_tokens": 62,
+      "metrics": {
+        "answer": 10.0,
+        "correct": true,
+        "has_steps": false,
+        "has_formula": true,
+        "format_ok": true,
+        "score": 80,
+        "chinese_chars": 70,
+        "answer_chars": 128
+      },
+      "prompt_chars": 226
+    },
+    {
+      "question_id": "Q2",
+      "question_type": "两集合 · 求交集（逆向）",
+      "question": "一个班有 50 名学生，其中 28 人喜欢数学，22 人喜欢物理，10 人两科都不喜欢。问两科都喜欢的有多少人？",
+      "expected": 10,
+      "strategy": "Chain-of-Thought",
+      "ok": true,
+      "content": "# 求两科都喜欢的人数\n\n## 第一步：明确已知条件和所求量\n\n| 已知条件 | 数值 |\n|---|---|\n| 全班总人数 | 50 人 |\n| 喜欢数学的人数 | 28 人 |\n| 喜欢物理的人数 | 22 人 |\n| 两科都不喜欢的人数 | 10 人 |\n\n**要求：** 两科都喜欢的人数。\n\n## 第二步：写出关系公式\n\n根据**容斥原理**：\n\n$$|A \\cup B| = |A| + |B| - |A \\cap B|$$\n\n其中 $A$ 表示喜欢数学的学生集合，$B$ 表示喜欢物理的学生集合。\n\n## 第三步：代入数值，逐步计算\n\n1. **喜欢至少一科的人数（全集减去都不喜欢的）：**\n\n$$|A \\cup B| = 50 - 10 = 40 \\text{（人）}$$\n\n2. **代入容斥原理公式：**\n\n$$40 = 28 + 22 - |A \\cap B|$$\n\n3. **求解 $|A \\cap B|$：**\n\n$$|A \\cap B| = 28 + 22 - 40 = 50 - 40 = 10 \\text{（人）}$$\n\n## 第四步：验证\n\n$$28 + 22 - 10 = 40 \\text{（至少喜欢一科）}$$\n$$40 + 10 = 50 \\text{（总人数）} \\quad \\checkmark$$\n\n答案：10",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 512,
+        "prompt_tokens": 113,
+        "total_tokens": 625,
+        "completion_tokens_details": {
+          "reasoning_tokens": 132
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 64
+        }
+      },
+      "think_tokens": 132,
+      "metrics": {
+        "answer": 10.0,
+        "correct": true,
+        "has_steps": true,
+        "has_formula": true,
+        "format_ok": true,
+        "score": 100,
+        "chinese_chars": 166,
+        "answer_chars": 446
+      },
+      "prompt_chars": 150
+    },
+    {
+      "question_id": "Q3",
+      "question_type": "三集合 · 容斥原理",
+      "question": "某年级有 100 名学生，48 人参加数学竞赛，40 人参加物理竞赛，32 人参加化学竞赛；10 人同时参加数学和物理，8 人同时参加数学和化学，6 人同时参加物理和化学，3 人三门都参加。问至少参加一门竞赛的有多少人？",
+      "expected": 99,
+      "strategy": "Zero-shot",
+      "ok": true,
+      "content": "# 至少参加一门竞赛的人数\n\n## 基本信息\n\n设：\n- $A$ = 参加数学竞赛的集合，$|A| = 48$\n- $B$ = 参加物理竞赛的集合，$|B| = 40$\n- $C$ = 参加化学竞赛的集合，$|C| = 32$\n\n交集信息：\n$$|A \\cap B| = 10, \\quad |A \\cap C| = 8, \\quad |B \\cap C| = 6, \\quad |A \\cap B \\cap C| = 3$$\n\n## 应用容斥原理\n\n$$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$$\n\n## 代入计算\n\n$$|A \\cup B \\cup C| = 48 + 40 + 32 - 10 - 8 - 6 + 3$$\n\n$$= 120 - 24 + 3$$\n\n$$\\boxed{= 99 \\text{ 人}}$$\n\n即至少参加一门竞赛的有 **99 人**。",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 390,
+        "prompt_tokens": 86,
+        "total_tokens": 476,
+        "completion_tokens_details": {
+          "reasoning_tokens": 96
+        },
+        "prompt_tokens_details": null
+      },
+      "think_tokens": 96,
+      "metrics": {
+        "answer": 99.0,
+        "correct": true,
+        "has_steps": true,
+        "has_formula": true,
+        "format_ok": false,
+        "score": 90,
+        "chinese_chars": 70,
+        "answer_chars": 336
+      },
+      "prompt_chars": 110
+    },
+    {
+      "question_id": "Q3",
+      "question_type": "三集合 · 容斥原理",
+      "question": "某年级有 100 名学生，48 人参加数学竞赛，40 人参加物理竞赛，32 人参加化学竞赛；10 人同时参加数学和物理，8 人同时参加数学和化学，6 人同时参加物理和化学，3 人三门都参加。问至少参加一门竞赛的有多少人？",
+      "expected": 99,
+      "strategy": "Few-shot",
+      "ok": true,
+      "content": "## 使用容斥原理\n\n根据三集合容斥原理公式：\n\n$$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$$\n\n**代入数据：**\n\n$$= 48 + 40 + 32 - 10 - 8 - 6 + 3$$\n\n$$= 120 - 24 + 3$$\n\n$$= \\boxed{99}$$\n\n至少参加一门竞赛的有 **99** 人。",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 225,
+        "prompt_tokens": 207,
+        "total_tokens": 432,
+        "completion_tokens_details": {
+          "reasoning_tokens": 82
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 64
+        }
+      },
+      "think_tokens": 82,
+      "metrics": {
+        "answer": 99.0,
+        "correct": true,
+        "has_steps": false,
+        "has_formula": true,
+        "format_ok": false,
+        "score": 70,
+        "chinese_chars": 32,
+        "answer_chars": 167
+      },
+      "prompt_chars": 280
+    },
+    {
+      "question_id": "Q3",
+      "question_type": "三集合 · 容斥原理",
+      "question": "某年级有 100 名学生，48 人参加数学竞赛，40 人参加物理竞赛，32 人参加化学竞赛；10 人同时参加数学和物理，8 人同时参加数学和化学，6 人同时参加物理和化学，3 人三门都参加。问至少参加一门竞赛的有多少人？",
+      "expected": 99,
+      "strategy": "Chain-of-Thought",
+      "ok": true,
+      "content": "# 求至少参加一门竞赛的人数\n\n## 第一步：明确已知条件和所求量\n\n**已知条件：**\n- 总人数：100人\n- 参加数学竞赛：48人（设为集合 $A$）\n- 参加物理竞赛：40人（设为集合 $B$）\n- 参加化学竞赛：32人（设为集合 $C$）\n- 同时参加数学和物理：10人（$A \\cap B$）\n- 同时参加数学和化学：8人（$A \\cap C$）\n- 同时参加物理和化学：6人（$B \\cap C$）\n- 三门都参加：3人（$A \\cap B \\cap C$）\n\n**所求量：** 至少参加一门竞赛的人数，即 $|A \\cup B \\cup C|$\n\n## 第二步：写出关系公式\n\n根据**容斥原理**（三集合）：\n\n$$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$$\n\n## 第三步：代入数值计算\n\n$$|A \\cup B \\cup C| = 48 + 40 + 32 - 10 - 8 - 6 + 3$$\n\n逐步计算：\n\n| 步骤 | 计算 | 结果 |\n|------|------|------|\n| 三门各自相加 | $48 + 40 + 32$ | $120$ |\n| 减去两两交集 | $120 - 10 - 8 - 6$ | $96$ |\n| 加回三门交集 | $96 + 3$ | $99$ |\n\n验证：$99 \\leqslant 100$ ✅，结果合理。\n\n## 第四步：最终结果\n\n至少参加一门竞赛的有 **99** 人。\n\n答案：99",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 632,
+        "prompt_tokens": 150,
+        "total_tokens": 782,
+        "completion_tokens_details": {
+          "reasoning_tokens": 163
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 64
+        }
+      },
+      "think_tokens": 163,
+      "metrics": {
+        "answer": 99.0,
+        "correct": true,
+        "has_steps": true,
+        "has_formula": true,
+        "format_ok": true,
+        "score": 100,
+        "chinese_chars": 198,
+        "answer_chars": 549
+      },
+      "prompt_chars": 204
+    },
+    {
+      "question_id": "Q4",
+      "question_type": "三集合 · 只参加一门（语义陷阱）",
+      "question": "某班有 50 名学生，30 人参加数学竞赛，25 人参加物理竞赛，20 人参加化学竞赛；12 人同时参加数学和物理，10 人同时参加数学和化学，8 人同时参加物理和化学，5 人三门都参加。问只参加一门竞赛的有多少人？",
+      "expected": 30,
+      "strategy": "Zero-shot",
+      "ok": true,
+      "content": "# 求只参加一门竞赛的人数\n\n## 基本信息整理\n\n| 已知条件 | 符号 | 数值 |\n|---------|------|------|\n| 数学竞赛 | $\\|M\\|$ | 30 |\n| 物理竞赛 | $\\|P\\|$ | 25 |\n| 化学竞赛 | $\\|C\\|$ | 20 |\n| 数学∩物理 | $\\|M \\cap P\\|$ | 12 |\n| 数学∩化学 | $\\|M \\cap C\\|$ | 10 |\n| 物理∩化学 | $\\|P \\cap C\\|$ | 8 |\n| 三门都参加 | $\\|M \\cap P \\cap C\\|$ | 5 |\n\n## 第一步：验证所有学生至少参加了一门\n\n由**容斥原理**：\n\n$$|M \\cup P \\cup C| = 30 + 25 + 20 - 12 - 10 - 8 + 5 = \\boxed{50}$$\n\n全班 50 人**都至少参加了一门**，没有人一门都不参加。\n\n## 第二步：分解各区域\n\n设恰好**只参加两门**的人数（从三个区域中减去三门都参加的 5 人）：\n\n$$\\begin{cases} \\text{只参加数+物} = 12 - 5 = 7 \\\\ \\text{只参加数+化} = 10 - 5 = 5 \\\\ \\text{只参加物+化} = 8 - 5 = 3 \\end{cases}$$\n\n设**只参加一门**的人数：\n\n$$\\begin{cases} \\text{只参加数学} = 30 - 7 - 5 - 5 = 13 \\\\ \\text{只参加物理} = 25 - 7 - 3 - 5 = 10 \\\\ \\text{只参加化学} = 20 - 5 - 3 - 5 = 7 \\end{cases}$$\n\n## 第三步：求解\n\n$$\\text{只参加一门的人数} = 13 + 10 + 7 = \\boxed{30} \\text{ 人}$$",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 869,
+        "prompt_tokens": 86,
+        "total_tokens": 955,
+        "completion_tokens_details": {
+          "reasoning_tokens": 372
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "think_tokens": 372,
+      "metrics": {
+        "answer": 30.0,
+        "correct": true,
+        "has_steps": true,
+        "has_formula": true,
+        "format_ok": false,
+        "score": 90,
+        "chinese_chars": 182,
+        "answer_chars": 614
+      },
+      "prompt_chars": 108
+    },
+    {
+      "question_id": "Q4",
+      "question_type": "三集合 · 只参加一门（语义陷阱）",
+      "question": "某班有 50 名学生，30 人参加数学竞赛，25 人参加物理竞赛，20 人参加化学竞赛；12 人同时参加数学和物理，10 人同时参加数学和化学，8 人同时参加物理和化学，5 人三门都参加。问只参加一门竞赛的有多少人？",
+      "expected": 30,
+      "strategy": "Few-shot",
+      "ok": true,
+      "content": "# 解题过程\n\n## 已知信息\n\n| 条件 | 人数 |\n|------|------|\n| 数学竞赛（A） | 30 |\n| 物理竞赛（B） | 25 |\n| 化学竞赛（C） | 20 |\n| A∩B | 12 |\n| A∩C | 10 |\n| B∩C | 8 |\n| A∩B∩C | 5 |\n\n## 求只参加一门的人数\n\n**只参加数学的：**\n$$30 - 12 - 10 + 5 = 13 \\text{ 人}$$\n\n**只参加物理的：**\n$$25 - 12 - 8 + 5 = 10 \\text{ 人}$$\n\n**只参加化学的：**\n$$20 - 10 - 8 + 5 = 7 \\text{ 人}$$\n\n## 最终结果\n\n$$13 + 10 + 7 = \\boxed{30}$$",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 370,
+        "prompt_tokens": 207,
+        "total_tokens": 577,
+        "completion_tokens_details": {
+          "reasoning_tokens": 141
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "think_tokens": 141,
+      "metrics": {
+        "answer": 30.0,
+        "correct": true,
+        "has_steps": true,
+        "has_formula": false,
+        "format_ok": false,
+        "score": 80,
+        "chinese_chars": 58,
+        "answer_chars": 245
+      },
+      "prompt_chars": 278
+    },
+    {
+      "question_id": "Q4",
+      "question_type": "三集合 · 只参加一门（语义陷阱）",
+      "question": "某班有 50 名学生，30 人参加数学竞赛，25 人参加物理竞赛，20 人参加化学竞赛；12 人同时参加数学和物理，10 人同时参加数学和化学，8 人同时参加物理和化学，5 人三门都参加。问只参加一门竞赛的有多少人？",
+      "expected": 30,
+      "strategy": "Chain-of-Thought",
+      "ok": true,
+      "content": "# 求只参加一门竞赛的人数\n\n## 1. 已知条件与要求\n\n| 条件 | 数值 |\n|------|------|\n| 总人数 | 50 |\n| 参加数学（M） | 30 |\n| 参加物理（P） | 25 |\n| 参加化学（C） | 20 |\n| 数学∩物理 | 12 |\n| 数学∩化学 | 10 |\n| 物理∩化学 | 8 |\n| 三门都参加 | 5 |\n\n**要求：** 只参加一门竞赛的人数。\n\n## 2. 关系与公式\n\n先用**容斥原理**验证参加至少一门竞赛的总人数：\n\n$$|M \\cup P \\cup C| = |M| + |P| + |C| - |M \\cap P| - |M \\cap C| - |P \\cap C| + |M \\cap P \\cap C|$$\n\n再分别计算每门**只参加**该科的人数：\n\n$$\\text{只参加数学} = |M| - |M \\cap P| - |M \\cap C| + |M \\cap P \\cap C|$$\n\n（物理、化学同理）\n\n## 3. 代入计算\n\n**第一步：** 验证至少参加一门的人数\n\n$$|M \\cup P \\cup C| = 30 + 25 + 20 - 12 - 10 - 8 + 5 = 50$$\n\n> ✅ 说明全部50人都至少参加了一门竞赛。\n\n**第二步：** 分别计算各科\"只参加\"人数\n\n$$\\text{只参加数学} = 30 - 12 - 10 + 5 = \\mathbf{13} \\text{（人）}$$\n\n$$\\text{只参加物理} = 25 - 12 - 8 + 5 = \\mathbf{10} \\text{（人）}$$\n\n$$\\text{只参加化学} = 20 - 10 - 8 + 5 = \\mathbf{7} \\text{（人）}$$\n\n**第三步：** 求和\n\n$$\\text{只参加一门} = 13 + 10 + 7 = 30 \\text{（人）}$$\n\n## 4. 验证\n\n| 类别 | 人数 |\n|------|------|\n| 只参加一门 | 30 |\n| 只参加两门 | 7+5+3 = 15 |\n| 三门都参加 | 5 |\n| **总计** | **50** ✅ |\n\n$$12-5=7 \\text{（只数+物）},\\quad 10-5=5 \\text{（只数+化）},\\quad 8-5=3 \\text{（只物+化）}$$\n\n$$30 + 7+5+3 + 5 = 50 \\quad \\checkmark$$\n\n答案：30",
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 1063,
+        "prompt_tokens": 150,
+        "total_tokens": 1213,
+        "completion_tokens_details": {
+          "reasoning_tokens": 379
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 64
+        }
+      },
+      "think_tokens": 379,
+      "metrics": {
+        "answer": 30.0,
+        "correct": true,
+        "has_steps": true,
+        "has_formula": true,
+        "format_ok": true,
+        "score": 100,
+        "chinese_chars": 227,
+        "answer_chars": 816
+      },
+      "prompt_chars": 202
+    }
+  ],
+  "aggregates": [
+    {
+      "strategy": "Zero-shot",
+      "n": 4,
+      "correct": 4,
+      "accuracy": 1.0,
+      "avg_score": 90.0,
+      "avg_completion": 525.0,
+      "avg_prompt": 68.0,
+      "avg_total": 593.0,
+      "avg_chinese": 117.0,
+      "format_rate": 0.0,
+      "steps_rate": 1.0
+    },
+    {
+      "strategy": "Few-shot",
+      "n": 4,
+      "correct": 4,
+      "accuracy": 1.0,
+      "avg_score": 77.5,
+      "avg_completion": 260.75,
+      "avg_prompt": 189.0,
+      "avg_total": 449.75,
+      "avg_chinese": 56.5,
+      "format_rate": 0.5,
+      "steps_rate": 0.25
+    },
+    {
+      "strategy": "Chain-of-Thought",
+      "n": 4,
+      "correct": 4,
+      "accuracy": 1.0,
+      "avg_score": 100.0,
+      "avg_completion": 693.25,
+      "avg_prompt": 132.0,
+      "avg_total": 825.25,
+      "avg_chinese": 192.0,
+      "format_rate": 1.0,
+      "steps_rate": 1.0
+    }
+  ]
+}

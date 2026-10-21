@@ -175,11 +175,12 @@ def evaluate(text):
 
 
 def fmt_bool(v):
-    # 终端和报告里用 emoji 代替 True/False，扫一眼就能看出命中情况。
+    """把布尔值转成 ✅/❌，用于 Markdown 表格。"""
     return "✅" if v else "❌"
 
 
 def run_experiment():
+    """按“普通组/结构化组 × 轮次”跑实验，返回每次调用的内容和指标。"""
     results = []
     # 控制变量：普通组 system=None，结构化组 system=模板；两组的 user 都是同一个 QUESTION。
     # 轮次放在内层循环，输出会按“组”聚在一起，方便人眼逐组对比。
@@ -258,6 +259,7 @@ def build_summary(results):
 
 
 def write_report(results):
+    """根据实验结果生成 Markdown 报告，避免手写结论数字。"""
     # 报告完全由 results 生成，不手写结论数字；重跑脚本即可复现同一套结构。
     os.makedirs(os.path.dirname(REPORT_PATH), exist_ok=True)
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -310,6 +312,7 @@ def write_report(results):
 
 
 def main():
+    """加载配置、执行实验，并输出终端汇总、Markdown 报告和原始 JSON。"""
     print(f"[config] 网关: {BASE_URL}  模型: {MODEL}")
     # 打印模板字符数，便于确认加载到的是完整文件，而不是空文件或旧版本。
     print(f"[setup ] 普通 Prompt {len(PLAIN_PROMPT)} 字符 | "

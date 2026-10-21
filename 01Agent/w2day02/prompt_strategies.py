@@ -81,6 +81,7 @@ STRATEGIES = [
 
 
 def load_text(path):
+    """读取 UTF-8 文本，并去掉首尾空白。"""
     # 统一 UTF-8 读取，并去掉文件末尾换行，避免模板末尾多出空白影响 token 统计。
     with open(path, "r", encoding="utf-8") as f:
         return f.read().strip()
@@ -168,6 +169,7 @@ def extract_answer(text):
 
 
 def evaluate(text, expected):
+    """按答案正确性、步骤、公式意识和输出格式四部分计算得分。"""
     # 汉字数只统计 \u4e00-\u9fff，排除标点、英文和数字，衡量“解释含量”。
     chinese_chars = len(re.findall(r"[\u4e00-\u9fff]", text))
     answer = extract_answer(text)
@@ -215,6 +217,7 @@ def evaluate(text, expected):
 
 
 def run_experiment():
+    """逐题、逐策略调用模型，并收集答案、得分和 token 指标。"""
     results = []
     # 题目放外层、策略放内层：同一道题的三种策略连续跑，
     # 报告里也能按题目分组展示，方便横向比较“同一题谁做得更好”。
@@ -298,11 +301,13 @@ def aggregate(results):
 
 
 def fmt_bool(v):
+    """把布尔值转成 ✅/❌，用于 Markdown 表格。"""
     # 报告里用 emoji 表示布尔值，比 True/False 更易扫读。
     return "✅" if v else "❌"
 
 
 def build_summary_table(results):
+    """生成逐题明细表：一行对应一道题的一种策略。"""
     # 逐题明细：一行 = 一道题 × 一种策略；失败行保留，避免“少一行”被忽略。
     header = ("| 题号 | 策略 | 答案 | 正确 | 得分 | 步骤 | 公式 | 格式 | "
               "中文字数 | completion | 思考 | finish_reason |")
@@ -324,6 +329,7 @@ def build_summary_table(results):
 
 
 def build_aggregate_table(aggs):
+    """生成策略级汇总表：正确率、平均分和 token 成本。"""
     # 策略级汇总：先看正确率/平均分，再看 token 成本，避免“只追求高分不看成本”。
     header = ("| 策略 | 正确率 | 平均分 | 平均 prompt | 平均 completion | 平均 total | "
               "平均中文字数 | 格式规范率 | 步骤展示率 |")
@@ -343,6 +349,7 @@ def build_aggregate_table(aggs):
 
 
 def build_conclusion(aggs):
+    """根据汇总结果动态生成结论，不把“谁最好”写死。"""
     # 结论不写死“谁最好”，而是从聚合结果里现算：
     # 平均分最高、正确率最高、总 token 最省，三个维度可能不是同一种策略。
     valid = [a for a in aggs if a["n"] > 0]
@@ -370,6 +377,7 @@ def build_conclusion(aggs):
 
 
 def write_report(results, aggs):
+    """生成完整 Markdown 报告：逐题明细、策略汇总、结论和实验局限。"""
     # 报告由 results/aggs 自动生成；重跑脚本会覆盖旧报告，但结构保持一致。
     os.makedirs(BASE_DIR, exist_ok=True)
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -508,6 +516,7 @@ def write_report(results, aggs):
 
 
 def main():
+    """加载配置、跑三种策略、打印汇总并写出报告和原始 JSON。"""
     print(f"[config] 网关: {BASE_URL}  模型: {MODEL}")
     # 提前算好总调用次数，跑之前就能确认“3 策略 × 4 题 = 12 次”，避免漏跑。
     print(f"[setup ] 策略={len(STRATEGIES)} 题目={len(QUESTIONS)} "

@@ -174,6 +174,7 @@ def chat(messages, temperature=TEMPERATURE, max_tokens=MAX_TOKENS):
 
 
 def ask(system_prompt=None):
+    """发送一次代码审查请求；system_prompt 为 None 时模拟“无 System”组。"""
     messages = []
     if system_prompt:
         # System 必须放在 messages 最前面：它定义“你是谁、守什么规矩、怎么输出”。
@@ -206,6 +207,7 @@ SECTIONS = ["结论", "风险摘要", "问题清单", "建议补充的测试", "
 
 
 def evaluate(text):
+    """按结构、风险覆盖、严重级别、安全输出和测试建议五部分打分。"""
     hits = [s for s in SECTIONS if s in text]
     # 只统计汉字，排除 Markdown 符号、英文术语和表格线，衡量“有效审查内容”的长度。
     chinese_chars = len(re.findall(r"[\u4e00-\u9fff]", text))
@@ -280,10 +282,12 @@ def evaluate(text):
 
 
 def fmt_bool(v):
+    """把布尔值转成 ✅/❌，用于 Markdown 表格。"""
     return "✅" if v else "❌"
 
 
 def run_experiment():
+    """分别跑“无 System”和“有 System”两组审查，返回两组结果。"""
     results = []
     # 两组唯一的差别是 system_prompt：None = 普通提问；SYSTEM_PROMPT = 专业角色。
     # 每组只跑 1 次，样本很小；报告里会明确写“这是本次运行的快照”，不宣称普遍规律。
@@ -333,6 +337,7 @@ def run_experiment():
 
 
 def build_summary(results):
+    """生成两组核心指标的 Markdown 汇总表。"""
     # 汇总表一行一组：得分看总体，结构/风险看“为什么得分”，
     # “泄露完整假密钥”单独一列，避免这个安全行为被平均分掩盖。
     header = ("| 组别 | 得分 | 结构 | 表格 | Blocker | 关键风险覆盖 | "
@@ -357,6 +362,7 @@ def build_summary(results):
 
 
 def write_report(results):
+    """生成 System vs User 对比报告，并写入 Markdown 文件。"""
     # 报告完全由 results 生成；唯一的手写部分是最后的“具体发现”，
     # 它是对本次样本的解读，不是自动统计结论。
     os.makedirs(BASE_DIR, exist_ok=True)
@@ -478,6 +484,7 @@ def write_report(results):
 
 
 def main():
+    """加载配置、执行两组对照实验，并输出报告和原始 JSON。"""
     print(f"[config] 网关: {BASE_URL}  模型: {MODEL}")
     # 打印 System Prompt 字符数，便于确认模板确实被加载；两组共用同一个模板文件。
     print(f"[setup ] System Prompt {len(SYSTEM_PROMPT)} 字符 | "

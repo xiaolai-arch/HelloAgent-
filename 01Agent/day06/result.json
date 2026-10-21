@@ -1,0 +1,27 @@
+{
+  "id": "3f6af681-65b0-4f2a-bc91-44417df4633b_82fd65510dc5463491223aca93919d1b",
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "自注意力机制是一种让序列中的每个元素都能直接\"关注\"同一序列中所有其他元素并动态计算它们之间关联权重的方法，从而使模型能够捕捉序列内部的长距离依赖关系。",
+        "role": "assistant",
+        "tool_calls": null,
+        "reasoning_content": "The user asks me to explain the self-attention mechanism in one sentence in Chinese."
+      }
+    }
+  ],
+  "created": 1792552833,
+  "model": "mimo-v2.6-flash",
+  "object": "chat.completion",
+  "usage": {
+    "completion_tokens": 61,
+    "prompt_tokens": 15,
+    "total_tokens": 76,
+    "completion_tokens_details": {
+      "reasoning_tokens": 18
+    },
+    "prompt_tokens_details": null
+  }
+}

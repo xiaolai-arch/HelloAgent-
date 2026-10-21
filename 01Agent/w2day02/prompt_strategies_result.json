@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-21T14:58:32",
+  "generated_at": "2026-10-21T16:42:23",
   "model": "mimo-v2.6-flash",
   "temperature": 0.2,
   "max_tokens": 2000,
@@ -46,27 +46,27 @@
       "expected": 66,
       "strategy": "Zero-shot",
       "ok": true,
-      "content": "# 求两种语言都会的员工人数\n\n## 已知条件\n\n| 条件 | 百分比 | 人数 |\n|------|--------|------|\n| 总人数 | 100% | 120 人 |\n| 会英语 | 75% | 90 人 |\n| 会日语 | 60% | 72 人 |\n| 两种都不会 | 20% | 24 人 |\n\n## 解题过程\n\n**第一步：** 求至少会一种语言的比例：\n\n$$100\\% - 20\\% = 80\\%$$\n\n**第二步：** 根据**容斥原理**：\n\n$$\\text{会英语} + \\text{会日语} - \\text{两种都会} = \\text{至少会一种}$$\n\n$$75\\% + 60\\% - \\text{两种都会} = 80\\%$$\n\n**第三步：** 解出两种都会的比例：\n\n$$\\text{两种都会} = 75\\% + 60\\% - 80\\% = 55\\%$$\n\n**第四步：** 换算为人数：\n\n$$120 \\times 55\\% = \\boxed{66 \\text{ 人}}$$",
+      "content": "# 求两种语言都会的员工人数\n\n## 基本信息整理\n\n| 项目 | 百分比 | 人数 |\n|------|--------|------|\n| 总人数 | 100% | 120 人 |\n| 会英语 | 75% | 90 人 |\n| 会日语 | 60% | 72 人 |\n| 两种都不会 | 20% | 24 人 |\n\n## 求解过程\n\n**第一步：** 求至少会一种语言的人数：\n\n$$|E \\cup J| = 120 - 24 = 96 \\text{ 人}$$\n\n**第二步：** 利用**容斥原理**：\n\n$$|E \\cup J| = |E| + |J| - |E \\cap J|$$\n\n代入数据：\n\n$$96 = 90 + 72 - |E \\cap J|$$\n\n$$|E \\cap J| = 90 + 72 - 96 = \\boxed{66}$$\n\n## 结果\n\n两种语言都会的员工有 **66 人**（占总人数的 55%）。",
       "finish_reason": "stop",
       "usage": {
-        "completion_tokens": 480,
+        "completion_tokens": 438,
         "prompt_tokens": 51,
-        "total_tokens": 531,
+        "total_tokens": 489,
         "completion_tokens_details": {
-          "reasoning_tokens": 184
+          "reasoning_tokens": 166
         },
         "prompt_tokens_details": null
       },
-      "think_tokens": 184,
+      "think_tokens": 166,
       "metrics": {
-        "answer": 66.0,
-        "correct": true,
+        "answer": 55.0,
+        "correct": false,
         "has_steps": true,
         "has_formula": true,
         "format_ok": false,
-        "score": 90,
-        "chinese_chars": 112,
-        "answer_chars": 357
+        "score": 30,
+        "chinese_chars": 93,
+        "answer_chars": 306
       },
       "prompt_chars": 59
     },
@@ -77,29 +77,29 @@
       "expected": 66,
       "strategy": "Few-shot",
       "ok": true,
-      "content": "**答案：66**\n\n**解题过程：**\n\n设全集为 120 名员工。\n\n- 会英语的：120 × 75% = **90 人**\n- 会日语的：120 × 60% = **72 人**\n- 两种都不会的：120 × 20% = **24 人**\n\n因此，**至少会一种语言**的人数为：\n\n$$120 - 24 = 96 \\text{ 人}$$\n\n根据容斥原理：\n\n$$\\text{两种都会} = \\text{会英语} + \\text{会日语} - \\text{至少会一种}$$\n\n$$= 90 + 72 - 96 = \\boxed{66} \\text{ 人}$$",
+      "content": "## 解题过程\n\n**已知条件：**\n- 员工总数：120 人\n- 会英语：75% → 120 × 75% = **90 人**\n- 会日语：60% → 120 × 60% = **72 人**\n- 两种语言都不会：20% → 120 × 20% = **24 人**\n\n**关键步骤：**\n\n**第一步：** 至少会一种语言的人数：\n$$120 - 24 = 96 \\text{ 人}$$\n\n**第二步：** 利用容斥原理（示例1的模型）：\n$$\\text{会英语} + \\text{会日语} - \\text{两种都会} = \\text{至少会一种}$$\n$$90 + 72 - \\text{两种都会} = 96$$\n$$\\text{两种都会} = 90 + 72 - 96 = \\boxed{66} \\text{ 人}$$\n\n**答案：两种语言都会的员工有 66 人。**",
       "finish_reason": "stop",
       "usage": {
-        "completion_tokens": 264,
+        "completion_tokens": 368,
         "prompt_tokens": 172,
-        "total_tokens": 436,
+        "total_tokens": 540,
         "completion_tokens_details": {
-          "reasoning_tokens": 79
+          "reasoning_tokens": 106
         },
         "prompt_tokens_details": {
           "cached_tokens": 128
         }
       },
-      "think_tokens": 79,
+      "think_tokens": 106,
       "metrics": {
         "answer": 66.0,
         "correct": true,
-        "has_steps": false,
+        "has_steps": true,
         "has_formula": true,
         "format_ok": true,
-        "score": 80,
-        "chinese_chars": 66,
-        "answer_chars": 223
+        "score": 100,
+        "chinese_chars": 98,
+        "answer_chars": 311
       },
       "prompt_chars": 229
     },
@@ -110,18 +110,20 @@
       "expected": 66,
       "strategy": "Chain-of-Thought",
       "ok": true,
-      "content": "## 解题步骤\n\n### 第一步：明确已知条件和要求的量\n\n| 已知条件 | 数值 |\n|---------|------|\n| 总员工数 | 120 人 |\n| 会英语的比例 | 75% |\n| 会日语的比例 | 60% |\n| 两种都不会的比例 | 20% |\n\n**要求：** 两种语言都会的员工有多少人？\n\n---\n\n### 第二步：写出用到的关系公式\n\n利用**容斥原理（集合的包含排斥公式）**：\n\n$$P(\\text{英语} \\cup \\text{日语}) = P(\\text{英语}) + P(\\text{日语}) - P(\\text{都会})$$\n\n其中，\"至少会一种语言\"的比例为：\n\n$$P(\\text{英语} \\cup \\text{日语}) = 1 - P(\\text{都不会})$$\n\n---\n\n### 第三步：代入数值，逐步计算\n\n**① 先求\"至少会一种语言\"的比例：**\n\n$$P(\\text{英语} \\cup \\text{日语}) = 1 - 20\\% = 80\\%$$\n\n**② 代入容斥公式，求\"两种都会\"的比例：**\n\n$$80\\% = 75\\% + 60\\% - P(\\text{都会})$$\n\n$$P(\\text{都会}) = 75\\% + 60\\% - 80\\% = 55\\%$$\n\n**③ 求\"两种都会\"的人数：**\n\n$$120 \\times 55\\% = 120 \\times 0.55 = 66 \\text{ 人}$$\n\n---\n\n答案：66",
+      "content": "# 求两种语言都会的员工人数\n\n## 第一步：明确已知条件和要求的量\n\n**已知条件：**\n- 总员工数：120人\n- 会英语的比例：75%\n- 会日语的比例：60%\n- 两种语言都不会的比例：20%\n\n**要求的量：** 两种语言都会的员工人数\n\n## 第二步：写出用到的关系或公式\n\n利用**容斥原理（集合公式）**：\n\n$$|A \\cup B| = |A| + |B| - |A \\cap B|$$\n\n其中：\n- $|A|$ = 会英语的人数\n- $|B|$ = 会日语的人数\n- $|A \\cap B|$ = 两种语言都会的人数\n- $|A \\cup B|$ = 至少会一种语言的人数\n\n## 第三步：代入数值，逐步计算\n\n**① 会英语的人数：**\n$$120 \\times 75\\% = 90 \\text{ 人}$$\n\n**② 会日语的人数：**\n$$120 \\times 60\\% = 72 \\text{ 人}$$\n\n**③ 两种都不会的人数：**\n$$120 \\times 20\\% = 24 \\text{ 人}$$\n\n**④ 至少会一种语言的人数：**\n$$120 - 24 = 96 \\text{ 人}$$\n\n**⑤ 利用容斥原理求两种都会的人数：**\n$$|A \\cap B| = |A| + |B| - |A \\cup B|$$\n$$|A \\cap B| = 90 + 72 - 96 = 66 \\text{ 人}$$\n\n## 第四步：得出结果\n\n$$\\text{答案：66}$$",
       "finish_reason": "stop",
       "usage": {
-        "completion_tokens": 566,
+        "completion_tokens": 576,
         "prompt_tokens": 115,
-        "total_tokens": 681,
+        "total_tokens": 691,
         "completion_tokens_details": {
-          "reasoning_tokens": 178
+          "reasoning_tokens": 148
         },
-        "prompt_tokens_details": null
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
       },
-      "think_tokens": 178,
+      "think_tokens": 148,
       "metrics": {
         "answer": 66.0,
         "correct": true,
@@ -129,8 +131,8 @@
         "has_formula": true,
         "format_ok": true,
         "score": 100,
-        "chinese_chars": 177,
-        "answer_chars": 528
+        "chinese_chars": 197,
+        "answer_chars": 521
       },
       "prompt_chars": 153
     },
@@ -141,18 +143,20 @@
       "expected": 10,
       "strategy": "Zero-shot",
       "ok": true,
-      "content": "# 两科都喜欢的人数\n\n## 基本信息\n\n| 类别 | 人数 |\n|------|------|\n| 全班总人数 | 50 人 |\n| 喜欢数学 | 28 人 |\n| 喜欢物理 | 22 人 |\n| 两科都不喜欢 | 10 人 |\n\n## 解题过程\n\n**第一步：** 求至少喜欢一科的人数\n\n$$\\text{至少喜欢一科} = 50 - 10 = 40 \\text{（人）}$$\n\n**第二步：** 利用容斥原理求两科都喜欢的人数\n\n$$|\\text{数学} \\cup \\text{物理}| = |\\text{数学}| + |\\text{物理}| - |\\text{数学} \\cap \\text{物理}|$$\n\n$$40 = 28 + 22 - \\text{两科都喜欢}$$\n\n$$\\text{两科都喜欢} = 28 + 22 - 40 = \\boxed{10} \\text{（人）}$$",
+      "content": "# 求两科都喜欢的人数\n\n## 已知信息\n\n| 条件 | 数值 |\n|------|------|\n| 全班总人数 | 50 人 |\n| 喜欢数学 | 28 人 |\n| 喜欢物理 | 22 人 |\n| 两科都不喜欢 | 10 人 |\n\n## 解题过程\n\n**第一步：求至少喜欢一科的人数**\n\n$$\\text{至少喜欢一科} = \\text{总人数} - \\text{两科都不喜欢} = 50 - 10 = 40 \\text{（人）}$$\n\n**第二步：利用容斥原理求两科都喜欢的人数**\n\n$$\\text{至少喜欢一科} = \\text{喜欢数学} + \\text{喜欢物理} - \\text{两科都喜欢}$$\n\n$$40 = 28 + 22 - \\text{两科都喜欢}$$\n\n$$\\text{两科都喜欢} = 28 + 22 - 40 = \\boxed{10} \\text{（人）}$$\n\n**两科都喜欢的有 10 人。**",
       "finish_reason": "stop",
       "usage": {
-        "completion_tokens": 361,
+        "completion_tokens": 321,
         "prompt_tokens": 49,
-        "total_tokens": 410,
+        "total_tokens": 370,
         "completion_tokens_details": {
-          "reasoning_tokens": 117
+          "reasoning_tokens": 58
         },
-        "prompt_tokens_details": null
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
       },
-      "think_tokens": 117,
+      "think_tokens": 58,
       "metrics": {
         "answer": 10.0,
         "correct": true,
@@ -160,8 +164,8 @@
         "has_formula": true,
         "format_ok": false,
         "score": 90,
-        "chinese_chars": 104,
-        "answer_chars": 311
+        "chinese_chars": 129,
+        "answer_chars": 329
       },
       "prompt_chars": 56
     },
@@ -172,29 +176,29 @@
       "expected": 10,
       "strategy": "Few-shot",
       "ok": true,
-      "content": "**答案：10**\n\n**解题过程：**\n\n根据容斥原理：\n\n- 至少喜欢一科的人数 = 总人数 − 两科都不喜欢的人数 = 50 − 10 = **40 人**\n- 利用容斥公式：喜欢数学 + 喜欢物理 − 两科都喜欢 = 至少喜欢一科\n- 28 + 22 − 两科都喜欢 = 40\n- 两科都喜欢 = **50 − 40 = 10 人**",
+      "content": "**10**\n\n**解题过程：**\n\n1. 至少喜欢一科的人数 = 50 - 10（两科都不喜欢）= **40人**\n2. 根据容斥原理：喜欢数学 + 喜欢物理 - 两科都喜欢 = 至少喜欢一科\n   - 28 + 22 - 两科都喜欢 = 40\n   - **两科都喜欢 = 50 - 40 = 10人**",
       "finish_reason": "stop",
       "usage": {
-        "completion_tokens": 184,
+        "completion_tokens": 162,
         "prompt_tokens": 170,
-        "total_tokens": 354,
+        "total_tokens": 332,
         "completion_tokens_details": {
-          "reasoning_tokens": 62
+          "reasoning_tokens": 51
         },
         "prompt_tokens_details": {
-          "cached_tokens": 64
+          "cached_tokens": 0
         }
       },
-      "think_tokens": 62,
+      "think_tokens": 51,
       "metrics": {
         "answer": 10.0,
         "correct": true,
-        "has_steps": false,
+        "has_steps": true,
         "has_formula": true,
-        "format_ok": true,
-        "score": 80,
-        "chinese_chars": 70,
-        "answer_chars": 128
+        "format_ok": false,
+        "score": 90,
+        "chinese_chars": 56,
+        "answer_chars": 114
       },
       "prompt_chars": 226
     },
@@ -205,20 +209,18 @@
       "expected": 10,
       "strategy": "Chain-of-Thought",
       "ok": true,
-      "content": "# 求两科都喜欢的人数\n\n## 第一步：明确已知条件和所求量\n\n| 已知条件 | 数值 |\n|---|---|\n| 全班总人数 | 50 人 |\n| 喜欢数学的人数 | 28 人 |\n| 喜欢物理的人数 | 22 人 |\n| 两科都不喜欢的人数 | 10 人 |\n\n**要求：** 两科都喜欢的人数。\n\n## 第二步：写出关系公式\n\n根据**容斥原理**：\n\n$$|A \\cup B| = |A| + |B| - |A \\cap B|$$\n\n其中 $A$ 表示喜欢数学的学生集合，$B$ 表示喜欢物理的学生集合。\n\n## 第三步：代入数值，逐步计算\n\n1. **喜欢至少一科的人数（全集减去都不喜欢的）：**\n\n$$|A \\cup B| = 50 - 10 = 40 \\text{（人）}$$\n\n2. **代入容斥原理公式：**\n\n$$40 = 28 + 22 - |A \\cap B|$$\n\n3. **求解 $|A \\cap B|$：**\n\n$$|A \\cap B| = 28 + 22 - 40 = 50 - 40 = 10 \\text{（人）}$$\n\n## 第四步：验证\n\n$$28 + 22 - 10 = 40 \\text{（至少喜欢一科）}$$\n$$40 + 10 = 50 \\text{（总人数）} \\quad \\checkmark$$\n\n答案：10",
+      "content": "# 逐步求解\n\n## 1. 明确已知条件和要求的量\n\n| 已知条件 | 数值 |\n|---|---|\n| 全班总人数 | 50 人 |\n| 喜欢数学的人数 | 28 人 |\n| 喜欢物理的人数 | 22 人 |\n| 两科都不喜欢的人数 | 10 人 |\n\n**要求：** 两科都喜欢的人数，设为 $x$。\n\n## 2. 写出关系公式\n\n根据**容斥原理**：\n\n$$|A \\cup B| = |A| + |B| - |A \\cap B|$$\n\n其中：\n- $A \\cup B$：至少喜欢一科的人数\n- $A \\cap B$：两科都喜欢的人数（即 $x$）\n\n同时，至少喜欢一科的人数 = 总人数 - 两科都不喜欢的人数。\n\n## 3. 代入数值计算\n\n**第一步：** 求至少喜欢一科的人数\n\n$$|A \\cup B| = 50 - 10 = 40 \\text{（人）}$$\n\n**第二步：** 代入容斥公式\n\n$$40 = 28 + 22 - x$$\n\n**第三步：** 解方程\n\n$$x = 28 + 22 - 40 = 50 - 40 = 10$$\n\n## 4. 验证\n\n- 至少喜欢一科的：28 + 22 - 10 = **40** ✓\n- 40 + 10（都不喜欢）= **50** = 全班人数 ✓\n\n---\n\n答案：**10**（两科都喜欢的有 10 人）",
       "finish_reason": "stop",
       "usage": {
         "completion_tokens": 512,
         "prompt_tokens": 113,
         "total_tokens": 625,
         "completion_tokens_details": {
-          "reasoning_tokens": 132
+          "reasoning_tokens": 109
         },
-        "prompt_tokens_details": {
-          "cached_tokens": 64
-        }
+        "prompt_tokens_details": null
       },
-      "think_tokens": 132,
+      "think_tokens": 109,
       "metrics": {
         "answer": 10.0,
         "correct": true,
@@ -226,8 +228,8 @@
         "has_formula": true,
         "format_ok": true,
         "score": 100,
-        "chinese_chars": 166,
-        "answer_chars": 446
+        "chinese_chars": 182,
+        "answer_chars": 436
       },
       "prompt_chars": 150
     },
@@ -238,27 +240,29 @@
       "expected": 99,
       "strategy": "Zero-shot",
       "ok": true,
-      "content": "# 至少参加一门竞赛的人数\n\n## 基本信息\n\n设：\n- $A$ = 参加数学竞赛的集合，$|A| = 48$\n- $B$ = 参加物理竞赛的集合，$|B| = 40$\n- $C$ = 参加化学竞赛的集合，$|C| = 32$\n\n交集信息：\n$$|A \\cap B| = 10, \\quad |A \\cap C| = 8, \\quad |B \\cap C| = 6, \\quad |A \\cap B \\cap C| = 3$$\n\n## 应用容斥原理\n\n$$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$$\n\n## 代入计算\n\n$$|A \\cup B \\cup C| = 48 + 40 + 32 - 10 - 8 - 6 + 3$$\n\n$$= 120 - 24 + 3$$\n\n$$\\boxed{= 99 \\text{ 人}}$$\n\n即至少参加一门竞赛的有 **99 人**。",
+      "content": "# 利用容斥原理求解\n\n## 已知条件\n\n| 竞赛类别 | 人数 |\n|---------|------|\n| 数学 (M) | 48 |\n| 物理 (P) | 40 |\n| 化学 (C) | 32 |\n| M∩P | 10 |\n| M∩C | 8 |\n| P∩C | 6 |\n| M∩P∩C | 3 |\n\n## 应用容斥原理\n\n至少参加一门竞赛的人数为：\n\n$$|M \\cup P \\cup C| = |M| + |P| + |C| - |M \\cap P| - |M \\cap C| - |P \\cap C| + |M \\cap P \\cap C|$$\n\n**逐步代入计算：**\n\n$$= 48 + 40 + 32 - 10 - 8 - 6 + 3$$\n\n$$= 120 - 24 + 3$$\n\n$$= \\boxed{99}$$\n\n**至少参加一门竞赛的有 99 人。**",
       "finish_reason": "stop",
       "usage": {
-        "completion_tokens": 390,
+        "completion_tokens": 422,
         "prompt_tokens": 86,
-        "total_tokens": 476,
+        "total_tokens": 508,
         "completion_tokens_details": {
-          "reasoning_tokens": 96
+          "reasoning_tokens": 174
         },
-        "prompt_tokens_details": null
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
       },
-      "think_tokens": 96,
+      "think_tokens": 174,
       "metrics": {
         "answer": 99.0,
         "correct": true,
-        "has_steps": true,
+        "has_steps": false,
         "has_formula": true,
         "format_ok": false,
-        "score": 90,
-        "chinese_chars": 70,
-        "answer_chars": 336
+        "score": 70,
+        "chinese_chars": 59,
+        "answer_chars": 273
       },
       "prompt_chars": 110
     },
@@ -269,17 +273,17 @@
       "expected": 99,
       "strategy": "Few-shot",
       "ok": true,
-      "content": "## 使用容斥原理\n\n根据三集合容斥原理公式：\n\n$$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$$\n\n**代入数据：**\n\n$$= 48 + 40 + 32 - 10 - 8 - 6 + 3$$\n\n$$= 120 - 24 + 3$$\n\n$$= \\boxed{99}$$\n\n至少参加一门竞赛的有 **99** 人。",
+      "content": "## 解题过程\n\n使用**容斥原理**（三集合）：\n\n$$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$$\n\n代入数据：\n\n$$= 48 + 40 + 32 - 10 - 8 - 6 + 3 = \\boxed{99}$$\n\n**答案：99**",
       "finish_reason": "stop",
       "usage": {
-        "completion_tokens": 225,
+        "completion_tokens": 200,
         "prompt_tokens": 207,
-        "total_tokens": 432,
+        "total_tokens": 407,
         "completion_tokens_details": {
           "reasoning_tokens": 82
         },
         "prompt_tokens_details": {
-          "cached_tokens": 64
+          "cached_tokens": 0
         }
       },
       "think_tokens": 82,
@@ -288,10 +292,10 @@
         "correct": true,
         "has_steps": false,
         "has_formula": true,
-        "format_ok": false,
-        "score": 70,
-        "chinese_chars": 32,
-        "answer_chars": 167
+        "format_ok": true,
+        "score": 80,
+        "chinese_chars": 19,
+        "answer_chars": 139
       },
       "prompt_chars": 280
     },
@@ -302,20 +306,20 @@
       "expected": 99,
       "strategy": "Chain-of-Thought",
       "ok": true,
-      "content": "# 求至少参加一门竞赛的人数\n\n## 第一步：明确已知条件和所求量\n\n**已知条件：**\n- 总人数：100人\n- 参加数学竞赛：48人（设为集合 $A$）\n- 参加物理竞赛：40人（设为集合 $B$）\n- 参加化学竞赛：32人（设为集合 $C$）\n- 同时参加数学和物理：10人（$A \\cap B$）\n- 同时参加数学和化学：8人（$A \\cap C$）\n- 同时参加物理和化学：6人（$B \\cap C$）\n- 三门都参加：3人（$A \\cap B \\cap C$）\n\n**所求量：** 至少参加一门竞赛的人数，即 $|A \\cup B \\cup C|$\n\n## 第二步：写出关系公式\n\n根据**容斥原理**（三集合）：\n\n$$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$$\n\n## 第三步：代入数值计算\n\n$$|A \\cup B \\cup C| = 48 + 40 + 32 - 10 - 8 - 6 + 3$$\n\n逐步计算：\n\n| 步骤 | 计算 | 结果 |\n|------|------|------|\n| 三门各自相加 | $48 + 40 + 32$ | $120$ |\n| 减去两两交集 | $120 - 10 - 8 - 6$ | $96$ |\n| 加回三门交集 | $96 + 3$ | $99$ |\n\n验证：$99 \\leqslant 100$ ✅，结果合理。\n\n## 第四步：最终结果\n\n至少参加一门竞赛的有 **99** 人。\n\n答案：99",
+      "content": "# 解题过程\n\n## 第一步：明确已知条件和要求的量\n\n**已知条件：**\n\n| 条件 | 数值 |\n|------|------|\n| 参加数学竞赛 | 48 人 |\n| 参加物理竞赛 | 40 人 |\n| 参加化学竞赛 | 32 人 |\n| 数学 ∩ 物理 | 10 人 |\n| 数学 ∩ 化学 | 8 人 |\n| 物理 ∩ 化学 | 6 人 |\n| 数学 ∩ 物理 ∩ 化学 | 3 人 |\n\n**要求：** 至少参加一门竞赛的人数，即 $|A \\cup B \\cup C|$\n\n## 第二步：写出用到的关系或公式\n\n根据**容斥原理**（三个集合的并集）：\n\n$$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$$\n\n> 直觉理解：先加各单独人数 → 减去重复计算的两两交集 → 加回被多减了的三者交集。\n\n## 第三步：代入数值，逐步计算\n\n$$|A \\cup B \\cup C| = 48 + 40 + 32 - 10 - 8 - 6 + 3$$\n\n**逐项计算：**\n\n- 第一部分（加法）：$48 + 40 + 32 = 120$\n- 第二部分（减法）：$10 + 8 + 6 = 24$\n- 第三部分（加法）：$+3$\n\n$$= 120 - 24 + 3 = 99$$\n\n## 第四步：验证合理性\n\n$$99 \\leqslant 100 \\text{（总人数）} \\checkmark$$\n\n结果不超过年级总人数，合理。\n\n---\n\n答案：99",
       "finish_reason": "stop",
       "usage": {
-        "completion_tokens": 632,
+        "completion_tokens": 651,
         "prompt_tokens": 150,
-        "total_tokens": 782,
+        "total_tokens": 801,
         "completion_tokens_details": {
-          "reasoning_tokens": 163
+          "reasoning_tokens": 188
         },
         "prompt_tokens_details": {
-          "cached_tokens": 64
+          "cached_tokens": 0
         }
       },
-      "think_tokens": 163,
+      "think_tokens": 188,
       "metrics": {
         "answer": 99.0,
         "correct": true,
@@ -323,8 +327,8 @@
         "has_formula": true,
         "format_ok": true,
         "score": 100,
-        "chinese_chars": 198,
-        "answer_chars": 549
+        "chinese_chars": 200,
+        "answer_chars": 519
       },
       "prompt_chars": 204
     },
@@ -335,29 +339,29 @@
       "expected": 30,
       "strategy": "Zero-shot",
       "ok": true,
-      "content": "# 求只参加一门竞赛的人数\n\n## 基本信息整理\n\n| 已知条件 | 符号 | 数值 |\n|---------|------|------|\n| 数学竞赛 | $\\|M\\|$ | 30 |\n| 物理竞赛 | $\\|P\\|$ | 25 |\n| 化学竞赛 | $\\|C\\|$ | 20 |\n| 数学∩物理 | $\\|M \\cap P\\|$ | 12 |\n| 数学∩化学 | $\\|M \\cap C\\|$ | 10 |\n| 物理∩化学 | $\\|P \\cap C\\|$ | 8 |\n| 三门都参加 | $\\|M \\cap P \\cap C\\|$ | 5 |\n\n## 第一步：验证所有学生至少参加了一门\n\n由**容斥原理**：\n\n$$|M \\cup P \\cup C| = 30 + 25 + 20 - 12 - 10 - 8 + 5 = \\boxed{50}$$\n\n全班 50 人**都至少参加了一门**，没有人一门都不参加。\n\n## 第二步：分解各区域\n\n设恰好**只参加两门**的人数（从三个区域中减去三门都参加的 5 人）：\n\n$$\\begin{cases} \\text{只参加数+物} = 12 - 5 = 7 \\\\ \\text{只参加数+化} = 10 - 5 = 5 \\\\ \\text{只参加物+化} = 8 - 5 = 3 \\end{cases}$$\n\n设**只参加一门**的人数：\n\n$$\\begin{cases} \\text{只参加数学} = 30 - 7 - 5 - 5 = 13 \\\\ \\text{只参加物理} = 25 - 7 - 3 - 5 = 10 \\\\ \\text{只参加化学} = 20 - 5 - 3 - 5 = 7 \\end{cases}$$\n\n## 第三步：求解\n\n$$\\text{只参加一门的人数} = 13 + 10 + 7 = \\boxed{30} \\text{ 人}$$",
+      "content": "# 只参加一门竞赛的人数\n\n## 基本信息\n\n| 符号 | 含义 | 人数 |\n|------|------|------|\n| $|M|$ | 参加数学 | 30 |\n| $|P|$ | 参加物理 | 25 |\n| $|C|$ | 参加化学 | 20 |\n| $|M\\cap P\\cap C|$ | 三门都参加 | 5 |\n| $|M\\cap P|, |M\\cap C|, |P\\cap C|$ | 两两交集 | 12, 10, 8 |\n\n## 第一步：验证全班是否都至少参加了一门\n\n由**容斥原理**：\n\n$$|M\\cup P\\cup C| = 30+25+20-12-10-8+5 = 50$$\n\n等于全班50人，说明**每位同学都至少参加了一门竞赛**。\n\n## 第二步：计算\"只参加\"某门的人数\n\n**只参加数学**（剔除参加物、化的部分）：\n\n$$|M| - |M\\cap P| - |M\\cap C| + |M\\cap P\\cap C| = 30-12-10+5 = \\mathbf{13}$$\n\n**只参加物理**：\n\n$$|P| - |M\\cap P| - |P\\cap C| + |M\\cap P\\cap C| = 25-12-8+5 = \\mathbf{10}$$\n\n**只参加化学**：\n\n$$|C| - |M\\cap C| - |P\\cap C| + |M\\cap P\\cap C| = 20-10-8+5 = \\mathbf{7}$$\n\n## 第三步：求和\n\n$$\\text{只参加一门} = 13 + 10 + 7 = \\boxed{30}$$\n\n> **验证**：只一门30人 + 恰两门 $(7+5+3)=15$人 + 三门5人 $= 50$ ✓",
       "finish_reason": "stop",
       "usage": {
-        "completion_tokens": 869,
+        "completion_tokens": 843,
         "prompt_tokens": 86,
-        "total_tokens": 955,
+        "total_tokens": 929,
         "completion_tokens_details": {
-          "reasoning_tokens": 372
+          "reasoning_tokens": 359
         },
         "prompt_tokens_details": {
-          "cached_tokens": 0
+          "cached_tokens": 64
         }
       },
-      "think_tokens": 372,
+      "think_tokens": 359,
       "metrics": {
-        "answer": 30.0,
-        "correct": true,
+        "answer": 50.0,
+        "correct": false,
         "has_steps": true,
         "has_formula": true,
         "format_ok": false,
-        "score": 90,
-        "chinese_chars": 182,
-        "answer_chars": 614
+        "score": 30,
+        "chinese_chars": 144,
+        "answer_chars": 588
       },
       "prompt_chars": 108
     },
@@ -368,29 +372,29 @@
       "expected": 30,
       "strategy": "Few-shot",
       "ok": true,
-      "content": "# 解题过程\n\n## 已知信息\n\n| 条件 | 人数 |\n|------|------|\n| 数学竞赛（A） | 30 |\n| 物理竞赛（B） | 25 |\n| 化学竞赛（C） | 20 |\n| A∩B | 12 |\n| A∩C | 10 |\n| B∩C | 8 |\n| A∩B∩C | 5 |\n\n## 求只参加一门的人数\n\n**只参加数学的：**\n$$30 - 12 - 10 + 5 = 13 \\text{ 人}$$\n\n**只参加物理的：**\n$$25 - 12 - 8 + 5 = 10 \\text{ 人}$$\n\n**只参加化学的：**\n$$20 - 10 - 8 + 5 = 7 \\text{ 人}$$\n\n## 最终结果\n\n$$13 + 10 + 7 = \\boxed{30}$$",
+      "content": "# 只参加一门竞赛的人数\n\n## 使用容斥原理\n\n**第一步：求至少参加一门竞赛的人数**\n\n$$|A \\cup B \\cup C| = 30 + 25 + 20 - 12 - 10 - 8 + 5 = 50$$\n\n恰好等于全班人数，说明每人都至少参加了一门。\n\n**第二步：求恰好参加两门的人数**\n\n> ⚠️ 注意：同时参加两门的已知数据中包含了三门都参加的5人，需要减去。\n\n| 组合 | 计算 | 结果 |\n|------|------|------|\n| 仅数学+物理 | 12 − 5 | **7** |\n| 仅数学+化学 | 10 − 5 | **5** |\n| 仅物理+化学 | 8 − 5 | **3** |\n\n恰好参加两门共：$7 + 5 + 3 = 15$ 人\n\n**第三步：求只参加一门的人数**\n\n$$\\text{只参加一门} = 50 - 15 - 5 = \\boxed{30}$$",
       "finish_reason": "stop",
       "usage": {
-        "completion_tokens": 370,
+        "completion_tokens": 598,
         "prompt_tokens": 207,
-        "total_tokens": 577,
+        "total_tokens": 805,
         "completion_tokens_details": {
-          "reasoning_tokens": 141
+          "reasoning_tokens": 341
         },
         "prompt_tokens_details": {
-          "cached_tokens": 0
+          "cached_tokens": 64
         }
       },
-      "think_tokens": 141,
+      "think_tokens": 341,
       "metrics": {
         "answer": 30.0,
         "correct": true,
         "has_steps": true,
-        "has_formula": false,
+        "has_formula": true,
         "format_ok": false,
-        "score": 80,
-        "chinese_chars": 58,
-        "answer_chars": 245
+        "score": 90,
+        "chinese_chars": 138,
+        "answer_chars": 312
       },
       "prompt_chars": 278
     },
@@ -401,20 +405,20 @@
       "expected": 30,
       "strategy": "Chain-of-Thought",
       "ok": true,
-      "content": "# 求只参加一门竞赛的人数\n\n## 1. 已知条件与要求\n\n| 条件 | 数值 |\n|------|------|\n| 总人数 | 50 |\n| 参加数学（M） | 30 |\n| 参加物理（P） | 25 |\n| 参加化学（C） | 20 |\n| 数学∩物理 | 12 |\n| 数学∩化学 | 10 |\n| 物理∩化学 | 8 |\n| 三门都参加 | 5 |\n\n**要求：** 只参加一门竞赛的人数。\n\n## 2. 关系与公式\n\n先用**容斥原理**验证参加至少一门竞赛的总人数：\n\n$$|M \\cup P \\cup C| = |M| + |P| + |C| - |M \\cap P| - |M \\cap C| - |P \\cap C| + |M \\cap P \\cap C|$$\n\n再分别计算每门**只参加**该科的人数：\n\n$$\\text{只参加数学} = |M| - |M \\cap P| - |M \\cap C| + |M \\cap P \\cap C|$$\n\n（物理、化学同理）\n\n## 3. 代入计算\n\n**第一步：** 验证至少参加一门的人数\n\n$$|M \\cup P \\cup C| = 30 + 25 + 20 - 12 - 10 - 8 + 5 = 50$$\n\n> ✅ 说明全部50人都至少参加了一门竞赛。\n\n**第二步：** 分别计算各科\"只参加\"人数\n\n$$\\text{只参加数学} = 30 - 12 - 10 + 5 = \\mathbf{13} \\text{（人）}$$\n\n$$\\text{只参加物理} = 25 - 12 - 8 + 5 = \\mathbf{10} \\text{（人）}$$\n\n$$\\text{只参加化学} = 20 - 10 - 8 + 5 = \\mathbf{7} \\text{（人）}$$\n\n**第三步：** 求和\n\n$$\\text{只参加一门} = 13 + 10 + 7 = 30 \\text{（人）}$$\n\n## 4. 验证\n\n| 类别 | 人数 |\n|------|------|\n| 只参加一门 | 30 |\n| 只参加两门 | 7+5+3 = 15 |\n| 三门都参加 | 5 |\n| **总计** | **50** ✅ |\n\n$$12-5=7 \\text{（只数+物）},\\quad 10-5=5 \\text{（只数+化）},\\quad 8-5=3 \\text{（只物+化）}$$\n\n$$30 + 7+5+3 + 5 = 50 \\quad \\checkmark$$\n\n答案：30",
+      "content": "# 求只参加一门竞赛的人数\n\n## 第一步：明确已知条件和要求\n\n**已知条件：**\n- 总人数：50人\n- 参加数学（A）：30人，参加物理（B）：25人，参加化学（C）：20人\n- A∩B：12人，A∩C：10人，B∩C：8人\n- A∩B∩C：5人\n\n**要求：** 只参加一门竞赛的人数\n\n## 第二步：写出公式\n\n**容斥原理（先求总参与人数）：**\n\n$$|A \\cup B \\cup C| = |A| + |B| + |C| - |A \\cap B| - |A \\cap C| - |B \\cap C| + |A \\cap B \\cap C|$$\n\n**只参加某一门竞赛的公式（例如只参加数学）：**\n\n$$|\\text{只参加A}| = |A| - |A \\cap B| - |A \\cap C| + |A \\cap B \\cap C|$$\n\n## 第三步：代入计算\n\n**① 求参与至少一门竞赛的总人数：**\n\n$$|A \\cup B \\cup C| = 30 + 25 + 20 - 12 - 10 - 8 + 5 = \\boxed{50}$$\n\n> 说明全班50人每人都至少参加了一门竞赛。\n\n**② 求只参加一门的人数：**\n\n| 只参加 | 计算过程 | 人数 |\n|--------|---------|------|\n| 只参加数学 | $30 - 12 - 10 + 5$ | **13** |\n| 只参加物理 | $25 - 12 - 8 + 5$ | **10** |\n| 只参加化学 | $20 - 10 - 8 + 5$ | **7** |\n\n**③ 汇总验证：**\n\n$$13 + 10 + 7 + \\underbrace{(12{-}5)}_{7} + \\underbrace{(10{-}5)}_{5} + \\underbrace{(8{-}5)}_{3} + 5 = 13+10+7+7+5+3+5 = 50 \\quad \\checkmark$$\n\n$$\\text{只参加一门} = 13 + 10 + 7 = 30$$\n\n## 答案：30",
       "finish_reason": "stop",
       "usage": {
-        "completion_tokens": 1063,
+        "completion_tokens": 995,
         "prompt_tokens": 150,
-        "total_tokens": 1213,
+        "total_tokens": 1145,
         "completion_tokens_details": {
-          "reasoning_tokens": 379
+          "reasoning_tokens": 426
         },
         "prompt_tokens_details": {
           "cached_tokens": 64
         }
       },
-      "think_tokens": 379,
+      "think_tokens": 426,
       "metrics": {
         "answer": 30.0,
         "correct": true,
@@ -422,8 +426,8 @@
         "has_formula": true,
         "format_ok": true,
         "score": 100,
-        "chinese_chars": 227,
-        "answer_chars": 816
+        "chinese_chars": 182,
+        "answer_chars": 703
       },
       "prompt_chars": 202
     }
@@ -432,28 +436,28 @@
     {
       "strategy": "Zero-shot",
       "n": 4,
-      "correct": 4,
-      "accuracy": 1.0,
-      "avg_score": 90.0,
-      "avg_completion": 525.0,
+      "correct": 2,
+      "accuracy": 0.5,
+      "avg_score": 55.0,
+      "avg_completion": 506.0,
       "avg_prompt": 68.0,
-      "avg_total": 593.0,
-      "avg_chinese": 117.0,
+      "avg_total": 574.0,
+      "avg_chinese": 106.25,
       "format_rate": 0.0,
-      "steps_rate": 1.0
+      "steps_rate": 0.75
     },
     {
       "strategy": "Few-shot",
       "n": 4,
       "correct": 4,
       "accuracy": 1.0,
-      "avg_score": 77.5,
-      "avg_completion": 260.75,
+      "avg_score": 90.0,
+      "avg_completion": 332.0,
       "avg_prompt": 189.0,
-      "avg_total": 449.75,
-      "avg_chinese": 56.5,
+      "avg_total": 521.0,
+      "avg_chinese": 77.75,
       "format_rate": 0.5,
-      "steps_rate": 0.25
+      "steps_rate": 0.75
     },
     {
       "strategy": "Chain-of-Thought",
@@ -461,10 +465,10 @@
       "correct": 4,
       "accuracy": 1.0,
       "avg_score": 100.0,
-      "avg_completion": 693.25,
+      "avg_completion": 683.5,
       "avg_prompt": 132.0,
-      "avg_total": 825.25,
-      "avg_chinese": 192.0,
+      "avg_total": 815.5,
+      "avg_chinese": 190.25,
       "format_rate": 1.0,
       "steps_rate": 1.0
     }

@@ -25,6 +25,8 @@
 
 配置同 first_llm_call.py：../../vision_config.json 或环境变量。
 """
+# 全部用标准库：用 urllib 直发 HTTP，不依赖 openai/requests 等 SDK，
+# 实验脚本零第三方依赖，换机器复现时不用先 pip install。
 import sys
 import io
 import os
@@ -131,6 +133,7 @@ def ask(system_prompt, user_prompt, temperature=TEMPERATURE, max_tokens=MAX_TOKE
     if err:
         return {"ok": False, "error": err, "content": "", "usage": {}}
 
+    # 非流式响应默认只返回一个候选（n=1），取 choices[0] 即可。
     choice = resp["choices"][0]
     return {
         "ok": True,
@@ -245,6 +248,7 @@ def build_summary(results):
     rows = [header, sep]
     for r in results:
         if not r["ok"]:
+            # 失败行不跳过，用“调用失败”占位：表格行数应等于 ROUNDS×组数，缺行即说明出了问题。
             rows.append(f"| {r['condition']} | {r['round']} | 调用失败 | - | - | - | - | - | - | - | - | - |")
             continue
         m, u = r["metrics"], r["usage"]
@@ -341,7 +345,7 @@ def main():
             "plain_prompt": PLAIN_PROMPT,
             "structured_prompt_chars": len(STRUCTURED_PROMPT),
             "results": results,
-        }, f, ensure_ascii=False, indent=2)
+        }, f, ensure_ascii=False, indent=2)  # 中文原样存储而非转义成 \uXXXX，肉眼可读；indent=2 便于 diff
 
     print(f"\n[output] 报告已写入 {REPORT_PATH}")
     print(f"[output] 原始数据已写入 {RESULT_PATH}")

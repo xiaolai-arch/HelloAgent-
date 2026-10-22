@@ -1,6 +1,6 @@
 # 向量数据库 CRUD 实验报告（Chroma，W3 Day2）
 
-- 生成时间：2026-10-21 16:13:55
+- 生成时间：2026-10-22 15:59:22
 - Chroma 版本：`1.5.9`（PersistentClient 本地持久化）
 - 向量：`BAAI/bge-small-zh-v1.5`（semantic，与 w3day01 同一套，查询/文档同模型）
 

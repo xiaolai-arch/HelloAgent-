@@ -28,7 +28,9 @@ import sys
 import io
 import os
 import json
+import gc
 import shutil
+import time
 import datetime
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
@@ -39,6 +41,22 @@ sys.path.insert(0, os.path.abspath(os.path.join(BASE_DIR, "../w3data")))
 REPORT_PATH = os.path.join(BASE_DIR, "chroma_crud_report.md")
 RESULT_PATH = os.path.join(BASE_DIR, "chroma_crud_result.json")
 DB_PATH = os.path.join(BASE_DIR, "chroma_demo_db")  # 持久化目录（每次运行重建）
+
+
+def wipe_db(tag):
+    """删除演示库目录。Windows 专有坑：即使 client.close() 释放了大部分句柄，
+    chroma.sqlite3 仍可能被进程内后台线程（异步落盘/遥测）或外部程序
+    （杀毒、IDE 索引）短暂占用（WinError 32）。标准对策是"等一下重试"，
+    最终仍失败就警告而不是让整个实验以崩溃收尾——报告和数据早已落盘。"""
+    for i in range(5):
+        try:
+            shutil.rmtree(DB_PATH)
+            print(f"[clean] 已清理演示库目录（{tag}）")
+            return True
+        except PermissionError:
+            time.sleep(0.4 * (i + 1))
+    print(f"[warn] {DB_PATH} 仍被其他进程占用，暂不删除，可稍后手动删（不影响结果）")
+    return False
 
 import ragkit  # noqa: E402
 
@@ -86,6 +104,10 @@ def main():
     print("=" * 62)
     print("幕 1  Create：创建 Collection（≈ 关系库里的'表'）")
     print("=" * 62)
+    # 开库前先清掉上次运行残留的目录（上次清理失败/中断时会有残留，
+    # 否则下面 add 固定 id 会撞 DuplicateIDError）；此刻本进程还没开句柄
+    if os.path.exists(DB_PATH):
+        wipe_db("清残留")
     client = chromadb.PersistentClient(path=DB_PATH)
     col = client.get_or_create_collection(
         name="knowledge_cards",
@@ -186,8 +208,9 @@ def main():
     print(f"[done] 数据：{RESULT_PATH}")
     # 默认清掉演示库，避免把二进制目录带进 git；想留着重看就加 --keep-db
     if "--keep-db" not in sys.argv:
-        shutil.rmtree(DB_PATH)
-        print("[clean] 已清理演示库目录（--keep-db 可保留）")
+        client.close()   # 释放 SQLite / HNSW 文件句柄（Windows 删目录的前提）
+        gc.collect()     # 兜底：回收尚未释放的连接对象
+        wipe_db("--keep-db 可保留")
 
 
 def build_report(p):

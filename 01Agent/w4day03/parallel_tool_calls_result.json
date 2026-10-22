@@ -1,0 +1,168 @@
+{
+  "meta": {
+    "generated_at": "2026-10-21T16:53:27.104628",
+    "model": "mimo-v2.6-flash",
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "get_weather",
+          "description": "查询指定城市当前天气（模拟数据源）",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "city": {
+                "type": "string",
+                "description": "城市名"
+              }
+            },
+            "required": [
+              "city"
+            ]
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "calculate",
+          "description": "计算四则运算表达式",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "expression": {
+                "type": "string",
+                "description": "如 3*7+2"
+              }
+            },
+            "required": [
+              "expression"
+            ]
+          }
+        }
+      }
+    ],
+    "mock_io_sec": 0.3
+  },
+  "parallel": {
+    "question": "北京、上海、广州现在分别多少度？哪个最热？",
+    "n_tool_calls": 3,
+    "calls": [
+      {
+        "name": "get_weather",
+        "args": "{\"city\": \"北京\"}",
+        "id": "call_bb8f410438ee48f395295039"
+      },
+      {
+        "name": "get_weather",
+        "args": "{\"city\": \"上海\"}",
+        "id": "call_410a90030dfd495787c25dff"
+      },
+      {
+        "name": "get_weather",
+        "args": "{\"city\": \"广州\"}",
+        "id": "call_62541adee5714d1caf94794d"
+      }
+    ],
+    "wall_sec": 0.31,
+    "serial_sum_sec": 0.93,
+    "final_answer": "三个城市当前气温：\n\n| 城市 | 气温 | 天气 |\n|------|------|------|\n| 北京 | 9℃ | 晴 |\n| 上海 | 17℃ | 多云 |\n| 广州 | 26℃ | 阵雨 |\n\n**广州最热**（26℃），比上海高 9℃，比北京高 17℃。",
+    "finish_reasons": [
+      "tool_calls",
+      "stop"
+    ]
+  },
+  "tool_choice": [
+    {
+      "label": "auto",
+      "question": "北京多少度？",
+      "tool_choice": "auto",
+      "finish_reason": "tool_calls",
+      "calls": [
+        {
+          "name": "get_weather",
+          "args": "{\"city\": \"北京\"}"
+        }
+      ],
+      "content_head": "",
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 173,
+        "total_tokens": 203,
+        "completion_tokens_details": {
+          "reasoning_tokens": 11
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "label": "none",
+      "question": "北京多少度？",
+      "tool_choice": "forced",
+      "finish_reason": "tool_calls",
+      "calls": [
+        {
+          "name": "get_weather",
+          "args": "{\"city\": \"北京\"}"
+        }
+      ],
+      "content_head": "",
+      "usage": {
+        "completion_tokens": 24,
+        "prompt_tokens": 173,
+        "total_tokens": 197,
+        "completion_tokens_details": {
+          "reasoning_tokens": 5
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "label": "required",
+      "question": "北京多少度？",
+      "tool_choice": "required",
+      "finish_reason": "tool_calls",
+      "calls": [
+        {
+          "name": "get_weather",
+          "args": "{\"city\": \"北京\"}"
+        }
+      ],
+      "content_head": "",
+      "usage": {
+        "completion_tokens": 24,
+        "prompt_tokens": 173,
+        "total_tokens": 197,
+        "completion_tokens_details": {
+          "reasoning_tokens": 5
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    },
+    {
+      "label": "强制-get_weather",
+      "question": "用一句话解释注意力机制（与天气无关）",
+      "tool_choice": "forced",
+      "finish_reason": "stop",
+      "calls": [],
+      "content_head": "注意力机制就是让模型在处理信息时，自动\"把目光聚焦\"到最相关的部分，而忽略无关内容（比如读句子时重点看关键词）。",
+      "usage": {
+        "completion_tokens": 52,
+        "prompt_tokens": 179,
+        "total_tokens": 231,
+        "completion_tokens_details": {
+          "reasoning_tokens": 16
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        }
+      }
+    }
+  ]
+}

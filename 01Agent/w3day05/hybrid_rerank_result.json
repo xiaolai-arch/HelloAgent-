@@ -1,0 +1,1227 @@
+{
+  "meta": {
+    "generated_at": "2026-10-21T16:29:51.327299",
+    "embedder": {
+      "kind": "semantic",
+      "name": "BAAI/bge-small-zh-v1.5"
+    },
+    "degraded": null,
+    "reranker": {
+      "kind": "cross-encoder",
+      "name": "BAAI/bge-reranker-v2-m3-int8"
+    },
+    "n_chunks": 72,
+    "chunking": "recursive-300",
+    "top_k": 5,
+    "cand_k": 20,
+    "rrf_k": 60,
+    "bm25": {
+      "k1": 1.5,
+      "b": 0.75,
+      "tokenize": "中文 bigram + 英数整词"
+    },
+    "timings_total_sec": {
+      "dense": 0.06,
+      "bm25": 0.01,
+      "hybrid_rrf": 0.07,
+      "hybrid_rerank": 45.95
+    }
+  },
+  "metrics": {
+    "dense": {
+      "recall@1": 0.533,
+      "recall@3": 0.733,
+      "recall@5": 0.867,
+      "mrr": 0.606,
+      "hit_rate": 0.733
+    },
+    "bm25": {
+      "recall@1": 0.6,
+      "recall@3": 0.733,
+      "recall@5": 0.8,
+      "mrr": 0.65,
+      "hit_rate": 0.733
+    },
+    "hybrid_rrf": {
+      "recall@1": 0.533,
+      "recall@3": 0.8,
+      "recall@5": 0.933,
+      "mrr": 0.639,
+      "hit_rate": 0.8
+    },
+    "hybrid_rerank": {
+      "recall@1": 0.667,
+      "recall@3": 0.8,
+      "recall@5": 0.933,
+      "mrr": 0.717,
+      "hit_rate": 0.8
+    }
+  },
+  "per_question": {
+    "dense": {
+      "Q1": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "01_transformer#c3",
+          "14_agent_patterns#c0",
+          "12_react_function_calling#c1",
+          "04_moe_multimodal#c1",
+          "09_rag_eval#c3"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q2": {
+        "recall@5": 1,
+        "mrr": 0.5,
+        "top5": [
+          "02_attention#c0",
+          "02_attention#c1",
+          "01_transformer#c3",
+          "07_rag_pipeline#c0",
+          "02_attention#c3"
+        ],
+        "rel": [
+          0,
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q3": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "03_tokenizer_sampling#c2",
+          "03_tokenizer_sampling#c3",
+          "05_embedding#c3",
+          "12_react_function_calling#c4",
+          "10_prompt_engineering#c2"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q4": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "04_moe_multimodal#c1",
+          "04_moe_multimodal#c0",
+          "03_tokenizer_sampling#c1",
+          "03_tokenizer_sampling#c0",
+          "01_transformer#c2"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q5": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "04_moe_multimodal#c3",
+          "04_moe_multimodal#c1",
+          "01_transformer#c0",
+          "04_moe_multimodal#c0",
+          "12_react_function_calling#c1"
+        ],
+        "rel": [
+          1,
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q6": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "08_hybrid_rerank#c1",
+          "02_attention#c1",
+          "07_rag_pipeline#c0",
+          "03_tokenizer_sampling#c0",
+          "09_rag_eval#c5"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q7": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "13_mcp#c1",
+          "14_agent_patterns#c3",
+          "10_prompt_engineering#c2",
+          "01_transformer#c1",
+          "09_rag_eval#c0"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q8": {
+        "recall@5": 1,
+        "mrr": 0.333,
+        "top5": [
+          "09_rag_eval#c1",
+          "09_rag_eval#c0",
+          "09_rag_eval#c5",
+          "09_rag_eval#c2",
+          "13_mcp#c1"
+        ],
+        "rel": [
+          0,
+          0,
+          1,
+          1,
+          0
+        ]
+      },
+      "Q9": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "15_helloai_policy#c4",
+          "09_rag_eval#c5",
+          "15_helloai_policy#c0",
+          "15_helloai_policy#c5",
+          "11_context_engineering#c1"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q10": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "15_helloai_policy#c2",
+          "15_helloai_policy#c0",
+          "15_helloai_policy#c3",
+          "15_helloai_policy#c1",
+          "15_helloai_policy#c4"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q11": {
+        "recall@5": 0,
+        "mrr": 0.0,
+        "top5": [
+          "15_helloai_policy#c1",
+          "15_helloai_policy#c3",
+          "15_helloai_policy#c0",
+          "15_helloai_policy#c2",
+          "15_helloai_policy#c4"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q12": {
+        "recall@5": 0,
+        "mrr": 0.0,
+        "top5": [
+          "13_mcp#c4",
+          "12_react_function_calling#c1",
+          "12_react_function_calling#c3",
+          "10_prompt_engineering#c2",
+          "13_mcp#c2"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q13": {
+        "recall@5": 0,
+        "mrr": 0.0,
+        "top5": [
+          "09_rag_eval#c4",
+          "04_moe_multimodal#c1",
+          "11_context_engineering#c2",
+          "02_attention#c1",
+          "03_tokenizer_sampling#c1"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q14": {
+        "recall@5": 0,
+        "mrr": 0.0,
+        "top5": [
+          "07_rag_pipeline#c4",
+          "04_moe_multimodal#c1",
+          "01_transformer#c4",
+          "06_vector_db#c0",
+          "09_rag_eval#c4"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q15": {
+        "recall@5": 1,
+        "mrr": 0.25,
+        "top5": [
+          "08_hybrid_rerank#c4",
+          "07_rag_pipeline#c0",
+          "11_context_engineering#c2",
+          "07_rag_pipeline#c4",
+          "09_rag_eval#c2"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          1,
+          0
+        ]
+      }
+    },
+    "bm25": {
+      "Q1": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "01_transformer#c3",
+          "12_react_function_calling#c0",
+          "01_transformer#c0",
+          "09_rag_eval#c0",
+          "12_react_function_calling#c1"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q2": {
+        "recall@5": 1,
+        "mrr": 0.5,
+        "top5": [
+          "02_attention#c0",
+          "02_attention#c1",
+          "02_attention#c2",
+          "02_attention#c3",
+          "03_tokenizer_sampling#c2"
+        ],
+        "rel": [
+          0,
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q3": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "03_tokenizer_sampling#c2",
+          "03_tokenizer_sampling#c3",
+          "12_react_function_calling#c0",
+          "02_attention#c2",
+          "09_rag_eval#c0"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q4": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "04_moe_multimodal#c1",
+          "04_moe_multimodal#c0",
+          "04_moe_multimodal#c4",
+          "04_moe_multimodal#c2",
+          "10_prompt_engineering#c0"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q5": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "04_moe_multimodal#c1",
+          "04_moe_multimodal#c3",
+          "01_transformer#c0",
+          "04_moe_multimodal#c4",
+          "04_moe_multimodal#c0"
+        ],
+        "rel": [
+          1,
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q6": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "08_hybrid_rerank#c1",
+          "09_rag_eval#c1",
+          "02_attention#c2",
+          "02_attention#c1",
+          "12_react_function_calling#c0"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q7": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "13_mcp#c1",
+          "13_mcp#c0",
+          "10_prompt_engineering#c2",
+          "14_agent_patterns#c3",
+          "02_attention#c0"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q8": {
+        "recall@5": 0,
+        "mrr": 0.0,
+        "top5": [
+          "09_rag_eval#c1",
+          "09_rag_eval#c0",
+          "14_agent_patterns#c0",
+          "09_rag_eval#c3",
+          "09_rag_eval#c4"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q9": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "15_helloai_policy#c4",
+          "15_helloai_policy#c5",
+          "15_helloai_policy#c3",
+          "15_helloai_policy#c0",
+          "06_vector_db#c2"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q10": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "15_helloai_policy#c2",
+          "15_helloai_policy#c0",
+          "15_helloai_policy#c4",
+          "13_mcp#c5",
+          "08_hybrid_rerank#c4"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q11": {
+        "recall@5": 0,
+        "mrr": 0.0,
+        "top5": [
+          "15_helloai_policy#c2",
+          "15_helloai_policy#c0",
+          "15_helloai_policy#c4",
+          "15_helloai_policy#c3",
+          "08_hybrid_rerank#c4"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q12": {
+        "recall@5": 1,
+        "mrr": 0.25,
+        "top5": [
+          "13_mcp#c4",
+          "12_react_function_calling#c1",
+          "12_react_function_calling#c3",
+          "12_react_function_calling#c2",
+          "13_mcp#c0"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          1,
+          0
+        ]
+      },
+      "Q13": {
+        "recall@5": 0,
+        "mrr": 0.0,
+        "top5": [
+          "15_helloai_policy#c0",
+          "13_mcp#c0",
+          "15_helloai_policy#c4",
+          "15_helloai_policy#c1",
+          "12_react_function_calling#c2"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q14": {
+        "recall@5": 0,
+        "mrr": 0.0,
+        "top5": [
+          "13_mcp#c4",
+          "09_rag_eval#c1",
+          "13_mcp#c1",
+          "07_rag_pipeline#c1",
+          "03_tokenizer_sampling#c3"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q15": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "07_rag_pipeline#c4",
+          "07_rag_pipeline#c0",
+          "03_tokenizer_sampling#c3",
+          "07_rag_pipeline#c2",
+          "11_context_engineering#c0"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "hybrid_rrf": {
+      "Q1": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "01_transformer#c3",
+          "12_react_function_calling#c1",
+          "09_rag_eval#c0",
+          "04_moe_multimodal#c0",
+          "14_agent_patterns#c0"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q2": {
+        "recall@5": 1,
+        "mrr": 0.5,
+        "top5": [
+          "02_attention#c0",
+          "02_attention#c1",
+          "01_transformer#c3",
+          "02_attention#c2",
+          "02_attention#c3"
+        ],
+        "rel": [
+          0,
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q3": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "03_tokenizer_sampling#c2",
+          "03_tokenizer_sampling#c3",
+          "10_prompt_engineering#c2",
+          "10_prompt_engineering#c0",
+          "03_tokenizer_sampling#c1"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "Q4": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "04_moe_multimodal#c1",
+          "04_moe_multimodal#c0",
+          "03_tokenizer_sampling#c1",
+          "08_hybrid_rerank#c2",
+          "03_tokenizer_sampling#c0"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q5": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "04_moe_multimodal#c3",
+          "04_moe_multimodal#c1",
+          "01_transformer#c0",
+          "04_moe_multimodal#c0",
+          "13_mcp#c4"
+        ],
+        "rel": [
+          1,
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q6": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "08_hybrid_rerank#c1",
+          "02_attention#c1",
+          "09_rag_eval#c1",
+          "09_rag_eval#c0",
+          "01_transformer#c3"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q7": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "13_mcp#c1",
+          "14_agent_patterns#c3",
+          "10_prompt_engineering#c2",
+          "02_attention#c0",
+          "01_transformer#c2"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q8": {
+        "recall@5": 1,
+        "mrr": 0.333,
+        "top5": [
+          "09_rag_eval#c1",
+          "09_rag_eval#c0",
+          "09_rag_eval#c5",
+          "09_rag_eval#c3",
+          "14_agent_patterns#c0"
+        ],
+        "rel": [
+          0,
+          0,
+          1,
+          0,
+          0
+        ]
+      },
+      "Q9": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "15_helloai_policy#c4",
+          "15_helloai_policy#c5",
+          "15_helloai_policy#c0",
+          "15_helloai_policy#c3",
+          "05_embedding#c3"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q10": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "15_helloai_policy#c2",
+          "15_helloai_policy#c0",
+          "15_helloai_policy#c4",
+          "15_helloai_policy#c3",
+          "15_helloai_policy#c1"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q11": {
+        "recall@5": 0,
+        "mrr": 0.0,
+        "top5": [
+          "15_helloai_policy#c2",
+          "15_helloai_policy#c0",
+          "15_helloai_policy#c3",
+          "15_helloai_policy#c1",
+          "15_helloai_policy#c4"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q12": {
+        "recall@5": 1,
+        "mrr": 0.25,
+        "top5": [
+          "13_mcp#c4",
+          "12_react_function_calling#c1",
+          "12_react_function_calling#c3",
+          "12_react_function_calling#c2",
+          "13_mcp#c2"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          1,
+          0
+        ]
+      },
+      "Q13": {
+        "recall@5": 0,
+        "mrr": 0.0,
+        "top5": [
+          "15_helloai_policy#c0",
+          "15_helloai_policy#c4",
+          "11_context_engineering#c0",
+          "02_attention#c0",
+          "01_transformer#c3"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q14": {
+        "recall@5": 0,
+        "mrr": 0.0,
+        "top5": [
+          "13_mcp#c1",
+          "07_rag_pipeline#c4",
+          "13_mcp#c4",
+          "04_moe_multimodal#c1",
+          "09_rag_eval#c1"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q15": {
+        "recall@5": 1,
+        "mrr": 0.5,
+        "top5": [
+          "07_rag_pipeline#c0",
+          "07_rag_pipeline#c4",
+          "08_hybrid_rerank#c4",
+          "03_tokenizer_sampling#c3",
+          "11_context_engineering#c2"
+        ],
+        "rel": [
+          0,
+          1,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "hybrid_rerank": {
+      "Q1": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "01_transformer#c3",
+          "01_transformer#c0",
+          "14_agent_patterns#c3",
+          "12_react_function_calling#c1",
+          "04_moe_multimodal#c0"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q2": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "02_attention#c1",
+          "02_attention#c0",
+          "02_attention#c3",
+          "02_attention#c2",
+          "01_transformer#c3"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q3": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "03_tokenizer_sampling#c2",
+          "03_tokenizer_sampling#c3",
+          "10_prompt_engineering#c1",
+          "10_prompt_engineering#c0",
+          "12_react_function_calling#c3"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q4": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "04_moe_multimodal#c1",
+          "04_moe_multimodal#c0",
+          "03_tokenizer_sampling#c3",
+          "04_moe_multimodal#c4",
+          "02_attention#c3"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q5": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "04_moe_multimodal#c3",
+          "04_moe_multimodal#c1",
+          "13_mcp#c1",
+          "01_transformer#c4",
+          "04_moe_multimodal#c0"
+        ],
+        "rel": [
+          1,
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q6": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "08_hybrid_rerank#c1",
+          "08_hybrid_rerank#c2",
+          "02_attention#c1",
+          "09_rag_eval#c1",
+          "02_attention#c2"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q7": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "13_mcp#c1",
+          "13_mcp#c2",
+          "01_transformer#c2",
+          "14_agent_patterns#c3",
+          "13_mcp#c0"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q8": {
+        "recall@5": 1,
+        "mrr": 0.25,
+        "top5": [
+          "09_rag_eval#c1",
+          "09_rag_eval#c3",
+          "09_rag_eval#c0",
+          "09_rag_eval#c5",
+          "09_rag_eval#c2"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          1,
+          1
+        ]
+      },
+      "Q9": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "15_helloai_policy#c4",
+          "15_helloai_policy#c5",
+          "15_helloai_policy#c3",
+          "09_rag_eval#c5",
+          "15_helloai_policy#c0"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q10": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "15_helloai_policy#c2",
+          "15_helloai_policy#c3",
+          "15_helloai_policy#c1",
+          "15_helloai_policy#c0",
+          "15_helloai_policy#c4"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q11": {
+        "recall@5": 0,
+        "mrr": 0.0,
+        "top5": [
+          "15_helloai_policy#c0",
+          "15_helloai_policy#c2",
+          "15_helloai_policy#c3",
+          "15_helloai_policy#c1",
+          "15_helloai_policy#c4"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q12": {
+        "recall@5": 1,
+        "mrr": 0.5,
+        "top5": [
+          "13_mcp#c4",
+          "12_react_function_calling#c2",
+          "12_react_function_calling#c3",
+          "13_mcp#c2",
+          "12_react_function_calling#c1"
+        ],
+        "rel": [
+          0,
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q13": {
+        "recall@5": 0,
+        "mrr": 0.0,
+        "top5": [
+          "15_helloai_policy#c0",
+          "09_rag_eval#c4",
+          "11_context_engineering#c2",
+          "11_context_engineering#c0",
+          "09_rag_eval#c0"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q14": {
+        "recall@5": 0,
+        "mrr": 0.0,
+        "top5": [
+          "13_mcp#c1",
+          "03_tokenizer_sampling#c3",
+          "09_rag_eval#c4",
+          "06_vector_db#c3",
+          "04_moe_multimodal#c4"
+        ],
+        "rel": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "Q15": {
+        "recall@5": 1,
+        "mrr": 1.0,
+        "top5": [
+          "07_rag_pipeline#c4",
+          "07_rag_pipeline#c0",
+          "08_hybrid_rerank#c4",
+          "11_context_engineering#c2",
+          "03_tokenizer_sampling#c3"
+        ],
+        "rel": [
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "questions": [
+    {
+      "id": "Q1",
+      "question": "Transformer 为什么比 RNN 好？",
+      "type": "fact"
+    },
+    {
+      "id": "Q2",
+      "question": "注意力公式里 Q·K^T 之后为什么要除以 sqrt(d_k)？",
+      "type": "fact"
+    },
+    {
+      "id": "Q3",
+      "question": "温度（temperature）调高为什么输出更随机？",
+      "type": "fact"
+    },
+    {
+      "id": "Q4",
+      "question": "DeepSeek-V3 的总参数量和每 token 激活参数量分别是多少？",
+      "type": "fact"
+    },
+    {
+      "id": "Q5",
+      "question": "多模态模型 LLaVA 的架构是怎么组成的？",
+      "type": "fact"
+    },
+    {
+      "id": "Q6",
+      "question": "RRF 融合公式是什么样的？k 常取多少？为什么只用排名不用原始分数？",
+      "type": "fact"
+    },
+    {
+      "id": "Q7",
+      "question": "MCP 的三层角色是什么？各自负责什么？",
+      "type": "fact"
+    },
+    {
+      "id": "Q8",
+      "question": "RAGAS 的四大生成层指标是哪几个？分别考察什么？",
+      "type": "fact"
+    },
+    {
+      "id": "Q9",
+      "question": "报销系统报错 TRV-40907 应该怎么处理？",
+      "type": "exact-term"
+    },
+    {
+      "id": "Q10",
+      "question": "去深圳出差，普通员工住宿标准是多少钱一晚？",
+      "type": "fact"
+    },
+    {
+      "id": "Q11",
+      "question": "员工要坐高铁去北京出差，最晚要提前几天提交申请？住宿标准每天多少钱、餐补每天多少？",
+      "type": "multi-hop"
+    },
+    {
+      "id": "Q12",
+      "question": "MCP Server 暴露的工具最终靠什么机制让模型决定调用？这个机制的完整流程是哪几步？",
+      "type": "multi-hop"
+    },
+    {
+      "id": "Q13",
+      "question": "HelloAI 公司年会一等奖是什么？",
+      "type": "unanswerable"
+    },
+    {
+      "id": "Q14",
+      "question": "HelloAgent 学习仓库在 GitHub 上有多少个 star？",
+      "type": "unanswerable"
+    },
+    {
+      "id": "Q15",
+      "question": "什么时候不该用 RAG，直接把资料放进上下文更好？",
+      "type": "fact"
+    }
+  ]
+}

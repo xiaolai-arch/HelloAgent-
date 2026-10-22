@@ -1,0 +1,1639 @@
+{
+  "meta": {
+    "generated_at": "2026-10-21T16:22:40.972756",
+    "embedder": {
+      "kind": "semantic",
+      "name": "BAAI/bge-small-zh-v1.5"
+    },
+    "degraded": null,
+    "n_docs": 15,
+    "n_questions": 15,
+    "top_k": 5,
+    "semantic_drop_sigma": 1.5
+  },
+  "configs": {
+    "fixed-300-50": {
+      "metrics": {
+        "recall@1": 0.467,
+        "recall@3": 0.8,
+        "recall@5": 1.0,
+        "mrr": 0.583,
+        "hit_rate": 0.733
+      },
+      "stats": {
+        "n_chunks": 65,
+        "avg_len": 271.5,
+        "max_len": 300,
+        "min_len": 52
+      },
+      "per_question": [
+        {
+          "id": "Q1",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "01_transformer#c2(1)",
+            "14_agent_patterns#c0(0)",
+            "04_moe_multimodal#c1(0)",
+            "09_rag_eval#c2(0)",
+            "12_react_function_calling#c0(0)"
+          ]
+        },
+        {
+          "id": "Q2",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 0.5,
+          "hits": [
+            "02_attention#c0(0)",
+            "02_attention#c1(1)",
+            "01_transformer#c2(0)",
+            "02_attention#c2(0)",
+            "02_attention#c3(0)"
+          ]
+        },
+        {
+          "id": "Q3",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "03_tokenizer_sampling#c2(1)",
+            "12_react_function_calling#c2(0)",
+            "13_mcp#c4(0)",
+            "03_tokenizer_sampling#c3(0)",
+            "05_embedding#c3(0)"
+          ]
+        },
+        {
+          "id": "Q4",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "04_moe_multimodal#c0(1)",
+            "04_moe_multimodal#c1(1)",
+            "03_tokenizer_sampling#c1(0)",
+            "03_tokenizer_sampling#c0(0)",
+            "08_hybrid_rerank#c2(0)"
+          ]
+        },
+        {
+          "id": "Q5",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 0.5,
+          "hits": [
+            "01_transformer#c0(0)",
+            "04_moe_multimodal#c2(1)",
+            "04_moe_multimodal#c1(1)",
+            "04_moe_multimodal#c0(0)",
+            "01_transformer#c3(0)"
+          ]
+        },
+        {
+          "id": "Q6",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "08_hybrid_rerank#c1(1)",
+            "02_attention#c1(0)",
+            "09_rag_eval#c1(0)",
+            "09_rag_eval#c2(0)",
+            "08_hybrid_rerank#c0(0)"
+          ]
+        },
+        {
+          "id": "Q7",
+          "type": "fact",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "01_transformer#c2(0)",
+            "09_rag_eval#c4(0)",
+            "01_transformer#c1(0)",
+            "14_agent_patterns#c2(0)",
+            "01_transformer#c0(0)"
+          ]
+        },
+        {
+          "id": "Q8",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 0.5,
+          "hits": [
+            "09_rag_eval#c0(0)",
+            "09_rag_eval#c1(1)",
+            "09_rag_eval#c2(0)",
+            "09_rag_eval#c4(1)",
+            "09_rag_eval#c3(0)"
+          ]
+        },
+        {
+          "id": "Q9",
+          "type": "exact-term",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "15_helloai_policy#c3(1)",
+            "15_helloai_policy#c4(0)",
+            "09_rag_eval#c4(0)",
+            "09_rag_eval#c2(0)",
+            "15_helloai_policy#c0(0)"
+          ]
+        },
+        {
+          "id": "Q10",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "15_helloai_policy#c1(1)",
+            "15_helloai_policy#c0(0)",
+            "15_helloai_policy#c2(0)",
+            "15_helloai_policy#c3(0)",
+            "08_hybrid_rerank#c4(0)"
+          ]
+        },
+        {
+          "id": "Q11",
+          "type": "multi-hop",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "15_helloai_policy#c1(0)",
+            "15_helloai_policy#c0(0)",
+            "15_helloai_policy#c2(0)",
+            "15_helloai_policy#c3(0)",
+            "15_helloai_policy#c4(0)"
+          ]
+        },
+        {
+          "id": "Q12",
+          "type": "multi-hop",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "12_react_function_calling#c1(1)",
+            "13_mcp#c4(0)",
+            "13_mcp#c2(0)",
+            "10_prompt_engineering#c2(0)",
+            "12_react_function_calling#c2(1)"
+          ]
+        },
+        {
+          "id": "Q13",
+          "type": "unanswerable",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "09_rag_eval#c2(0)",
+            "09_rag_eval#c3(0)",
+            "09_rag_eval#c1(0)",
+            "04_moe_multimodal#c1(0)",
+            "03_tokenizer_sampling#c1(0)"
+          ]
+        },
+        {
+          "id": "Q14",
+          "type": "unanswerable",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "07_rag_pipeline#c3(0)",
+            "13_mcp#c2(0)",
+            "06_vector_db#c0(0)",
+            "04_moe_multimodal#c1(0)",
+            "09_rag_eval#c3(0)"
+          ]
+        },
+        {
+          "id": "Q15",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 0.25,
+          "hits": [
+            "08_hybrid_rerank#c4(0)",
+            "11_context_engineering#c1(0)",
+            "11_context_engineering#c2(0)",
+            "07_rag_pipeline#c3(1)",
+            "11_context_engineering#c0(0)"
+          ]
+        }
+      ]
+    },
+    "fixed-300-0": {
+      "metrics": {
+        "recall@1": 0.6,
+        "recall@3": 0.867,
+        "recall@5": 1.0,
+        "mrr": 0.678,
+        "hit_rate": 0.8
+      },
+      "stats": {
+        "n_chunks": 59,
+        "avg_len": 256.7,
+        "max_len": 300,
+        "min_len": 9
+      },
+      "per_question": [
+        {
+          "id": "Q1",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "01_transformer#c2(1)",
+            "14_agent_patterns#c0(0)",
+            "12_react_function_calling#c0(0)",
+            "04_moe_multimodal#c0(0)",
+            "09_rag_eval#c3(0)"
+          ]
+        },
+        {
+          "id": "Q2",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 0.333,
+          "hits": [
+            "02_attention#c0(0)",
+            "02_attention#c3(0)",
+            "02_attention#c1(1)",
+            "08_hybrid_rerank#c1(0)",
+            "12_react_function_calling#c4(0)"
+          ]
+        },
+        {
+          "id": "Q3",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "03_tokenizer_sampling#c2(1)",
+            "03_tokenizer_sampling#c1(1)",
+            "05_embedding#c2(0)",
+            "12_react_function_calling#c2(0)",
+            "13_mcp#c3(0)"
+          ]
+        },
+        {
+          "id": "Q4",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "04_moe_multimodal#c0(1)",
+            "03_tokenizer_sampling#c1(0)",
+            "03_tokenizer_sampling#c0(0)",
+            "01_transformer#c2(0)",
+            "08_hybrid_rerank#c2(0)"
+          ]
+        },
+        {
+          "id": "Q5",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 0.333,
+          "hits": [
+            "01_transformer#c0(0)",
+            "04_moe_multimodal#c0(0)",
+            "04_moe_multimodal#c2(1)",
+            "04_moe_multimodal#c1(1)",
+            "14_agent_patterns#c0(0)"
+          ]
+        },
+        {
+          "id": "Q6",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "08_hybrid_rerank#c1(1)",
+            "08_hybrid_rerank#c0(0)",
+            "09_rag_eval#c0(0)",
+            "02_attention#c0(0)",
+            "08_hybrid_rerank#c2(0)"
+          ]
+        },
+        {
+          "id": "Q7",
+          "type": "fact",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "01_transformer#c1(0)",
+            "10_prompt_engineering#c2(0)",
+            "01_transformer#c0(0)",
+            "09_rag_eval#c0(0)",
+            "09_rag_eval#c1(0)"
+          ]
+        },
+        {
+          "id": "Q8",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "09_rag_eval#c1(1)",
+            "09_rag_eval#c0(0)",
+            "09_rag_eval#c2(0)",
+            "14_agent_patterns#c0(0)",
+            "09_rag_eval#c3(1)"
+          ]
+        },
+        {
+          "id": "Q9",
+          "type": "exact-term",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "15_helloai_policy#c2(1)",
+            "05_embedding#c2(0)",
+            "14_agent_patterns#c3(0)",
+            "09_rag_eval#c3(0)",
+            "15_helloai_policy#c3(0)"
+          ]
+        },
+        {
+          "id": "Q10",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "15_helloai_policy#c1(1)",
+            "15_helloai_policy#c0(0)",
+            "15_helloai_policy#c3(0)",
+            "15_helloai_policy#c2(0)",
+            "03_tokenizer_sampling#c3(0)"
+          ]
+        },
+        {
+          "id": "Q11",
+          "type": "multi-hop",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "15_helloai_policy#c1(1)",
+            "15_helloai_policy#c0(0)",
+            "15_helloai_policy#c3(0)",
+            "15_helloai_policy#c2(0)",
+            "11_context_engineering#c2(0)"
+          ]
+        },
+        {
+          "id": "Q12",
+          "type": "multi-hop",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "12_react_function_calling#c1(1)",
+            "13_mcp#c3(0)",
+            "12_react_function_calling#c2(0)",
+            "13_mcp#c2(0)",
+            "10_prompt_engineering#c2(0)"
+          ]
+        },
+        {
+          "id": "Q13",
+          "type": "unanswerable",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "09_rag_eval#c3(0)",
+            "13_mcp#c4(0)",
+            "13_mcp#c2(0)",
+            "11_context_engineering#c0(0)",
+            "15_helloai_policy#c3(0)"
+          ]
+        },
+        {
+          "id": "Q14",
+          "type": "unanswerable",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "06_vector_db#c0(0)",
+            "07_rag_pipeline#c3(0)",
+            "09_rag_eval#c1(0)",
+            "06_vector_db#c2(0)",
+            "01_transformer#c3(0)"
+          ]
+        },
+        {
+          "id": "Q15",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 0.5,
+          "hits": [
+            "08_hybrid_rerank#c3(0)",
+            "07_rag_pipeline#c3(1)",
+            "11_context_engineering#c0(0)",
+            "11_context_engineering#c2(0)",
+            "07_rag_pipeline#c0(0)"
+          ]
+        }
+      ]
+    },
+    "recursive-150": {
+      "metrics": {
+        "recall@1": 0.267,
+        "recall@3": 0.6,
+        "recall@5": 0.667,
+        "mrr": 0.35,
+        "hit_rate": 0.467
+      },
+      "stats": {
+        "n_chunks": 132,
+        "avg_len": 113.6,
+        "max_len": 177,
+        "min_len": 26
+      },
+      "per_question": [
+        {
+          "id": "Q1",
+          "type": "fact",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "01_transformer#c5(0)",
+            "12_react_function_calling#c2(0)",
+            "09_rag_eval#c5(0)",
+            "11_context_engineering#c4(0)",
+            "04_moe_multimodal#c3(0)"
+          ]
+        },
+        {
+          "id": "Q2",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 0.25,
+          "hits": [
+            "02_attention#c0(0)",
+            "01_transformer#c6(0)",
+            "02_attention#c7(0)",
+            "02_attention#c2(1)",
+            "02_attention#c4(0)"
+          ]
+        },
+        {
+          "id": "Q3",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "03_tokenizer_sampling#c6(1)",
+            "01_transformer#c5(1)",
+            "03_tokenizer_sampling#c5(1)",
+            "12_react_function_calling#c8(0)",
+            "03_tokenizer_sampling#c7(0)"
+          ]
+        },
+        {
+          "id": "Q4",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 0.5,
+          "hits": [
+            "04_moe_multimodal#c2(0)",
+            "04_moe_multimodal#c3(1)",
+            "04_moe_multimodal#c1(0)",
+            "03_tokenizer_sampling#c3(0)",
+            "01_transformer#c4(0)"
+          ]
+        },
+        {
+          "id": "Q5",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "04_moe_multimodal#c4(1)",
+            "04_moe_multimodal#c6(1)",
+            "01_transformer#c0(0)",
+            "04_moe_multimodal#c3(0)",
+            "04_moe_multimodal#c0(0)"
+          ]
+        },
+        {
+          "id": "Q6",
+          "type": "fact",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "08_hybrid_rerank#c4(0)",
+            "08_hybrid_rerank#c2(0)",
+            "02_attention#c2(0)",
+            "08_hybrid_rerank#c3(0)",
+            "09_rag_eval#c4(0)"
+          ]
+        },
+        {
+          "id": "Q7",
+          "type": "fact",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "13_mcp#c2(0)",
+            "14_agent_patterns#c5(0)",
+            "01_transformer#c2(0)",
+            "01_transformer#c4(0)",
+            "10_prompt_engineering#c6(0)"
+          ]
+        },
+        {
+          "id": "Q8",
+          "type": "fact",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "09_rag_eval#c2(0)",
+            "09_rag_eval#c0(0)",
+            "06_vector_db#c2(0)",
+            "09_rag_eval#c4(0)",
+            "01_transformer#c7(0)"
+          ]
+        },
+        {
+          "id": "Q9",
+          "type": "exact-term",
+          "recall@5": 1,
+          "mrr": 0.5,
+          "hits": [
+            "15_helloai_policy#c6(0)",
+            "15_helloai_policy#c7(1)",
+            "09_rag_eval#c8(0)",
+            "15_helloai_policy#c0(0)",
+            "14_agent_patterns#c7(0)"
+          ]
+        },
+        {
+          "id": "Q10",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "15_helloai_policy#c3(1)",
+            "15_helloai_policy#c2(0)",
+            "15_helloai_policy#c1(0)",
+            "15_helloai_policy#c5(0)",
+            "15_helloai_policy#c4(0)"
+          ]
+        },
+        {
+          "id": "Q11",
+          "type": "multi-hop",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "15_helloai_policy#c1(0)",
+            "15_helloai_policy#c5(0)",
+            "15_helloai_policy#c2(0)",
+            "15_helloai_policy#c3(0)",
+            "15_helloai_policy#c8(0)"
+          ]
+        },
+        {
+          "id": "Q12",
+          "type": "multi-hop",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "13_mcp#c8(0)",
+            "12_react_function_calling#c3(0)",
+            "12_react_function_calling#c6(0)",
+            "10_prompt_engineering#c6(0)",
+            "03_tokenizer_sampling#c4(0)"
+          ]
+        },
+        {
+          "id": "Q13",
+          "type": "unanswerable",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "15_helloai_policy#c0(0)",
+            "15_helloai_policy#c7(0)",
+            "09_rag_eval#c6(0)",
+            "03_tokenizer_sampling#c3(0)",
+            "09_rag_eval#c7(0)"
+          ]
+        },
+        {
+          "id": "Q14",
+          "type": "unanswerable",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "06_vector_db#c1(0)",
+            "06_vector_db#c3(0)",
+            "04_moe_multimodal#c3(0)",
+            "01_transformer#c3(0)",
+            "01_transformer#c8(0)"
+          ]
+        },
+        {
+          "id": "Q15",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "07_rag_pipeline#c8(1)",
+            "08_hybrid_rerank#c8(0)",
+            "11_context_engineering#c1(0)",
+            "11_context_engineering#c3(0)",
+            "11_context_engineering#c4(0)"
+          ]
+        }
+      ]
+    },
+    "recursive-300": {
+      "metrics": {
+        "recall@1": 0.533,
+        "recall@3": 0.733,
+        "recall@5": 0.867,
+        "mrr": 0.606,
+        "hit_rate": 0.733
+      },
+      "stats": {
+        "n_chunks": 72,
+        "avg_len": 209.2,
+        "max_len": 298,
+        "min_len": 73
+      },
+      "per_question": [
+        {
+          "id": "Q1",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "01_transformer#c3(1)",
+            "14_agent_patterns#c0(0)",
+            "12_react_function_calling#c1(0)",
+            "04_moe_multimodal#c1(0)",
+            "09_rag_eval#c3(0)"
+          ]
+        },
+        {
+          "id": "Q2",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 0.5,
+          "hits": [
+            "02_attention#c0(0)",
+            "02_attention#c1(1)",
+            "01_transformer#c3(0)",
+            "07_rag_pipeline#c0(0)",
+            "02_attention#c3(0)"
+          ]
+        },
+        {
+          "id": "Q3",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "03_tokenizer_sampling#c2(1)",
+            "03_tokenizer_sampling#c3(0)",
+            "05_embedding#c3(0)",
+            "12_react_function_calling#c4(0)",
+            "10_prompt_engineering#c2(0)"
+          ]
+        },
+        {
+          "id": "Q4",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "04_moe_multimodal#c1(1)",
+            "04_moe_multimodal#c0(0)",
+            "03_tokenizer_sampling#c1(0)",
+            "03_tokenizer_sampling#c0(0)",
+            "01_transformer#c2(0)"
+          ]
+        },
+        {
+          "id": "Q5",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "04_moe_multimodal#c3(1)",
+            "04_moe_multimodal#c1(1)",
+            "01_transformer#c0(0)",
+            "04_moe_multimodal#c0(0)",
+            "12_react_function_calling#c1(0)"
+          ]
+        },
+        {
+          "id": "Q6",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "08_hybrid_rerank#c1(1)",
+            "02_attention#c1(0)",
+            "07_rag_pipeline#c0(0)",
+            "03_tokenizer_sampling#c0(0)",
+            "09_rag_eval#c5(0)"
+          ]
+        },
+        {
+          "id": "Q7",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "13_mcp#c1(1)",
+            "14_agent_patterns#c3(0)",
+            "10_prompt_engineering#c2(0)",
+            "01_transformer#c1(0)",
+            "09_rag_eval#c0(0)"
+          ]
+        },
+        {
+          "id": "Q8",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 0.333,
+          "hits": [
+            "09_rag_eval#c1(0)",
+            "09_rag_eval#c0(0)",
+            "09_rag_eval#c5(1)",
+            "09_rag_eval#c2(1)",
+            "13_mcp#c1(0)"
+          ]
+        },
+        {
+          "id": "Q9",
+          "type": "exact-term",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "15_helloai_policy#c4(1)",
+            "09_rag_eval#c5(0)",
+            "15_helloai_policy#c0(0)",
+            "15_helloai_policy#c5(0)",
+            "11_context_engineering#c1(0)"
+          ]
+        },
+        {
+          "id": "Q10",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "15_helloai_policy#c2(1)",
+            "15_helloai_policy#c0(0)",
+            "15_helloai_policy#c3(0)",
+            "15_helloai_policy#c1(0)",
+            "15_helloai_policy#c4(0)"
+          ]
+        },
+        {
+          "id": "Q11",
+          "type": "multi-hop",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "15_helloai_policy#c1(0)",
+            "15_helloai_policy#c3(0)",
+            "15_helloai_policy#c0(0)",
+            "15_helloai_policy#c2(0)",
+            "15_helloai_policy#c4(0)"
+          ]
+        },
+        {
+          "id": "Q12",
+          "type": "multi-hop",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "13_mcp#c4(0)",
+            "12_react_function_calling#c1(0)",
+            "12_react_function_calling#c3(0)",
+            "10_prompt_engineering#c2(0)",
+            "13_mcp#c2(0)"
+          ]
+        },
+        {
+          "id": "Q13",
+          "type": "unanswerable",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "09_rag_eval#c4(0)",
+            "04_moe_multimodal#c1(0)",
+            "11_context_engineering#c2(0)",
+            "02_attention#c1(0)",
+            "03_tokenizer_sampling#c1(0)"
+          ]
+        },
+        {
+          "id": "Q14",
+          "type": "unanswerable",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "07_rag_pipeline#c4(0)",
+            "04_moe_multimodal#c1(0)",
+            "01_transformer#c4(0)",
+            "06_vector_db#c0(0)",
+            "09_rag_eval#c4(0)"
+          ]
+        },
+        {
+          "id": "Q15",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 0.25,
+          "hits": [
+            "08_hybrid_rerank#c4(0)",
+            "07_rag_pipeline#c0(0)",
+            "11_context_engineering#c2(0)",
+            "07_rag_pipeline#c4(1)",
+            "09_rag_eval#c2(0)"
+          ]
+        }
+      ]
+    },
+    "recursive-500": {
+      "metrics": {
+        "recall@1": 0.733,
+        "recall@3": 0.8,
+        "recall@5": 0.867,
+        "mrr": 0.733,
+        "hit_rate": 0.733
+      },
+      "stats": {
+        "n_chunks": 43,
+        "avg_len": 351.6,
+        "max_len": 584,
+        "min_len": 114
+      },
+      "per_question": [
+        {
+          "id": "Q1",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "01_transformer#c1(1)",
+            "14_agent_patterns#c0(0)",
+            "04_moe_multimodal#c0(0)",
+            "11_context_engineering#c1(0)",
+            "12_react_function_calling#c0(0)"
+          ]
+        },
+        {
+          "id": "Q2",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "02_attention#c0(1)",
+            "02_attention#c2(0)",
+            "02_attention#c1(0)",
+            "01_transformer#c1(0)",
+            "07_rag_pipeline#c0(0)"
+          ]
+        },
+        {
+          "id": "Q3",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "03_tokenizer_sampling#c1(1)",
+            "12_react_function_calling#c2(0)",
+            "10_prompt_engineering#c2(0)",
+            "05_embedding#c1(0)",
+            "01_transformer#c1(1)"
+          ]
+        },
+        {
+          "id": "Q4",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "04_moe_multimodal#c0(1)",
+            "03_tokenizer_sampling#c0(0)",
+            "01_transformer#c1(0)",
+            "08_hybrid_rerank#c1(0)",
+            "07_rag_pipeline#c2(0)"
+          ]
+        },
+        {
+          "id": "Q5",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "04_moe_multimodal#c1(1)",
+            "04_moe_multimodal#c0(0)",
+            "01_transformer#c0(0)",
+            "01_transformer#c2(0)",
+            "14_agent_patterns#c0(0)"
+          ]
+        },
+        {
+          "id": "Q6",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "08_hybrid_rerank#c0(1)",
+            "09_rag_eval#c0(0)",
+            "07_rag_pipeline#c0(0)",
+            "02_attention#c0(0)",
+            "04_moe_multimodal#c0(0)"
+          ]
+        },
+        {
+          "id": "Q7",
+          "type": "fact",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "10_prompt_engineering#c2(0)",
+            "09_rag_eval#c0(0)",
+            "01_transformer#c0(0)",
+            "09_rag_eval#c1(0)",
+            "14_agent_patterns#c1(0)"
+          ]
+        },
+        {
+          "id": "Q8",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "09_rag_eval#c1(1)",
+            "09_rag_eval#c0(0)",
+            "09_rag_eval#c2(1)",
+            "14_agent_patterns#c0(0)",
+            "04_moe_multimodal#c0(0)"
+          ]
+        },
+        {
+          "id": "Q9",
+          "type": "exact-term",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "15_helloai_policy#c2(1)",
+            "15_helloai_policy#c0(0)",
+            "05_embedding#c1(0)",
+            "07_rag_pipeline#c1(0)",
+            "03_tokenizer_sampling#c2(0)"
+          ]
+        },
+        {
+          "id": "Q10",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "15_helloai_policy#c1(1)",
+            "15_helloai_policy#c0(0)",
+            "15_helloai_policy#c2(0)",
+            "03_tokenizer_sampling#c2(0)",
+            "09_rag_eval#c1(0)"
+          ]
+        },
+        {
+          "id": "Q11",
+          "type": "multi-hop",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "15_helloai_policy#c1(1)",
+            "15_helloai_policy#c0(0)",
+            "15_helloai_policy#c2(0)",
+            "05_embedding#c1(0)",
+            "09_rag_eval#c2(0)"
+          ]
+        },
+        {
+          "id": "Q12",
+          "type": "multi-hop",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "12_react_function_calling#c1(1)",
+            "13_mcp#c1(0)",
+            "03_tokenizer_sampling#c2(0)",
+            "10_prompt_engineering#c2(0)",
+            "13_mcp#c2(0)"
+          ]
+        },
+        {
+          "id": "Q13",
+          "type": "unanswerable",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "09_rag_eval#c2(0)",
+            "11_context_engineering#c1(0)",
+            "13_mcp#c2(0)",
+            "02_attention#c0(0)",
+            "09_rag_eval#c1(0)"
+          ]
+        },
+        {
+          "id": "Q14",
+          "type": "unanswerable",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "01_transformer#c2(0)",
+            "06_vector_db#c0(0)",
+            "04_moe_multimodal#c2(0)",
+            "01_transformer#c0(0)",
+            "06_vector_db#c2(0)"
+          ]
+        },
+        {
+          "id": "Q15",
+          "type": "fact",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "03_tokenizer_sampling#c2(0)",
+            "11_context_engineering#c1(0)",
+            "11_context_engineering#c0(0)",
+            "07_rag_pipeline#c1(0)",
+            "07_rag_pipeline#c0(0)"
+          ]
+        }
+      ]
+    },
+    "semantic": {
+      "metrics": {
+        "recall@1": 0.467,
+        "recall@3": 0.733,
+        "recall@5": 0.933,
+        "mrr": 0.578,
+        "hit_rate": 0.8
+      },
+      "stats": {
+        "n_chunks": 58,
+        "avg_len": 254.0,
+        "max_len": 498,
+        "min_len": 9
+      },
+      "per_question": [
+        {
+          "id": "Q1",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 0.333,
+          "hits": [
+            "09_rag_eval#c2(0)",
+            "14_agent_patterns#c0(0)",
+            "01_transformer#c1(1)",
+            "04_moe_multimodal#c1(0)",
+            "12_react_function_calling#c1(0)"
+          ]
+        },
+        {
+          "id": "Q2",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 0.25,
+          "hits": [
+            "02_attention#c1(0)",
+            "02_attention#c0(0)",
+            "02_attention#c2(0)",
+            "02_attention#c3(1)",
+            "02_attention#c4(0)"
+          ]
+        },
+        {
+          "id": "Q3",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "03_tokenizer_sampling#c1(1)",
+            "05_embedding#c1(0)",
+            "12_react_function_calling#c2(0)",
+            "05_embedding#c2(0)",
+            "12_react_function_calling#c1(0)"
+          ]
+        },
+        {
+          "id": "Q4",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "04_moe_multimodal#c1(1)",
+            "03_tokenizer_sampling#c0(0)",
+            "08_hybrid_rerank#c1(0)",
+            "01_transformer#c1(0)",
+            "02_attention#c4(0)"
+          ]
+        },
+        {
+          "id": "Q5",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "04_moe_multimodal#c2(1)",
+            "04_moe_multimodal#c0(0)",
+            "01_transformer#c0(0)",
+            "04_moe_multimodal#c1(1)",
+            "01_transformer#c2(0)"
+          ]
+        },
+        {
+          "id": "Q6",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "08_hybrid_rerank#c0(1)",
+            "09_rag_eval#c3(0)",
+            "07_rag_pipeline#c0(0)",
+            "09_rag_eval#c1(0)",
+            "09_rag_eval#c0(0)"
+          ]
+        },
+        {
+          "id": "Q7",
+          "type": "fact",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "13_mcp#c1(0)",
+            "02_attention#c3(0)",
+            "09_rag_eval#c0(0)",
+            "01_transformer#c0(0)",
+            "14_agent_patterns#c2(0)"
+          ]
+        },
+        {
+          "id": "Q8",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 0.333,
+          "hits": [
+            "09_rag_eval#c0(0)",
+            "09_rag_eval#c1(0)",
+            "09_rag_eval#c3(1)",
+            "14_agent_patterns#c0(0)",
+            "04_moe_multimodal#c1(0)"
+          ]
+        },
+        {
+          "id": "Q9",
+          "type": "exact-term",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "15_helloai_policy#c4(1)",
+            "09_rag_eval#c3(0)",
+            "15_helloai_policy#c5(0)",
+            "15_helloai_policy#c0(0)",
+            "14_agent_patterns#c4(0)"
+          ]
+        },
+        {
+          "id": "Q10",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "15_helloai_policy#c2(1)",
+            "15_helloai_policy#c1(0)",
+            "15_helloai_policy#c3(0)",
+            "15_helloai_policy#c4(0)",
+            "15_helloai_policy#c0(0)"
+          ]
+        },
+        {
+          "id": "Q11",
+          "type": "multi-hop",
+          "recall@5": 1,
+          "mrr": 0.5,
+          "hits": [
+            "15_helloai_policy#c1(0)",
+            "15_helloai_policy#c2(1)",
+            "15_helloai_policy#c4(0)",
+            "15_helloai_policy#c3(0)",
+            "03_tokenizer_sampling#c2(0)"
+          ]
+        },
+        {
+          "id": "Q12",
+          "type": "multi-hop",
+          "recall@5": 1,
+          "mrr": 1.0,
+          "hits": [
+            "12_react_function_calling#c1(1)",
+            "12_react_function_calling#c2(1)",
+            "10_prompt_engineering#c3(0)",
+            "14_agent_patterns#c1(0)",
+            "13_mcp#c3(0)"
+          ]
+        },
+        {
+          "id": "Q13",
+          "type": "unanswerable",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "09_rag_eval#c2(0)",
+            "03_tokenizer_sampling#c2(0)",
+            "09_rag_eval#c1(0)",
+            "15_helloai_policy#c0(0)",
+            "02_attention#c2(0)"
+          ]
+        },
+        {
+          "id": "Q14",
+          "type": "unanswerable",
+          "recall@5": 0,
+          "mrr": 0.0,
+          "hits": [
+            "07_rag_pipeline#c2(0)",
+            "06_vector_db#c1(0)",
+            "01_transformer#c2(0)",
+            "11_context_engineering#c0(0)",
+            "09_rag_eval#c1(0)"
+          ]
+        },
+        {
+          "id": "Q15",
+          "type": "fact",
+          "recall@5": 1,
+          "mrr": 0.25,
+          "hits": [
+            "08_hybrid_rerank#c4(0)",
+            "11_context_engineering#c2(0)",
+            "03_tokenizer_sampling#c2(0)",
+            "07_rag_pipeline#c2(1)",
+            "07_rag_pipeline#c0(0)"
+          ]
+        }
+      ]
+    }
+  },
+  "sentence_cuts": {
+    "fixed-300-50": [
+      {
+        "doc": "01_transformer",
+        "tail": "。\n- **Decode",
+        "head": "面套残差连接（Resid",
+        "rejoined": "。\n- **Decode面套残差连接（Resid"
+      },
+      {
+        "doc": "01_transformer",
+        "tail": "负责\"纵向\"逐位置变换（",
+        "head": "层的处理都是：注意力负责",
+        "rejoined": "负责\"纵向\"逐位置变换（层的处理都是：注意力负责"
+      },
+      {
+        "doc": "01_transformer",
+        "tail": "*：堆相同的层即可扩规模",
+        "head": "之间的路径长度是 O(1",
+        "rejoined": "*：堆相同的层即可扩规模之间的路径长度是 O(1"
+      },
+      {
+        "doc": "02_attention",
+        "tail": "k)（K 的维度开根号）",
+        "head": "K 做点积，得到每对位置",
+        "rejoined": "k)（K 的维度开根号）K 做点积，得到每对位置"
+      },
+      {
+        "doc": "02_attention",
+        "tail": "力，最后把各头输出拼接再",
+        "head": "h=8，每头 d_k=d",
+        "rejoined": "力，最后把各头输出拼接再h=8，每头 d_k=d"
+      },
+      {
+        "doc": "02_attention",
+        "tail": "V2 = [2,3]。真",
+        "head": "0.71；单 token",
+        "rejoined": "V2 = [2,3]。真0.71；单 token"
+      },
+      {
+        "doc": "03_tokenizer_sampling",
+        "tail": "在 GPT 系列编码（如",
+        "head": "化程度。\n\nOpenAI",
+        "rejoined": "在 GPT 系列编码（如化程度。\n\nOpenAI"
+      },
+      {
+        "doc": "03_tokenizer_sampling",
+        "tail": "要稳定的任务。\n- **",
+        "head": "永远选概率最大的 tok",
+        "rejoined": "要稳定的任务。\n- **永远选概率最大的 tok"
+      },
+      {
+        "doc": "03_tokenizer_sampling",
+        "tail": "emperature 取",
+        "head": "高的 K 个 token",
+        "rejoined": "emperature 取高的 K 个 token"
+      },
+      {
+        "doc": "04_moe_multimodal",
+        "tail": "——容量接近千亿级大模型",
+        "head": "DeepSeek-V3 ",
+        "rejoined": "——容量接近千亿级大模型DeepSeek-V3 "
+      }
+    ],
+    "recursive-300": [
+      {
+        "doc": "02_attention",
+        "tail": "ntion（多头注意力）",
+        "head": "多头不是算一次注意力，而",
+        "rejoined": "ntion（多头注意力）多头不是算一次注意力，而"
+      },
+      {
+        "doc": "07_rag_pipeline",
+        "tail": "king 策略与经验参数",
+        "head": "- **固定长度切分**",
+        "rejoined": "king 策略与经验参数- **固定长度切分**"
+      },
+      {
+        "doc": "09_rag_eval",
+        "tail": "标（RAGAS 四大件）",
+        "head": "- **Faithful",
+        "rejoined": "标（RAGAS 四大件）- **Faithful"
+      },
+      {
+        "doc": "10_prompt_engineering",
+        "tail": "w-shot / CoT",
+        "head": "- **Zero-sho",
+        "rejoined": "w-shot / CoT- **Zero-sho"
+      },
+      {
+        "doc": "10_prompt_engineering",
+        "tail": "# 结构化输出的三种机制",
+        "head": "1. **纯 Promp",
+        "rejoined": "# 结构化输出的三种机制1. **纯 Promp"
+      },
+      {
+        "doc": "12_react_function_calling",
+        "tail": "l Answer\n```",
+        "head": "为什么 ReAct 比单",
+        "rejoined": "l Answer\n```为什么 ReAct 比单"
+      },
+      {
+        "doc": "13_mcp",
+        "tail": "tion Calling",
+        "head": "- Function C",
+        "rejoined": "tion Calling- Function C"
+      }
+    ]
+  },
+  "gold_keyword_spread": [
+    {
+      "id": "Q1",
+      "type": "fact",
+      "keyword_locations": {
+        "并行": [
+          "01_transformer#c3",
+          "02_attention#c3",
+          "12_react_function_calling#c3",
+          "12_react_function_calling#c4",
+          "14_agent_patterns#c1",
+          "14_agent_patterns#c3",
+          "14_agent_patterns#c4"
+        ],
+        "长程依赖": [
+          "01_transformer#c3"
+        ]
+      },
+      "n_distinct_chunks": 7,
+      "multi_chunk": true
+    },
+    {
+      "id": "Q2",
+      "type": "fact",
+      "keyword_locations": {
+        "方差": [
+          "02_attention#c1"
+        ],
+        "饱和": [
+          "02_attention#c1",
+          "08_hybrid_rerank#c0"
+        ]
+      },
+      "n_distinct_chunks": 2,
+      "multi_chunk": true
+    },
+    {
+      "id": "Q3",
+      "type": "fact",
+      "keyword_locations": {
+        "分布": [
+          "01_transformer#c2",
+          "03_tokenizer_sampling#c1",
+          "03_tokenizer_sampling#c2",
+          "06_vector_db#c3"
+        ],
+        "softmax": [
+          "01_transformer#c2",
+          "02_attention#c0",
+          "02_attention#c1",
+          "02_attention#c3",
+          "03_tokenizer_sampling#c2"
+        ]
+      },
+      "n_distinct_chunks": 7,
+      "multi_chunk": true
+    },
+    {
+      "id": "Q4",
+      "type": "fact",
+      "keyword_locations": {
+        "671": [
+          "04_moe_multimodal#c1"
+        ],
+        "37": [
+          "04_moe_multimodal#c1"
+        ]
+      },
+      "n_distinct_chunks": 1,
+      "multi_chunk": false
+    },
+    {
+      "id": "Q5",
+      "type": "fact",
+      "keyword_locations": {
+        "CLIP ViT": [
+          "04_moe_multimodal#c3"
+        ],
+        "投影": [
+          "01_transformer#c2",
+          "04_moe_multimodal#c1",
+          "04_moe_multimodal#c2",
+          "04_moe_multimodal#c3"
+        ]
+      },
+      "n_distinct_chunks": 4,
+      "multi_chunk": true
+    },
+    {
+      "id": "Q6",
+      "type": "fact",
+      "keyword_locations": {
+        "60": [
+          "08_hybrid_rerank#c1",
+          "15_helloai_policy#c2"
+        ],
+        "量纲": [
+          "08_hybrid_rerank#c1"
+        ]
+      },
+      "n_distinct_chunks": 2,
+      "multi_chunk": true
+    },
+    {
+      "id": "Q7",
+      "type": "fact",
+      "keyword_locations": {
+        "Host": [
+          "13_mcp#c1",
+          "13_mcp#c3"
+        ],
+        "Client": [
+          "13_mcp#c1"
+        ],
+        "Server": [
+          "13_mcp#c0",
+          "13_mcp#c1",
+          "13_mcp#c2",
+          "13_mcp#c3",
+          "13_mcp#c4",
+          "13_mcp#c5"
+        ]
+      },
+      "n_distinct_chunks": 6,
+      "multi_chunk": true
+    },
+    {
+      "id": "Q8",
+      "type": "fact",
+      "keyword_locations": {
+        "Faithfulness": [
+          "09_rag_eval#c2",
+          "09_rag_eval#c5"
+        ],
+        "Answer Relevancy": [
+          "09_rag_eval#c2"
+        ],
+        "Context Precision": [
+          "09_rag_eval#c2",
+          "09_rag_eval#c5"
+        ],
+        "Context Recall": [
+          "09_rag_eval#c2",
+          "09_rag_eval#c5"
+        ]
+      },
+      "n_distinct_chunks": 2,
+      "multi_chunk": true
+    },
+    {
+      "id": "Q9",
+      "type": "exact-term",
+      "keyword_locations": {
+        "TRV-40907": [
+          "15_helloai_policy#c4"
+        ]
+      },
+      "n_distinct_chunks": 1,
+      "multi_chunk": false
+    },
+    {
+      "id": "Q10",
+      "type": "fact",
+      "keyword_locations": {
+        "600": [
+          "15_helloai_policy#c2"
+        ],
+        "深圳": [
+          "15_helloai_policy#c2"
+        ]
+      },
+      "n_distinct_chunks": 1,
+      "multi_chunk": false
+    },
+    {
+      "id": "Q11",
+      "type": "multi-hop",
+      "keyword_locations": {
+        "3 个工作日": [
+          "15_helloai_policy#c0"
+        ],
+        "600": [
+          "15_helloai_policy#c2"
+        ],
+        "100": [
+          "03_tokenizer_sampling#c1",
+          "07_rag_pipeline#c2",
+          "08_hybrid_rerank#c3",
+          "15_helloai_policy#c3"
+        ]
+      },
+      "n_distinct_chunks": 6,
+      "multi_chunk": true
+    },
+    {
+      "id": "Q12",
+      "type": "multi-hop",
+      "keyword_locations": {
+        "tools": [
+          "10_prompt_engineering#c3",
+          "12_react_function_calling#c2",
+          "12_react_function_calling#c4",
+          "13_mcp#c2",
+          "13_mcp#c3"
+        ],
+        "tool_calls": [
+          "12_react_function_calling#c2",
+          "12_react_function_calling#c4"
+        ],
+        "role=tool": [
+          "12_react_function_calling#c2",
+          "12_react_function_calling#c4"
+        ]
+      },
+      "n_distinct_chunks": 5,
+      "multi_chunk": true
+    },
+    {
+      "id": "Q15",
+      "type": "fact",
+      "keyword_locations": {
+        "静态": [
+          "07_rag_pipeline#c4",
+          "12_react_function_calling#c1"
+        ],
+        "SQL": [
+          "06_vector_db#c3",
+          "07_rag_pipeline#c4"
+        ],
+        "延迟": [
+          "05_embedding#c3",
+          "07_rag_pipeline#c4",
+          "08_hybrid_rerank#c2",
+          "10_prompt_engineering#c1",
+          "11_context_engineering#c1",
+          "11_context_engineering#c2",
+          "14_agent_patterns#c2"
+        ]
+      },
+      "n_distinct_chunks": 9,
+      "multi_chunk": true
+    }
+  ]
+}

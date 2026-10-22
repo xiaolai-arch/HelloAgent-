@@ -1,0 +1,141 @@
+{
+  "description": "W3 RAG golden set。每条包含：question / gold_answer / gold_doc_ids（答案所在语料文档）/ type（fact=单点事实, multi-hop=多跳组合, exact-term=精确词, unanswerable=应弃权）/ gold_keywords（判定检索命中用的关键词，chunk 命中 = 命中词数 >= min_keyword_hits）",
+  "version": "1.0",
+  "questions": [
+    {
+      "id": "Q1",
+      "question": "Transformer 为什么比 RNN 好？",
+      "type": "fact",
+      "gold_answer": "两点：一是自注意力可以并行计算（RNN 必须按时间步串行）；二是任意两个位置直接建立连接、路径长度 O(1)，长程依赖不会像 RNN 那样逐步衰减。",
+      "gold_doc_ids": ["01_transformer"],
+      "gold_keywords": ["并行", "长程依赖"],
+      "min_keyword_hits": 2
+    },
+    {
+      "id": "Q2",
+      "question": "注意力公式里 Q·K^T 之后为什么要除以 sqrt(d_k)？",
+      "type": "fact",
+      "gold_answer": "维度越大点积的方差越大，不缩放会把 softmax 推入饱和区导致梯度消失，所以除以 K 维度的平方根做缩放。",
+      "gold_doc_ids": ["02_attention"],
+      "gold_keywords": ["方差", "饱和"],
+      "min_keyword_hits": 1
+    },
+    {
+      "id": "Q3",
+      "question": "温度（temperature）调高为什么输出更随机？",
+      "type": "fact",
+      "gold_answer": "温度是给 logits 除以 T 再做 softmax：T 越大分布越平，低概率 token 被选中的机会变大，输出越发散。",
+      "gold_doc_ids": ["03_tokenizer_sampling"],
+      "gold_keywords": ["分布", "softmax"],
+      "min_keyword_hits": 1
+    },
+    {
+      "id": "Q4",
+      "question": "DeepSeek-V3 的总参数量和每 token 激活参数量分别是多少？",
+      "type": "fact",
+      "gold_answer": "总参数 671B，每个 token 只激活 37B——容量是千亿级，推理成本是几十亿级。",
+      "gold_doc_ids": ["04_moe_multimodal"],
+      "gold_keywords": ["671", "37"],
+      "min_keyword_hits": 2
+    },
+    {
+      "id": "Q5",
+      "question": "多模态模型 LLaVA 的架构是怎么组成的？",
+      "type": "fact",
+      "gold_answer": "LLaVA = 视觉编码器（CLIP ViT）+ 线性投影层 + LLM（Vicuna/LLaMA），是'视觉编码器 + 投影 + LLM'架构的开源经典方案。",
+      "gold_doc_ids": ["04_moe_multimodal"],
+      "gold_keywords": ["CLIP ViT", "投影"],
+      "min_keyword_hits": 1
+    },
+    {
+      "id": "Q6",
+      "question": "RRF 融合公式是什么样的？k 常取多少？为什么只用排名不用原始分数？",
+      "type": "fact",
+      "gold_answer": "score(d) = Σ 1/(k + rank_i(d))，k 常取 60。只用排名是因为 BM25 分数和余弦相似度量纲不同无法直接相加，排名是无量纲的。",
+      "gold_doc_ids": ["08_hybrid_rerank"],
+      "gold_keywords": ["60", "量纲"],
+      "min_keyword_hits": 2
+    },
+    {
+      "id": "Q7",
+      "question": "MCP 的三层角色是什么？各自负责什么？",
+      "type": "fact",
+      "gold_answer": "Host 是用户使用的宿主应用，管理鉴权与用户确认；Client 是 Host 内与 Server 保持 1:1 连接的中间层；Server 是暴露工具/资源/提示模板的轻量进程。",
+      "gold_doc_ids": ["13_mcp"],
+      "gold_keywords": ["Host", "Client", "Server"],
+      "min_keyword_hits": 3
+    },
+    {
+      "id": "Q8",
+      "question": "RAGAS 的四大生成层指标是哪几个？分别考察什么？",
+      "type": "fact",
+      "gold_answer": "Faithfulness（答案是否被上下文支持）、Answer Relevancy（是否回答了问题）、Context Precision（相关资料是否排前面）、Context Recall（标准答案所需信息上下文是否覆盖）。",
+      "gold_doc_ids": ["09_rag_eval"],
+      "gold_keywords": ["Faithfulness", "Answer Relevancy", "Context Precision", "Context Recall"],
+      "min_keyword_hits": 3
+    },
+    {
+      "id": "Q9",
+      "question": "报销系统报错 TRV-40907 应该怎么处理？",
+      "type": "exact-term",
+      "gold_answer": "TRV-40907 表示报销单提交超过 15 日期限，需要总监在 OA 里发起'逾期特批'流程。",
+      "gold_doc_ids": ["15_helloai_policy"],
+      "gold_keywords": ["TRV-40907"],
+      "min_keyword_hits": 1
+    },
+    {
+      "id": "Q10",
+      "question": "去深圳出差，普通员工住宿标准是多少钱一晚？",
+      "type": "fact",
+      "gold_answer": "深圳属于 600 元/晚档（普通员工），总监及以上 900 元/晚。",
+      "gold_doc_ids": ["15_helloai_policy"],
+      "gold_keywords": ["600", "深圳"],
+      "min_keyword_hits": 2
+    },
+    {
+      "id": "Q11",
+      "question": "员工要坐高铁去北京出差，最晚要提前几天提交申请？住宿标准每天多少钱、餐补每天多少？",
+      "type": "multi-hop",
+      "gold_answer": "须提前 3 个工作日提交出差申请；北京普通员工住宿 600 元/晚；餐补 100 元/天。",
+      "gold_doc_ids": ["15_helloai_policy"],
+      "gold_keywords": ["3 个工作日", "600", "100"],
+      "min_keyword_hits": 2
+    },
+    {
+      "id": "Q12",
+      "question": "MCP Server 暴露的工具最终靠什么机制让模型决定调用？这个机制的完整流程是哪几步？",
+      "type": "multi-hop",
+      "gold_answer": "最终还是靠 Function Calling 让模型决策。完整流程：定义工具（tools + JSON Schema）→ 模型决策返回 tool_calls → 客户端代码执行真实函数 → 结果以 role=tool 回传，模型生成最终回答。",
+      "gold_doc_ids": ["13_mcp", "12_react_function_calling"],
+      "gold_keywords": ["tools", "tool_calls", "role=tool"],
+      "min_keyword_hits": 2
+    },
+    {
+      "id": "Q13",
+      "question": "HelloAI 公司年会一等奖是什么？",
+      "type": "unanswerable",
+      "gold_answer": "（语料中没有任何年会/抽奖信息，正确的反应是回答'根据现有资料无法确定'并弃权。）",
+      "gold_doc_ids": [],
+      "gold_keywords": [],
+      "min_keyword_hits": 0
+    },
+    {
+      "id": "Q14",
+      "question": "HelloAgent 学习仓库在 GitHub 上有多少个 star？",
+      "type": "unanswerable",
+      "gold_answer": "（语料中没有任何 GitHub star 信息，正确的反应是回答'根据现有资料无法确定'并弃权。）",
+      "gold_doc_ids": [],
+      "gold_keywords": [],
+      "min_keyword_hits": 0
+    },
+    {
+      "id": "Q15",
+      "question": "什么时候不该用 RAG，直接把资料放进上下文更好？",
+      "type": "fact",
+      "gold_answer": "知识库小且静态可整体放入上下文、任务缺的是推理不是知识、数据结构化查询明确（SQL/API 更合适）、延迟极度敏感——这些场景都不该上 RAG。",
+      "gold_doc_ids": ["07_rag_pipeline"],
+      "gold_keywords": ["静态", "SQL", "延迟"],
+      "min_keyword_hits": 2
+    }
+  ]
+}

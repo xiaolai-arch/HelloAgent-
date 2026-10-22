@@ -1,0 +1,56 @@
+{
+  "meta": {
+    "generated_at": "2026-10-21T16:59:27.506178",
+    "transport": "stdio",
+    "server": "mcp_server.py (hello-agent-tools)"
+  },
+  "checks": [
+    {
+      "name": "initialize 握手",
+      "ok": true,
+      "detail": "serverInfo.name=hello-agent-tools, protocolVersion=2025-11-25"
+    },
+    {
+      "name": "tools/list 发现工具",
+      "ok": true,
+      "detail": "共 3 个: ['calculate', 'lookup_travel_error_code', 'search_knowledge']"
+    },
+    {
+      "name": "calculate 正常计算",
+      "ok": true,
+      "detail": "返回 '23'"
+    },
+    {
+      "name": "calculate 白名单拦截",
+      "ok": true,
+      "detail": "返回 '错误：只支持数字与 + - * / ( ) 的四则运算'"
+    },
+    {
+      "name": "错误码查询（命中）",
+      "ok": true,
+      "detail": "TRV-40907：报销单提交超过 15 日期限。需总监在 OA 里发起'逾期特批'流程。"
+    },
+    {
+      "name": "错误码查询（未命中有可读提示）",
+      "ok": true,
+      "detail": "未知错误码 XXX-00000。已知错误码：TRV-40231, TRV-40907, TRV-41188, TRV-5"
+    },
+    {
+      "name": "search_knowledge 检索",
+      "ok": true,
+      "detail": "【08_hybrid_rerank#c1】RRF：按排名融合\n\nRRF（Reciprocal Rank Fusion）是…"
+    },
+    {
+      "name": "resources 读住宿标准",
+      "ok": true,
+      "detail": "北京 住宿标准：普通员工 600 元/晚，总监及以上 900 元/晚。"
+    },
+    {
+      "name": "未知工具返回 MCP 错误语义",
+      "ok": true,
+      "detail": "isError=False, 文本: Unknown tool: no_such_tool"
+    }
+  ],
+  "passed": 9,
+  "total": 9
+}

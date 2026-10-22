@@ -1,0 +1,23 @@
+# HelloAgent 学习项目依赖
+# 安装：pip install -r requirements.txt
+#
+# 分周说明：
+# - W1/W2（day01-06、w2day*）：脚本调用 LLM API 用的都是标准库 urllib，
+#   唯一的第三方依赖是 tiktoken（token 计数实验）。
+# - W3（w3day*）：RAG 实验引入向量检索与本地 embedding。
+#   首次使用会通过 HF 镜像下载 bge-small-zh-v1.5（约 90MB）；
+#   w3day05 首次运行还会下载 bge-reranker-v2-m3-int8（约 0.57GB）。
+#   国内网络脚本已默认 HF_ENDPOINT=https://hf-mirror.com（见 w3data/ragkit.py）。
+# - W4（w4day*）：w4day01 复用 fastembed 做检索工具；w4day05 用官方 mcp SDK。
+#
+# 没装 fastembed 时 W3/W4 脚本自动降级为纯 Python 哈希词袋向量并如实记录，
+# 不影响跑通（结论会标注降级）。
+
+tiktoken==0.14.0
+
+# W3: RAG
+chromadb>=1.0
+fastembed>=0.9          # 本地 onnx embedding（bge-small-zh）+ cross-encoder rerank
+
+# W4: Agent / MCP
+mcp>=2.0                # 官方 SDK（2.x：MCPServer；1.x 为 FastMCP，同形 API）

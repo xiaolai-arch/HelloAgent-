@@ -1,0 +1,656 @@
+{
+  "meta": {
+    "generated_at": "2026-10-21T16:54:57.541836",
+    "embedder": {
+      "kind": "semantic",
+      "name": "BAAI/bge-small-zh-v1.5"
+    },
+    "degraded": null,
+    "model": "mimo-v2.6-flash",
+    "gen_temperature": 0.2,
+    "judge_temperature": 0.0,
+    "judge_model": "mimo-v2.6-flash",
+    "n_chunks": 72,
+    "chunking": "recursive-300",
+    "retrieval": "dense+BM25 → RRF(k=60)",
+    "configs": {
+      "baseline-top5": {
+        "top_k": 5
+      },
+      "ctx-top3": {
+        "top_k": 3
+      }
+    },
+    "note": "RAGAS 指标为按论文口径的简化实现：faithfulness 合并了拆论断与判支持两步；relevancy 用直接评审代替反向生成问题。"
+  },
+  "results": {
+    "baseline-top5": {
+      "rows": [
+        {
+          "id": "Q1",
+          "type": "fact",
+          "question": "Transformer 为什么比 RNN 好？",
+          "answer": "Transformer 比 RNN 好主要体现在三个方面 [1]：\n\n1. **并行性更强**：RNN 必须按时间步串行计算，第 t 步依赖第 t-1 步；而自注意力对所有位置一次性算完，训练时能吃满 GPU。\n\n2. **长程依赖更好**：RNN 的信息要一步一步传，距离远了会衰减；自注意力任意两个位置之间的路径长度是 O(1)，能直接建立连接。\n\n3. **可扩展性更好**：计算图更简单，堆相同的层即可扩规模，催生了后来的 GPT（Decoder-only）、BERT（Encoder-only）、T5（Encoder-Decoder）三大路线。",
+          "hits": [
+            "01_transformer#c3",
+            "12_react_function_calling#c1",
+            "09_rag_eval#c0",
+            "04_moe_multimodal#c0",
+            "14_agent_patterns#c0"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 4,
+          "relevancy": 1.0,
+          "judge_rel_reason": "直接且完整地从并行性、长程依赖、可扩展性三个核心角度回答了Transformer为何优于RNN。",
+          "context_precision": 1.0,
+          "context_recall": 1.0,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q2",
+          "type": "fact",
+          "question": "注意力公式里 Q·K^T 之后为什么要除以 sqrt(d_k)？",
+          "answer": "## 为什么要除以 sqrt(d_k)\n\n根据资料，Q 和 K 做点积得到原始相关性分数后，除以 sqrt(d_k)（即 K 的维度开根号）是为了**缩放** [2]。\n\n具体原因：**维度越大，点积的方差就越大；如果不缩放，过大的分数会把 softmax 推入饱和区，导致梯度消失** [2]。\n\n补充说明：\n\n- 这里的 d_k 指的是 K 的维度（在多头注意力中，每头的维度 d_k = d_model / h，原始论文中为 64）[4]。\n- 缩放是计算流程的第二步，之后第三步才做按行 softmax 归一化成注意力权重，第四步用权重对 V 加权求和 [2]。",
+          "hits": [
+            "02_attention#c0",
+            "02_attention#c1",
+            "01_transformer#c3",
+            "02_attention#c2",
+            "02_attention#c3"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 10,
+          "relevancy": 1.0,
+          "judge_rel_reason": "回答直接给出了除以 sqrt(d_k) 的原因——点积方差随维度增大，不缩放会让 softmax 进入饱和区导致梯度消失——切中问题核心，补充信息也相关且不冗余。",
+          "context_precision": 0.5,
+          "context_recall": 1.0,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q3",
+          "type": "fact",
+          "question": "温度（temperature）调高为什么输出更随机？",
+          "answer": "温度调高后输出更随机，是因为它改的是**概率分布的形状**：\n\n- 温度的做法是先给 logits 除以 T，再做 softmax [1]。\n- T 越小，分布越尖，输出越确定；T 越大，分布越平，低概率 token 被选中的机会变大，输出越发散、越随机 [1]。\n\n也就是说，温度本身不改变模型对各 token 的排序倾向，而是通过缩放 logits 让 softmax 后的分布变得更均匀，于是那些原本概率较低的 token 也获得了被采样到的机会，最终表现为输出随机性上升 [1]。",
+          "hits": [
+            "03_tokenizer_sampling#c2",
+            "03_tokenizer_sampling#c3",
+            "10_prompt_engineering#c2",
+            "01_transformer#c2",
+            "10_prompt_engineering#c0"
+          ],
+          "faithfulness": 0.875,
+          "n_claims": 8,
+          "relevancy": 1.0,
+          "judge_rel_reason": "回答直接完整地解释了温度调高使概率分布变平、低概率token更易被采样，从而输出更随机的机制，无需额外展开。",
+          "context_precision": 1.0,
+          "context_recall": 1.0,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q4",
+          "type": "fact",
+          "question": "DeepSeek-V3 的总参数量和每 token 激活参数量分别是多少？",
+          "answer": "DeepSeek-V3 的总参数量为 **671B**，每个 token 激活的参数量为 **37B** [1]。",
+          "hits": [
+            "04_moe_multimodal#c1",
+            "04_moe_multimodal#c0",
+            "03_tokenizer_sampling#c1",
+            "03_tokenizer_sampling#c0",
+            "02_attention#c3"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 2,
+          "relevancy": 1.0,
+          "judge_rel_reason": "准确给出总参数量671B和每token激活参数量37B，直接且完整回答了问题。",
+          "context_precision": 1.0,
+          "context_recall": 1.0,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q5",
+          "type": "fact",
+          "question": "多模态模型 LLaVA 的架构是怎么组成的？",
+          "answer": "LLaVA 的架构由三部分组成：视觉编码器 CLIP ViT + 线性投影 + Vicuna/LLaMA[1]。\n\n这也符合图文多模态模型的主流架构模式，即\"视觉编码器 + 投影层 + LLM\"[1][3]。",
+          "hits": [
+            "04_moe_multimodal#c3",
+            "04_moe_multimodal#c1",
+            "01_transformer#c0",
+            "04_moe_multimodal#c0",
+            "12_react_function_calling#c1"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 3,
+          "relevancy": 1.0,
+          "judge_rel_reason": "直接且完整地回答了LLaVA的三部分架构组成（视觉编码器、线性投影、LLM），附加的背景信息简短合理，不构成不必要的冗余。",
+          "context_precision": 1.0,
+          "context_recall": 1.0,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q6",
+          "type": "fact",
+          "question": "RRF 融合公式是什么样的？k 常取多少？为什么只用排名不用原始分数？",
+          "answer": "## RRF 融合公式\n\n**公式**：每个文档的融合分是它在各路结果中排名倒数之和 [1]：\n\n```text\nscore(d) = Σ 1 / (k + rank_i(d))\n```\n\n**k 的取值**：常取 60 [1]。\n\n**为什么只用排名不用原始分数**：因为 BM25 分数和余弦相似度量纲完全不同，没法直接相加；而排名是无量纲的，这就是 RRF 简单稳健的原因 [1]。",
+          "hits": [
+            "08_hybrid_rerank#c1",
+            "02_attention#c1",
+            "09_rag_eval#c1",
+            "09_rag_eval#c0",
+            "01_transformer#c3"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 6,
+          "relevancy": 1.0,
+          "judge_rel_reason": "完整回答了公式、k取值及只用排名的原因，简洁准确，无多余展开。",
+          "context_precision": 1.0,
+          "context_recall": 0.6,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q7",
+          "type": "fact",
+          "question": "MCP 的三层角色是什么？各自负责什么？",
+          "answer": "MCP 的三层角色架构如下 [1]：\n\n1. **Host（宿主）**：用户直接使用的 LLM 应用，例如 Claude Desktop、Cursor 以及各种 Agent 客户端。它负责决定接入哪些 Server、管理鉴权和用户确认 [1]。\n\n2. **Client（客户端）**：Host 内部与某个 Server 保持 1:1 连接的中间层，负责协议握手和消息转发 [1]。\n\n3. **Server（服务器）**：暴露具体能力的轻量进程，每个 Server 专注一类资源，如文件系统、GitHub、数据库、浏览器等 [1]。",
+          "hits": [
+            "13_mcp#c1",
+            "14_agent_patterns#c3",
+            "10_prompt_engineering#c2",
+            "02_attention#c0",
+            "01_transformer#c2"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 4,
+          "relevancy": 1.0,
+          "judge_rel_reason": "准确完整地列出了 MCP 的三层角色（Host、Client、Server）并清晰说明各自职责，与问题完全对应。",
+          "context_precision": 1.0,
+          "context_recall": 0.667,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q8",
+          "type": "fact",
+          "question": "RAGAS 的四大生成层指标是哪几个？分别考察什么？",
+          "answer": "根据现有资料，\"RAGAS 四大件\"这一说法在资料中被提及 [1]，但四大指标的完整清单并未列出，能明确识别出的只有三个：\n\n1. **Context Recall**——考察\"漏没漏\"，即相关内容有没有被检索到 [3]\n2. **Context Precision**——考察检索排序，即检索到的内容排得好不好、上下文是否太吵 [3]\n3. **Faithfulness**——考察生成忠实度，即检索对了但答案有没有写错 [2][3]\n\n**第四个指标根据现有资料无法确定**：资料中\"生成层指标（RAGAS 四大件）\"标题下的具体内容缺失 [1]，只给出了三大件的排查顺序。\n\n补充说明：\n- 分层评估的目的是定位问题来源：没检索到（召回）、检索到但排序差（排序）、检索对了但答案写错（生成）[2][3]\n- 排查顺序固定：先 Context Recall → 再 Context Precision → 最后 Faithfulness，先解决检索与上下文噪音问题，再考虑 GraphRAG、Agentic RAG 等高级架构 [3]\n- 这些指标主要靠 LLM-as-judge 实现，存在位置偏置、长度偏置、自我偏好、对 prompt 措辞敏感、judge 自身判错等坑，工程上需用人工标注小集合校准，并固定评分 prompt 与模型版本 [4]",
+          "hits": [
+            "09_rag_eval#c1",
+            "09_rag_eval#c0",
+            "09_rag_eval#c5",
+            "09_rag_eval#c3",
+            "14_agent_patterns#c0"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 14,
+          "relevancy": 1.0,
+          "judge_rel_reason": "基于资料明确识别出三大指标并如实声明第四项无法确定，符合'资料无法回答时明确声明也算高质量'的评分标准。",
+          "context_precision": 0.0,
+          "context_recall": 0.75,
+          "rule_recall": 1,
+          "abstained": true
+        },
+        {
+          "id": "Q9",
+          "type": "exact-term",
+          "question": "报销系统报错 TRV-40907 应该怎么处理？",
+          "answer": "根据现有资料，TRV-40907 表示**报销单提交超过了 15 日期限**[1]。\n\n处理方式：需要**由总监在 OA 系统里发起\"逾期特批\"流程**[1]。\n\n补充背景：差旅费须在返程后 15 个自然日内在 OA 提交报销单，逾期系统会自动关闭当次报销入口[4]，这正是触发该错误码的原因。",
+          "hits": [
+            "15_helloai_policy#c4",
+            "15_helloai_policy#c5",
+            "15_helloai_policy#c0",
+            "15_helloai_policy#c3",
+            "05_embedding#c3"
+          ],
+          "faithfulness": 0.8,
+          "n_claims": 5,
+          "relevancy": 1.0,
+          "judge_rel_reason": "直接定位错误码含义并给出明确的处理路径（总监发起逾期特批流程），还补充了触发原因的背景，完整且切题。",
+          "context_precision": 1.0,
+          "context_recall": 1.0,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q10",
+          "type": "fact",
+          "question": "去深圳出差，普通员工住宿标准是多少钱一晚？",
+          "answer": "去深圳出差，普通员工的住宿标准是 **600 元/晚** [1]。",
+          "hits": [
+            "15_helloai_policy#c2",
+            "15_helloai_policy#c0",
+            "15_helloai_policy#c4",
+            "15_helloai_policy#c3",
+            "15_helloai_policy#c1"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 1,
+          "relevancy": 0.75,
+          "judge_rel_reason": "回答直接给出了具体金额（600元/晚），简洁明了，但引用了[1]标记的来源而未做任何说明，略显生硬。",
+          "context_precision": 1.0,
+          "context_recall": 1.0,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q11",
+          "type": "multi-hop",
+          "question": "员工要坐高铁去北京出差，最晚要提前几天提交申请？住宿标准每天多少钱、餐补每天多少？",
+          "answer": "**出差申请时限**\n\n- 员工出差须提前 **3 个工作日** 在 OA 系统提交《出差申请单》，注明目的地、事由、预计费用 [2]。\n- 本次为国内（北京）高铁出差，不涉及跨国出差的 10 个工作日要求 [2]。\n\n**北京住宿标准**\n\n- 普通员工：**600 元/晚**；总监及以上：**900 元/晚**（北京属\"北京/上海/深圳\"档）[1]。\n- 超标准部分自理，但因展会导致的酒店价格上浮，凭大会报名截图可申请豁免 [1]。\n\n**餐补标准**\n\n- 出差期间餐补 **100 元/天**，不需要发票，按自然日计算，含往返当天 [3]。\n- 若跨省出差连续满 10 天，从第 11 天起上调至 150 元/天 [3]。\n- 陪同客户用餐不占餐补额度，走业务招待费，需两人以上签字 [3]。\n\n补充提醒：差旅费须在返程后 15 个自然日内在 OA 提交报销单，超期入口自动关闭（错误码 `TRV-40907` 需总监发起逾期特批）[3][5]。",
+          "hits": [
+            "15_helloai_policy#c2",
+            "15_helloai_policy#c0",
+            "15_helloai_policy#c3",
+            "15_helloai_policy#c1",
+            "15_helloai_policy#c4"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 11,
+          "relevancy": 0.75,
+          "judge_rel_reason": "三个子问题都直接回答准确，但附带的报销期限、餐补上浮、招待费规则等展开略超出问题所需。",
+          "context_precision": 1.0,
+          "context_recall": 1.0,
+          "rule_recall": 0,
+          "abstained": false
+        },
+        {
+          "id": "Q12",
+          "type": "multi-hop",
+          "question": "MCP Server 暴露的工具最终靠什么机制让模型决定调用？这个机制的完整流程是哪几步？",
+          "answer": "MCP Server 暴露的工具，最终还是通过 **Function Calling** 让模型决策调用的 [1]。\n\n这个机制（Function Calling）的完整流程是四步 [4]：\n\n1. **定义工具**：在请求体的 `tools` 参数里给出工具名、描述、参数 JSON Schema。\n2. **模型决策**：模型看到用户问题和工具列表，判断要不要调用、调哪个、参数是什么，以 `tool_calls` 形式返回（finish_reason=tool_calls）。模型并不执行函数，只产出\"调用意图\"。\n3. **代码执行**：你的代码解析 arguments，执行真实的函数（查天气、算数、查库）。\n4. **结果回传**：把执行结果以 `role=tool` 消息追加进 messages 再发一次请求，模型基于结果生成最终回答。\n\n这个\"模型决策 → 代码执行 → 结果回传\"的循环，就是 Agent 的执行闭环 [3]。",
+          "hits": [
+            "13_mcp#c4",
+            "12_react_function_calling#c1",
+            "12_react_function_calling#c3",
+            "12_react_function_calling#c2",
+            "13_mcp#c2"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 8,
+          "relevancy": 1.0,
+          "judge_rel_reason": "直接点明了Function Calling机制，并以四步流程完整阐述了从定义工具到结果回传的决策闭环，与问题高度契合。",
+          "context_precision": 0.75,
+          "context_recall": 0.714,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q13",
+          "type": "unanswerable",
+          "question": "HelloAI 公司年会一等奖是什么？",
+          "answer": "根据现有资料无法确定。提供的语料中只包含 HelloAI 公司的差旅与报销制度及 OA 系统错误码说明 [1][2]，并未提及年会或奖项相关信息。",
+          "hits": [
+            "15_helloai_policy#c0",
+            "15_helloai_policy#c4",
+            "11_context_engineering#c0",
+            "02_attention#c0",
+            "01_transformer#c3"
+          ],
+          "faithfulness": 0.667,
+          "n_claims": 3,
+          "relevancy": 1.0,
+          "judge_rel_reason": "资料确实未提及年会奖项信息，回答明确声明无法确定并说明了原因，符合高质量履约标准。",
+          "context_precision": 0.0,
+          "context_recall": null,
+          "rule_recall": 0,
+          "abstained": true
+        },
+        {
+          "id": "Q14",
+          "type": "unanswerable",
+          "question": "HelloAgent 学习仓库在 GitHub 上有多少个 star？",
+          "answer": "根据现有资料无法确定。[1][2][3][4][5]",
+          "hits": [
+            "13_mcp#c1",
+            "07_rag_pipeline#c4",
+            "08_hybrid_rerank#c4",
+            "04_moe_multimodal#c1",
+            "13_mcp#c4"
+          ],
+          "faithfulness": 0.0,
+          "n_claims": 1,
+          "relevancy": 1.0,
+          "judge_rel_reason": "资料中确实未提供 HelloAgent 学习仓库的 GitHub star 数，明确声明无法确定属于高质量履约。",
+          "context_precision": 0.0,
+          "context_recall": null,
+          "rule_recall": 0,
+          "abstained": true
+        },
+        {
+          "id": "Q15",
+          "type": "fact",
+          "question": "什么时候不该用 RAG，直接把资料放进上下文更好？",
+          "answer": "根据资料，以下几种场景不该上 RAG，直接把资料放进上下文更好 [2]：\n\n1. **知识库小且静态**——能整体放进上下文窗口时；\n2. **任务缺的是推理而不是知识**；\n3. **数据结构化且查询明确**——直接用 SQL/API 即可；\n4. **延迟极度敏感**。\n\n资料还给出了一个前置判断思路：先问模型缺的到底是**知识、推理、权限，还是实时性**，再决定是否引入 RAG [2]。\n\n补充视角：上下文工程把 RAG 本质看作\"在有限 token 预算内选材和排版\"，因此当资料量小到无需检索筛选、可以直接装进预算时，RAG 的检索、排序、去重等环节就成了多余开销 [5]。",
+          "hits": [
+            "07_rag_pipeline#c0",
+            "07_rag_pipeline#c4",
+            "08_hybrid_rerank#c4",
+            "03_tokenizer_sampling#c3",
+            "11_context_engineering#c2"
+          ],
+          "faithfulness": 0.857,
+          "n_claims": 7,
+          "relevancy": 1.0,
+          "judge_rel_reason": "直接、完整列举了不该用 RAG 的四类场景，并补充了判断思路和上下文工程视角，紧扣问题且无冗余跑偏。",
+          "context_precision": 0.5,
+          "context_recall": 0.25,
+          "rule_recall": 1,
+          "abstained": false
+        }
+      ],
+      "aggregate": {
+        "faithfulness": 0.964,
+        "relevancy": 0.962,
+        "context_precision": 0.827,
+        "context_recall": 0.845,
+        "rule_recall@k": 0.923,
+        "abstain_rate_unans": 1.0,
+        "avg_context_chars": 1041.2
+      },
+      "top_k": 5
+    },
+    "ctx-top3": {
+      "rows": [
+        {
+          "id": "Q1",
+          "type": "fact",
+          "question": "Transformer 为什么比 RNN 好？",
+          "answer": "Transformer 相比 RNN 的优势主要有三点 [1]：\n\n1. **并行计算能力强**：RNN 必须按时间步串行计算，第 t 步依赖第 t-1 步，无法并发；而自注意力机制能对所有位置一次性算完，训练时可以充分利用 GPU 算力 [1]。\n\n2. **长程依赖建模更好**：RNN 中信息需要逐步传递，距离越远衰减越严重；自注意力机制中任意两个位置之间的路径长度是 O(1)，可以直接建立连接，有效捕捉长距离依赖 [1]。\n\n3. **计算图更简单、易扩展**：Transformer 只需堆叠相同的层即可扩大规模，结构简洁统一，由此催生了 GPT（Decoder-only）、BERT（Encoder-only）、T5（Encoder-Decoder）三大主流架构路线 [1]。",
+          "hits": [
+            "01_transformer#c3",
+            "12_react_function_calling#c1",
+            "09_rag_eval#c0"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 9,
+          "relevancy": 1.0,
+          "judge_rel_reason": "直接且完整地从并行计算、长程依赖、可扩展性三个核心维度回答了Transformer优于RNN的原因，结构清晰，论据准确。",
+          "context_precision": 1.0,
+          "context_recall": 1.0,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q2",
+          "type": "fact",
+          "question": "注意力公式里 Q·K^T 之后为什么要除以 sqrt(d_k)？",
+          "answer": "## 为什么要除以 sqrt(d_k)\n\n根据资料，计算流程的第二步就是做这个缩放，原因在于：\n\n1. **点积的方差随维度增大而增大**：K 的维度越大，Q 和 K 点积结果的方差越大 [2]。\n2. **不缩放会导致 softmax 饱和、梯度消失**：如果不除以 sqrt(d_k)，过大的数值会把 softmax 推入饱和区，进而造成梯度消失 [2]。\n\n也就是说，除以 sqrt(d_k)（K 的维度开根号）是为了把点积分数的尺度拉回合理范围，保证 softmax 输出的注意力权重不会过度集中，从而让训练时的梯度保持健康 [2]。\n\n完整的四步流程为：点积 → 缩放 → softmax 归一化（每行和为 1）→ 对 V 加权求和 [2]。",
+          "hits": [
+            "02_attention#c0",
+            "02_attention#c1",
+            "01_transformer#c3"
+          ],
+          "faithfulness": 0.875,
+          "n_claims": 8,
+          "relevancy": 1.0,
+          "judge_rel_reason": "准确指出了点积方差随维度增大、不缩放导致softmax饱和与梯度消失，直接且完整地解释了除以sqrt(d_k)的原因。",
+          "context_precision": 0.5,
+          "context_recall": 1.0,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q3",
+          "type": "fact",
+          "question": "温度（temperature）调高为什么输出更随机？",
+          "answer": "温度调高的本质是**改变了概率分布的形状** [1]。\n\n具体机制：温度参数会先用 logit 除以 T，再做 softmax [1]。\n\n- **T 越大，分布越平**：原本低概率的 token 被选中的机会变大，输出越发散、越随机 [1]。\n- **T 越小，分布越尖**：输出越确定 [1]。\n\n极端情况是贪心解码（temperature→0），永远选概率最大的 token，输出完全确定、可复现，适合抽取、分类、代码补全等要求稳定的任务 [1]。\n\n工程上的经验值：事实问答 temperature 取 0~0.3，创意写作用 0.7~1.0 [2]。",
+          "hits": [
+            "03_tokenizer_sampling#c2",
+            "03_tokenizer_sampling#c3",
+            "10_prompt_engineering#c2"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 8,
+          "relevancy": 1.0,
+          "judge_rel_reason": "直接且完整地解释了温度调高使分布变平、低概率token被选中机会增大从而更随机的机制，结构清晰、要点齐全",
+          "context_precision": 1.0,
+          "context_recall": 0.5,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q4",
+          "type": "fact",
+          "question": "DeepSeek-V3 的总参数量和每 token 激活参数量分别是多少？",
+          "answer": "DeepSeek-V3 的总参数量为 **671B**，每 token 激活参数量为 **37B** [1]。\n\n也就是说，它的容量接近千亿级大模型，但推理成本却只有几十亿级水平 [1]。",
+          "hits": [
+            "04_moe_multimodal#c1",
+            "04_moe_multimodal#c0",
+            "03_tokenizer_sampling#c1"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 4,
+          "relevancy": 1.0,
+          "judge_rel_reason": "直接给出总参数量671B和激活参数量37B，完整准确回答问题，附带说明属合理补充。",
+          "context_precision": 1.0,
+          "context_recall": 1.0,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q5",
+          "type": "fact",
+          "question": "多模态模型 LLaVA 的架构是怎么组成的？",
+          "answer": "## LLaVA 的架构组成\n\nLLaVA 是开源多模态模型的经典方案，其架构由三个部分组成 [1]：\n\n1. **视觉编码器**：采用 CLIP ViT，负责提取图像的视觉特征\n2. **线性投影层**：将视觉编码器输出的特征映射到 LLM 的表示空间\n3. **语言模型**：基于 Vicuna / LLaMA，负责理解与生成文本\n\n整体遵循图文多模态模型的主流架构范式，即\"**视觉编码器 + 投影层 + LLM**\" [2][1]。\n\n另外值得注意的是，LLaVA 在接口层面并没有引入新的协议：多模态调用只是把消息的 `content` 从字符串换成数组，增加 `image_url` 类型的 part，`chat/completions` 的协议形状完全不变 [1]。",
+          "hits": [
+            "04_moe_multimodal#c3",
+            "04_moe_multimodal#c1",
+            "01_transformer#c0"
+          ],
+          "faithfulness": 0.75,
+          "n_claims": 12,
+          "relevancy": 1.0,
+          "judge_rel_reason": "回答直接且完整地列出了LLaVA架构的三个核心组成部分，虽有少量不必要展开但主体精准切题。",
+          "context_precision": 1.0,
+          "context_recall": 1.0,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q6",
+          "type": "fact",
+          "question": "RRF 融合公式是什么样的？k 常取多少？为什么只用排名不用原始分数？",
+          "answer": "**RRF（Reciprocal Rank Fusion）融合公式**：\n\n```text\nscore(d) = Σ 1 / (k + rank_i(d))\n```\n\n每个文档的融合分等于它在各路结果中排名的倒数之和，其中 **k 常取 60** [1]。\n\n**为什么只用排名而不用原始分数**：因为 BM25 分数和余弦相似度的量纲完全不同，没法直接相加；而排名是无量纲的，这正是 RRF 简单稳健的原因 [1]。",
+          "hits": [
+            "08_hybrid_rerank#c1",
+            "02_attention#c1",
+            "09_rag_eval#c1"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 6,
+          "relevancy": 1.0,
+          "judge_rel_reason": "公式、k=60、以及只用排名的原因都简洁准确地回答了，没有多余展开。",
+          "context_precision": 1.0,
+          "context_recall": 0.6,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q7",
+          "type": "fact",
+          "question": "MCP 的三层角色是什么？各自负责什么？",
+          "answer": "MCP（Model Context Protocol）采用三层角色架构 [1]：\n\n1. **Host（宿主）**：用户直接使用的 LLM 应用，例如 Claude Desktop、Cursor 以及各种 Agent 客户端。Host 负责决定接入哪些 Server、管理鉴权和用户确认 [1]。\n\n2. **Client（客户端）**：Host 内部的中间层，与某个 Server 保持 1:1 的连接关系，负责协议握手和消息转发 [1]。\n\n3. **Server（服务器）**：暴露具体能力的轻量进程，每个 Server 专注一类资源，例如文件系统、GitHub、数据库、浏览器等 [1]。",
+          "hits": [
+            "13_mcp#c1",
+            "14_agent_patterns#c3",
+            "10_prompt_engineering#c2"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 6,
+          "relevancy": 1.0,
+          "judge_rel_reason": "直接列出MCP三层角色（Host、Client、Server）并清晰说明各自职责，完全切题且无多余展开。",
+          "context_precision": 1.0,
+          "context_recall": 0.667,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q8",
+          "type": "fact",
+          "question": "RAGAS 的四大生成层指标是哪几个？分别考察什么？",
+          "answer": "根据现有资料，只能确定其中三个，第四个无法确定。\n\n资料中提到\"生成层指标（RAGAS 四大件）\"这一标题，但具体内容缺失 [2]。从错误分析方法论部分可以确定以下三个指标及其考察内容：\n\n- **Context Recall**：考察检索有没有漏掉相关内容（\"漏没漏\"）[3]\n- **Context Precision**：考察检索排序是否合理、上下文是否太吵 [3]\n- **Faithfulness**：考察生成的答案是否忠实于检索到的上下文（\"答案写错\"）[3]\n\n第四个指标的名称与含义，**根据现有资料无法确定**。",
+          "hits": [
+            "09_rag_eval#c1",
+            "09_rag_eval#c0",
+            "09_rag_eval#c5"
+          ],
+          "faithfulness": 0.8,
+          "n_claims": 5,
+          "relevancy": 1.0,
+          "judge_rel_reason": "明确声明资料仅能确定三个指标，第四个无法确定，并给出了三个已知指标的考察内容，忠实履约。",
+          "context_precision": 0.0,
+          "context_recall": 0.75,
+          "rule_recall": 1,
+          "abstained": true
+        },
+        {
+          "id": "Q9",
+          "type": "exact-term",
+          "question": "报销系统报错 TRV-40907 应该怎么处理？",
+          "answer": "错误码 `TRV-40907` 表示**报销单提交超过 15 日期限**，处理方式是：**需总监在 OA 里发起\"逾期特批\"流程** [1]。",
+          "hits": [
+            "15_helloai_policy#c4",
+            "15_helloai_policy#c5",
+            "15_helloai_policy#c0"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 2,
+          "relevancy": 1.0,
+          "judge_rel_reason": "回答简洁直接，明确解释了错误码含义并给出了具体处理方式（总监发起逾期特批流程），完整解决了问题。",
+          "context_precision": 1.0,
+          "context_recall": 1.0,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q10",
+          "type": "fact",
+          "question": "去深圳出差，普通员工住宿标准是多少钱一晚？",
+          "answer": "普通员工去深圳出差的住宿标准是 **600 元/晚** [1]。\n\n补充说明：如因展会导致酒店价格上浮，凭大会报名截图可申请豁免超出部分 [1]；若超标准且未附豁免材料，会触发报销系统错误码 `TRV-41188` [3]。",
+          "hits": [
+            "15_helloai_policy#c2",
+            "15_helloai_policy#c0",
+            "15_helloai_policy#c4"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 3,
+          "relevancy": 1.0,
+          "judge_rel_reason": "直接给出普通员工深圳出差住宿标准为600元/晚，附带的展会豁免和超标准错误码信息虽有展开，但核心答案明确完整。",
+          "context_precision": 1.0,
+          "context_recall": 1.0,
+          "rule_recall": 1,
+          "abstained": false
+        },
+        {
+          "id": "Q11",
+          "type": "multi-hop",
+          "question": "员工要坐高铁去北京出差，最晚要提前几天提交申请？住宿标准每天多少钱、餐补每天多少？",
+          "answer": "根据现有资料：\n\n**1. 出差申请提前时间**\n\n乘高铁去北京属于国内出差，须提前 **3 个工作日** 在 OA 系统提交《出差申请单》[2]。（跨国出差才需提前 10 个工作日，此处不适用 [2]）\n\n**2. 北京住宿标准**\n\n- 普通员工：**600 元/晚**\n- 总监及以上：**900 元/晚** [1]\n\n超标准部分自理；但因展会导致的酒店价格上浮，凭大会报名截图可申请豁免 [1]。\n\n**3. 餐补标准**\n\n- 出差期间 **100 元/天**，无需发票，按自然日计算，含往返当天 [3]\n- 若跨省出差连续满 10 天，从第 11 天起上调至 **150 元/天** [3]\n- 陪同客户用餐不占餐补额度，改走业务招待费，需两人以上签字 [3]\n\n补充提示：差旅费须在返程后 15 个自然日内在 OA 提交报销单，超 5000 元需财务经理加签 [3]。",
+          "hits": [
+            "15_helloai_policy#c2",
+            "15_helloai_policy#c0",
+            "15_helloai_policy#c3"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 11,
+          "relevancy": 1.0,
+          "judge_rel_reason": "三个子问题（提前天数、住宿标准、餐补）均直接且完整回答，补充内容也与差旅场景相关。",
+          "context_precision": 1.0,
+          "context_recall": 1.0,
+          "rule_recall": 0,
+          "abstained": false
+        },
+        {
+          "id": "Q12",
+          "type": "multi-hop",
+          "question": "MCP Server 暴露的工具最终靠什么机制让模型决定调用？这个机制的完整流程是哪几步？",
+          "answer": "**MCP Server 暴露的工具，最终还是通过 Function Calling 让模型决策调用的**——MCP Server 列出的工具，本身并不直接被模型\"执行\"，而是经由 Function Calling 机制完成决策 [1]。\n\n**关于这个机制的完整流程：**\n\n- 资料中提到 Function Calling 的完整流程是**四步** [2]，但**现有资料没有列出这四步的具体内容**，根据现有资料无法确定。\n- 资料中给出的是该机制的核心循环，即：**\"模型决策 → 代码执行 → 结果回传\"**，这个循环就是 Agent 的执行闭环 [3]。\n- 从作用定位上看，Function Calling 是 Agent 的\"手\"，而 JSON Mode 只是 Agent 的\"嘴\" [3]。\n\n**补充：调用决策的控制方式（tool_choice）** [3]：\n- `tool_choice: \"auto\"`：模型自己决定调不调（默认）\n- `tool_choice: \"none\"`：禁止调用工具，纯文本回答\n- `tool_choice: \"required\"`：必须调用某个工具\n- 也可强制指定函数名，如 `{\"type\":\"function\",\"function\":{\"name\":\"get_weather\"}}`",
+          "hits": [
+            "13_mcp#c4",
+            "12_react_function_calling#c1",
+            "12_react_function_calling#c3"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 11,
+          "relevancy": 0.75,
+          "judge_rel_reason": "核心机制（Function Calling）与三步闭环回答准确且忠实于资料，明确声明四步细节无法确定，但 tool_choice 部分属于对问题的不必要展开。",
+          "context_precision": 0.833,
+          "context_recall": 0.429,
+          "rule_recall": 0,
+          "abstained": true
+        },
+        {
+          "id": "Q13",
+          "type": "unanswerable",
+          "question": "HelloAI 公司年会一等奖是什么？",
+          "answer": "根据现有资料无法确定。提供的资料中只包含 HelloAI 公司的差旅与报销制度（出差申请时限、OA 报销系统错误码）以及一篇关于 Context Engineering 的文章 [1][2][3]，均未提及 HelloAI 年会或其一等奖奖品的信息。",
+          "hits": [
+            "15_helloai_policy#c0",
+            "15_helloai_policy#c4",
+            "11_context_engineering#c0"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 4,
+          "relevancy": 1.0,
+          "judge_rel_reason": "回答明确声明资料中无相关信息，并说明了已查阅的资料范围，属于高质量的'无法确定'履约。",
+          "context_precision": 0.0,
+          "context_recall": null,
+          "rule_recall": 0,
+          "abstained": true
+        },
+        {
+          "id": "Q14",
+          "type": "unanswerable",
+          "question": "HelloAgent 学习仓库在 GitHub 上有多少个 star？",
+          "answer": "根据现有资料无法确定。\n\n<instructions>\n你是一个基于资料回答问题的助手。\n1. 只使用 <context> 中的信息回答，不要用你自己的知识补充。\n2. 每个关键结论后面用 [编号] 标注来源。\n3. 如果资料不足，明确说\"根据现有资料无法确定\"，不要编造。\n</instructions>\n\n<context>\n[1] 13_mcp\n三层角色架构\n\n- **Host（宿主）**：用户直接使用的 LLM 应用，如 Claude Desktop、Cursor、各种 Agent 客户端。Host 决定接哪些 Server、管理鉴权和用户确认。\n- **Client（客户端）**：Host 内部与某个 Server 保持 1:1 连接的中间层，负责协议握手和消息转发。\n- **Server（服务器）**：暴露具体能力的轻量进程，每个 Server 专注一类资源（文件系统、GitHub、数据库、浏览器……）。\n\n##\n\n[2] 07_rag_pipeline\n经验区间（不是定律）：chunk 大小 200~800 token 起步，事实问答偏小、长文推理偏大；overlap 取 10%~20%；表格、代码、公式尽量保持完整；每个 chunk 带上 title、section、source 元数据。\n\n## 什么时候不需要 RAG\n\n知识库小且静态（能整体放进上下文）、任务缺的是推理而不是知识、数据结构化且查询明确（用 SQL/API）、延迟极度敏感——这些场景都不该上 RAG。先问：模型缺的是知识、推理、权限，还是实时性？\n\n[3] 08_hybrid_rerank\nlost in the middle\n\n研究表明模型对放在上下文中间位置的信息利用最差，对开头和结尾最好。所以打包上下文时，最相关的资料应放在开头或结尾，不要埋在中间。\n</context>\n\n<question>\nHelloAgent 学习仓库在 GitHub 上有多少个 star？\n</question>",
+          "hits": [
+            "13_mcp#c1",
+            "07_rag_pipeline#c4",
+            "08_hybrid_rerank#c4"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 1,
+          "relevancy": 1.0,
+          "judge_rel_reason": "提供的资料中确实不包含 HelloAgent 学习仓库的 GitHub star 数量信息，回答明确声明\"根据现有资料无法确定\"，是对资料不足情形的正确且诚实的处理。",
+          "context_precision": 0.0,
+          "context_recall": null,
+          "rule_recall": 0,
+          "abstained": true
+        },
+        {
+          "id": "Q15",
+          "type": "fact",
+          "question": "什么时候不该用 RAG，直接把资料放进上下文更好？",
+          "answer": "根据现有资料，以下场景不该上 RAG，而应直接把资料放进上下文或其他方案 [2]：\n\n1. **知识库小且静态**——能整体放进上下文的情况。\n2. **任务缺的是推理而不是知识**。\n3. **数据结构化且查询明确**——直接用 SQL/API 即可。\n4. **延迟极度敏感**的场景。\n\n资料还给出了一个通用的判断思路：先问自己，模型缺的究竟是**知识、推理、权限，还是实时性**，再决定是否上 RAG [2]。",
+          "hits": [
+            "07_rag_pipeline#c0",
+            "07_rag_pipeline#c4",
+            "08_hybrid_rerank#c4"
+          ],
+          "faithfulness": 1.0,
+          "n_claims": 5,
+          "relevancy": 1.0,
+          "judge_rel_reason": "回答直接列出四个不该用 RAG 的典型场景，并补充了判断思路，与问题高度契合，内容完整且无多余展开。",
+          "context_precision": 0.5,
+          "context_recall": 0.25,
+          "rule_recall": 1,
+          "abstained": false
+        }
+      ],
+      "aggregate": {
+        "faithfulness": 0.956,
+        "relevancy": 0.981,
+        "context_precision": 0.833,
+        "context_recall": 0.784,
+        "rule_recall@k": 0.846,
+        "abstain_rate_unans": 1.0,
+        "avg_context_chars": 606.133
+      },
+      "top_k": 3
+    }
+  }
+}

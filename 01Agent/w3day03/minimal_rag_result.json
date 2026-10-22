@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-10-21T16:18:38.793781",
+    "generated_at": "2026-10-22T17:05:59.846423",
     "embedder": {
       "kind": "semantic",
       "name": "BAAI/bge-small-zh-v1.5"
@@ -65,7 +65,7 @@
     "answerable_recall@5": 0.846,
     "unanswerable_abstain_rate": 1.0,
     "total_prompt_tokens": 11699,
-    "total_completion_tokens": 2739
+    "total_completion_tokens": 3020
   },
   "results": [
     {
@@ -111,19 +111,19 @@
       ],
       "recall@5": 1,
       "mrr": 1.0,
-      "answer": "Transformer 相比 RNN 的优势主要有三点 [1]：\n\n1. **并行性更好**：RNN 必须按时间步串行计算，第 t 步依赖第 t-1 步；而自注意力可以对所有位置一次性算完，训练时能吃满 GPU [1]。\n\n2. **长程依赖能力更强**：RNN 的信息要一步一步传递，距离远了会衰减；自注意力中任意两个位置之间的路径长度是 O(1)，可以直接建立连接 [1]。\n\n3. **计算图更简单、易扩展**：只需堆叠相同的层即可扩大规模，这一特点催生了后来的 GPT（Decoder-only）、BERT（Encoder-only）、T5（Encoder-Decoder）三大路线 [1]。",
+      "answer": "根据现有资料，Transformer 比 RNN 好主要体现在三个方面：\n\n1. **并行计算能力强**：RNN 必须按时间步串行计算，第 t 步依赖第 t-1 步；而自注意力对所有位置一次性算完，训练时能吃满 GPU [1]。\n\n2. **长程依赖建模更好**：RNN 中信息要一步一步传递，距离远了会衰减；自注意力任意两个位置之间的路径长度是 O(1)，可以直接建立连接 [1]。\n\n3. **可扩展性**：Transformer 的计算图更简单，堆相同的层即可扩展规模，这一特性催生了后来的 GPT（Decoder-only）、BERT（Encoder-only）、T5（Encoder-Decoder）三大技术路线 [1]。",
       "abstained": false,
       "expect_abstain": false,
       "abstain_correct": true,
       "usage": {
-        "completion_tokens": 174,
+        "completion_tokens": 196,
         "prompt_tokens": 706,
-        "total_tokens": 880,
+        "total_tokens": 902,
         "completion_tokens_details": {
-          "reasoning_tokens": 7
+          "reasoning_tokens": 25
         },
         "prompt_tokens_details": {
-          "cached_tokens": 0
+          "cached_tokens": 640
         }
       },
       "finish_reason": "stop"
@@ -171,18 +171,20 @@
       ],
       "recall@5": 1,
       "mrr": 0.5,
-      "answer": "## 为什么除以 sqrt(d_k)\n\n**核心原因：维度越大，点积的方差越大；不缩放会把 softmax 推入饱和区，导致梯度消失。** [2]\n\n具体展开：\n\n1. **点积分数的量级随维度增长**。Q 和 K 都是 d_k 维向量，d_k 越大，Q·K^T 的数值方差就越大，得到的原始相关性分数会整体偏大或偏小。[2]\n2. **softmax 对大数值非常敏感**。当分数过大时，softmax 会进入\"饱和区\"——输出趋近于 one-hot（某个位置权重≈1，其余≈0），此时 softmax 的导数趋近于 0，反向传播时梯度几乎传不回来，即梯度消失。[2]\n3. **除以 sqrt(d_k) 正好把方差拉回 1 的量级**，让分数落在 softmax 的有效工作区间，注意力权重既不过于尖锐也不过于平坦。[2]\n\n在完整流程中的位置：缩放是四步流程的第二步——第一步 Q、K 点积得到原始分数，第二步除以 sqrt(d_k) 缩放，第三步按行 softmax 归一化，第四步对 V 加权求和。[2]\n\n可以对照一个手算例子理解量级：d_k=2 时，Q1·K2=1，缩放后为 1/sqrt(2)≈0.71，softmax 后再作为权重去加权 V2=[2,3]；真实模型则是把这个过程对几万个 token × 几十层并行做几亿次，所以缩放对数值稳定性的影响会被放大到不可忽视的程度。[5]",
+      "answer": "## 为什么要除以 sqrt(d_k)\n\n根据资料，除以 sqrt(d_k) 是**缩放（scaled）**这一步的原因在于：\n\n1. **维度越大，点积的方差越大**：Q 和 K 的维度 d_k 越高，Q·K^T 得到的原始相关性分数的数值范围（方差）就越大。\n2. **不缩放会把 softmax 推入饱和区**：如果分数数值过大，softmax 输出会趋近于 one-hot（几乎把全部权重压在单个位置上），此时 softmax 的梯度接近于 0，导致**梯度消失**，模型难以训练 [2]。\n\n因此，第二步用 sqrt(d_k)（K 的维度开根号）对点积结果做缩放，把分数的方差拉回到合理范围，再进行第三步按行 softmax 归一化为注意力权重，最后对 V 加权求和 [1][2]。",
       "abstained": false,
       "expect_abstain": false,
       "abstain_correct": true,
       "usage": {
-        "completion_tokens": 426,
+        "completion_tokens": 244,
         "prompt_tokens": 849,
-        "total_tokens": 1275,
+        "total_tokens": 1093,
         "completion_tokens_details": {
-          "reasoning_tokens": 37
+          "reasoning_tokens": 34
         },
-        "prompt_tokens_details": null
+        "prompt_tokens_details": {
+          "cached_tokens": 832
+        }
       },
       "finish_reason": "stop"
     },
@@ -229,18 +231,20 @@
       ],
       "recall@5": 1,
       "mrr": 1.0,
-      "answer": "温度调高会让输出更随机，是因为它改变了概率分布的形状，具体机制如下：\n\n温度的工作方式是**先给模型输出的 logits 除以温度 T，再做 softmax 得到最终的 token 概率分布** [1]。\n\n- **温度越小（T 低）**：分布越尖锐，高概率 token 的优势被放大，输出越确定、越可复现（如贪心 temperature→0 时永远选概率最大的 token）[1]。\n- **温度越大（T 高）**：分布被\"压平\"，原本低概率的 token 被选中的机会变大，输出越发散、越随机 [1]。\n\n也就是说，温度并不是凭空\"注入\"随机性，而是通过缩放 logits 改变了 softmax 之后各 token 的相对概率——高温让长尾低概率 token 也有机会被采样到，所以输出更随机 [1]。\n\n这也解释了工程上的经验值：事实问答（要稳定准确）用 0~0.3 的低温，创意写作（要多样发散）用 0.7~1.0 的高温 [2]。",
+      "answer": "温度调高会让输出更随机，因为它改变的是**概率分布的形状**，而不是直接\"增加随机性\"。\n\n具体机制是：模型对每个候选 token 会给出一个分数（logits），采样前先给这些 logits 除以温度 T，再做 softmax 得到概率分布 [1]。\n\n- **T 越小**（接近 0）：分布被\"压尖\"，高概率 token 的概率被进一步放大，低概率 token 几乎被抹掉，输出越确定；T→0 时退化为贪心解码，永远选概率最大的 token [1]。\n- **T 越大**：分布被\"摊平\"，原本低概率的 token 获得了被选中的机会，输出越发散、越随机 [1]。\n\n所以本质是：温度缩放了 logits 的差距，放大了 token 之间的对比度（低温）或削弱了这种对比度（高温），从而控制采样时的不确定性。工程上，事实问答通常用 0~0.3，创意写作用 0.7~1.0 [2]。",
       "abstained": false,
       "expect_abstain": false,
       "abstain_correct": true,
       "usage": {
-        "completion_tokens": 294,
+        "completion_tokens": 255,
         "prompt_tokens": 734,
-        "total_tokens": 1028,
+        "total_tokens": 989,
         "completion_tokens_details": {
-          "reasoning_tokens": 44
+          "reasoning_tokens": 11
         },
-        "prompt_tokens_details": null
+        "prompt_tokens_details": {
+          "cached_tokens": 704
+        }
       },
       "finish_reason": "stop"
     },
@@ -287,18 +291,20 @@
       ],
       "recall@5": 1,
       "mrr": 1.0,
-      "answer": "根据资料，DeepSeek-V3 的**总参数量为 671B**，**每 token 只激活 37B 参数**[1]。\n\n也就是说，它的容量接近千亿级大模型，但由于每个 token 只经过少数专家的计算，推理成本却只有几十亿级的水平[1]。",
+      "answer": "根据资料，DeepSeek-V3 的**总参数量为 671B**，**每个 token 激活的参数量为 37B** [1]。\n\n这意味着它的模型容量接近千亿级大模型，但推理成本却只有几十亿级的水平 [1]。代价是训练时需要小心负载均衡（防止所有 token 都涌向少数专家），且显存占用较高，因为所有专家都要驻留显存 [1]。",
       "abstained": false,
       "expect_abstain": false,
       "abstain_correct": true,
       "usage": {
-        "completion_tokens": 94,
+        "completion_tokens": 111,
         "prompt_tokens": 794,
-        "total_tokens": 888,
+        "total_tokens": 905,
         "completion_tokens_details": {
-          "reasoning_tokens": 22
+          "reasoning_tokens": 8
         },
-        "prompt_tokens_details": null
+        "prompt_tokens_details": {
+          "cached_tokens": 768
+        }
       },
       "finish_reason": "stop"
     },
@@ -345,16 +351,16 @@
       ],
       "recall@5": 1,
       "mrr": 1.0,
-      "answer": "LLaVA 是开源的经典多模态方案，其架构由三部分组成 [1]：\n\n1. **视觉编码器**：采用 CLIP ViT [1]\n2. **线性投影**（投影层）：连接视觉编码器与 LLM [1][3]\n\n图文多模态模型的主流架构正是\"视觉编码器 + 投影层 + LLM\"这一形式 [2][3]\n\n3. **LLM**：LLaVA 使用 Vicuna/LLaMA [1]\n\n即：**CLIP ViT（视觉编码器）+ 线性投影 + Vicuna/LLaMA（LLM）** [1]",
+      "answer": "LLaVA 的架构组成如下：\n\n- **视觉编码器**：采用 CLIP ViT [1]\n- **线性投影（投影层）**：连接视觉编码器与 LLM [1][2]\n- **语言模型**：采用 Vicuna/LLaMA [1]\n\n整体上，LLaVA 属于图文多模态模型的主流架构，即\"视觉编码器 + 投影层 + LLM\"的组合方案，同时也是开源经典方案 [1][2]。",
       "abstained": false,
       "expect_abstain": false,
       "abstain_correct": true,
       "usage": {
-        "completion_tokens": 150,
+        "completion_tokens": 157,
         "prompt_tokens": 694,
-        "total_tokens": 844,
+        "total_tokens": 851,
         "completion_tokens_details": {
-          "reasoning_tokens": 5
+          "reasoning_tokens": 47
         },
         "prompt_tokens_details": {
           "cached_tokens": 0
@@ -405,18 +411,20 @@
       ],
       "recall@5": 1,
       "mrr": 1.0,
-      "answer": "## RRF 融合公式\n\n**公式**：每个文档的融合分等于它在各路检索结果中排名倒数之和 [1]：\n\n```text\nscore(d) = Σ 1 / (k + rank_i(d))\n```\n\n其中 `k` 常取 **60** [1]。\n\n## 为什么只用排名、不用原始分数？\n\n因为 **BM25 分数和余弦相似度的量纲完全不同，没法直接相加**；而排名是无量纲的，这就是 RRF 简单稳健的原因 [1]。",
+      "answer": "## RRF 融合公式\n\n**公式**：\n\n```text\nscore(d) = Σ 1 / (k + rank_i(d))\n```\n\n每个文档的融合分等于它在各路结果中排名倒数之和，k 常取 **60** [1]。\n\n## 为什么只用排名、不用原始分数？\n\n因为 BM25 分数和余弦相似度的**量纲完全不同，没法直接相加**；而排名是无量纲的，这就是 RRF 简单稳健的原因 [1]。",
       "abstained": false,
       "expect_abstain": false,
       "abstain_correct": true,
       "usage": {
-        "completion_tokens": 137,
+        "completion_tokens": 132,
         "prompt_tokens": 776,
-        "total_tokens": 913,
+        "total_tokens": 908,
         "completion_tokens_details": {
-          "reasoning_tokens": 8
+          "reasoning_tokens": 10
         },
-        "prompt_tokens_details": null
+        "prompt_tokens_details": {
+          "cached_tokens": 768
+        }
       },
       "finish_reason": "stop"
     },
@@ -463,16 +471,16 @@
       ],
       "recall@5": 1,
       "mrr": 1.0,
-      "answer": "MCP 的三层角色架构如下 [1]：\n\n1. **Host（宿主）**：用户直接使用的 LLM 应用，例如 Claude Desktop、Cursor 以及各类 Agent 客户端。它负责决定接入哪些 Server、管理鉴权和用户确认 [1]。\n\n2. **Client（客户端）**：Host 内部与某个 Server 保持 1:1 连接的中间层，负责协议握手和消息转发 [1]。\n\n3. **Server（服务器）**：暴露具体能力的轻量进程，每个 Server 专注一类资源，如文件系统、GitHub、数据库、浏览器等 [1]。",
+      "answer": "MCP 的三层角色架构如下 [1]：\n\n1. **Host（宿主）**：用户直接使用的 LLM 应用，例如 Claude Desktop、Cursor、各种 Agent 客户端。它负责决定接入哪些 Server、管理鉴权和用户确认。\n\n2. **Client（客户端）**：Host 内部与某个 Server 保持 1:1 连接的中间层，负责协议握手和消息转发。\n\n3. **Server（服务器）**：暴露具体能力的轻量进程，每个 Server 专注一类资源（如文件系统、GitHub、数据库、浏览器等）。",
       "abstained": false,
       "expect_abstain": false,
       "abstain_correct": true,
       "usage": {
-        "completion_tokens": 148,
+        "completion_tokens": 137,
         "prompt_tokens": 703,
-        "total_tokens": 851,
+        "total_tokens": 840,
         "completion_tokens_details": {
-          "reasoning_tokens": 8
+          "reasoning_tokens": 7
         },
         "prompt_tokens_details": {
           "cached_tokens": 0
@@ -523,18 +531,20 @@
       ],
       "recall@5": 1,
       "mrr": 0.333,
-      "answer": "RAGAS 的四大生成层指标如下 [4]：\n\n1. **Faithfulness（忠实度）**：答案中的每个论断是否都被上下文支持。分数低意味着模型在编造或超出资料发挥。[4]\n\n2. **Answer Relevancy（答案相关性）**：答案是否真的回答了问题。分数低意味着答非所问或跑题。[4]\n\n3. **Context Precision（上下文精确率）**：检索到的资料里，相关的是否排在前面，考察的是排序质量。[4]\n\n4. **Context Recall（上下文召回率）**：标准答案需要的信息，上下文里是否都覆盖了。分数低说明检索层漏了内容，生成再好也白搭。[4]\n\n补充一点：出问题时建议按固定顺序排查——先看 Context Recall（有没有漏），再看 Context Precision（排序好不好），最后看 Faithfulness（生成是否忠实）[3]。",
+      "answer": "RAGAS 的四大生成层指标及其考察内容如下：\n\n1. **Faithfulness（忠实度）**：考察答案中的每个论断是否都被上下文支持。得分低说明模型在编造或超出资料发挥 [4]。\n\n2. **Answer Relevancy（答案相关性）**：考察答案是否真的回答了问题。得分低说明答非所问或跑题 [4]。\n\n3. **Context Precision（上下文精确率）**：考察检索到的资料里，相关的是否排在前面，衡量的是排序质量 [4]。\n\n4. **Context Recall（上下文召回率）**：考察标准答案需要的信息，上下文里是否都覆盖了。得分低说明检索层漏了东西，生成再好也白搭 [4]。",
       "abstained": false,
       "expect_abstain": false,
       "abstain_correct": true,
       "usage": {
-        "completion_tokens": 219,
+        "completion_tokens": 175,
         "prompt_tokens": 732,
-        "total_tokens": 951,
+        "total_tokens": 907,
         "completion_tokens_details": {
-          "reasoning_tokens": 12
+          "reasoning_tokens": 5
         },
-        "prompt_tokens_details": null
+        "prompt_tokens_details": {
+          "cached_tokens": 704
+        }
       },
       "finish_reason": "stop"
     },
@@ -581,18 +591,20 @@
       ],
       "recall@5": 1,
       "mrr": 1.0,
-      "answer": "根据资料，`TRV-40907` 表示**报销单提交超过 15 日期限**，需要**由总监在 OA 系统里发起\"逾期特批\"流程**来处理 [1]。",
+      "answer": "## TRV-40907 的处理方法\n\n**错误原因**：报销单提交超过了 **15 日期限** [1]。\n\n**处理步骤**：\n\n需要由**总监在 OA 系统里发起\"逾期特批\"流程**，通过特批后方可继续报销 [1]。\n\n---\n\n**补充说明（供参考）**：\n\n- 如果不确定自己是否超期，可对照制度中\"出差申请\"的相关规定（如出差须提前 3 个工作日提交申请，跨国出差需提前 10 个工作日等）核对行程时间线 [3]。\n- 建议今后注意在报销单产生后 **15 日内**完成提交，避免触发该错误码 [1]。\n\n如需了解其他错误码（如发票抬头不一致 TRV-40231、住宿超标 TRV-41188、缺少行程单 TRV-50002）的处理方式，也可以告诉我。",
       "abstained": false,
       "expect_abstain": false,
       "abstain_correct": true,
       "usage": {
-        "completion_tokens": 92,
+        "completion_tokens": 254,
         "prompt_tokens": 841,
-        "total_tokens": 933,
+        "total_tokens": 1095,
         "completion_tokens_details": {
-          "reasoning_tokens": 37
+          "reasoning_tokens": 43
         },
-        "prompt_tokens_details": null
+        "prompt_tokens_details": {
+          "cached_tokens": 832
+        }
       },
       "finish_reason": "stop"
     },
@@ -639,19 +651,19 @@
       ],
       "recall@5": 1,
       "mrr": 1.0,
-      "answer": "深圳出差普通员工的住宿标准是 **600 元/晚** [1]。",
+      "answer": "根据制度，深圳属于\"北京/上海/深圳\"一档，普通员工住宿标准为 **600 元/晚**[1]。\n\n补充说明：超出标准的部分需自理，但若因展会导致酒店价格上浮，凭大会报名截图可申请豁免[1]。",
       "abstained": false,
       "expect_abstain": false,
       "abstain_correct": true,
       "usage": {
-        "completion_tokens": 34,
+        "completion_tokens": 81,
         "prompt_tokens": 921,
-        "total_tokens": 955,
+        "total_tokens": 1002,
         "completion_tokens_details": {
-          "reasoning_tokens": 11
+          "reasoning_tokens": 15
         },
         "prompt_tokens_details": {
-          "cached_tokens": 0
+          "cached_tokens": 896
         }
       },
       "finish_reason": "stop"
@@ -699,18 +711,20 @@
       ],
       "recall@5": 0,
       "mrr": 0.0,
-      "answer": "## 出差申请时限\n\n- 员工须提前 **3 个工作日**在 OA 系统提交《出差申请单》，注明目的地、事由、预计费用；未提前申请的差旅费原则上不予报销（紧急情况可事后 48 小时内补录，需部门总监邮件批准）[3]。\n\n## 住宿标准\n\n| 职级 | 标准 |\n|---|---|\n| 普通员工 | **600 元/晚**（北京属\"北京/上海/深圳\"档）[4] |\n| 总监及以上 | **900 元/晚** [4] |\n\n超标准住宿的超出部分自理，但因展会导致的酒店价格上浮，凭大会报名截图可申请豁免 [4]。\n\n## 餐补\n\n- **100 元/天**，不需要发票，按自然日计算（含往返当天）[2]。\n- 补充：跨省出差连续满 10 天的，第 11 天起上调至 150 元/天；陪同客户用餐不占餐补额度，走业务招待费，需两人以上签字 [2]。\n\n说明：问题中未指明出差人员职级、是否属于展会情形及出差天数，以上按普通员工、常规情形列示；具体以实际职级与天数对照适用 [2][4]。",
+      "answer": "## 出差申请期限\n\n员工出差须提前 **3 个工作日** 在 OA 系统提交《出差申请单》，注明目的地、事由、预计费用 [3]。未提前申请的差旅费原则上不予报销；紧急情况可事后 48 小时内补录，但需部门总监邮件批准 [3]。\n\n## 住宿标准（北京）\n\n北京属于\"北京/上海/深圳\"一档城市 [4]：\n\n| 职级 | 标准 |\n|---|---|\n| 普通员工 | **600 元/晚** |\n| 总监及以上 | **900 元/晚** |\n\n超标准住宿的超出部分自理，但因展会导致的酒店价格上浮，凭大会报名截图可申请豁免 [4]。\n\n## 餐补标准\n\n出差期间餐补 **100 元/天**，不需要发票，按自然日计算（含往返当天）[2]。若跨省出差连续满 10 天，第 11 天起餐补上调至 150 元/天 [2]。",
       "abstained": false,
       "expect_abstain": false,
       "abstain_correct": true,
       "usage": {
-        "completion_tokens": 431,
+        "completion_tokens": 302,
         "prompt_tokens": 934,
-        "total_tokens": 1365,
+        "total_tokens": 1236,
         "completion_tokens_details": {
-          "reasoning_tokens": 117
+          "reasoning_tokens": 53
         },
-        "prompt_tokens_details": null
+        "prompt_tokens_details": {
+          "cached_tokens": 896
+        }
       },
       "finish_reason": "stop"
     },
@@ -757,19 +771,19 @@
       ],
       "recall@5": 0,
       "mrr": 0.0,
-      "answer": "**最终机制：Function Calling。** MCP Server 列出的工具，最终还是通过 Function Calling 让模型决策调用的 [1]；\"模型决策 → 代码执行 → 结果回传\"的循环就是 Agent 的执行闭环，Function Calling 是 Agent 的手 [3]。\n\n**关于完整流程：** 资料中提到\"Function Calling 的完整流程四步\"，但并未列出具体是哪四步 [3]，根据现有资料无法确定这四步的具体内容。可以确定的是其核心循环为：模型决策 → 代码执行 → 结果回传 [3]。",
+      "answer": "## 回答\n\n**1. 最终依靠的机制：Function Calling**\n\nMCP Server 列出的工具，最终还是通过 Function Calling 让模型决策调用的 [1]。MCP 本身不是与 Function Calling 竞争的机制，它更像是把工具开放给整个生态、接入第三方 Server 的协议层，而模型真正\"伸手\"调用工具的动作仍然走 Function Calling [1][3]。\n\n**2. 完整流程**\n\n- 资料中指出 Function Calling 的完整流程共**四步** [2]，但 `<context>` 未逐条列出这四步的具体名称与内容，**根据现有资料无法确定四步的完整细节**。\n- 可以确认的是其执行闭环的描述：**\"模型决策 → 代码执行 → 结果回传\"**，这个循环就是 Agent 的执行闭环——Function Calling 是 Agent 的手，JSON Mode 只是 Agent 的嘴 [3]。\n- 从 ReAct 的视角看，推理决定\"下一步干什么\"，行动获取\"事实依据\"，Observation 把真实世界事实塞回上下文，两者交替形成闭环 [2]。\n\n**3. 补充：模型是否调用工具的控制方式**（tool_choice）\n\n- `auto`：模型自己决定调不调（默认）\n- `none`：禁止调用工具，纯文本回答\n- `required`：必须调用某个工具\n- 也可强制指定函数名，如 `{\"type\":\"function\",\"function\":{\"name\":\"get_weather\"}}` [3]\n\n**4. 与 MCP 协议侧的衔接**\n\nMCP Server 的生命周期为：initialize 握手（交换协议版本和能力声明）→ 发现（tools/list 列出工具、resources/list 列出资源、prompts/list 列出提示模板）→ 调用（tools/call）[5]。其中 Tools 即模型可调用的函数 [5]，这些函数最终通过上述 Function Calling 机制由模型决策触发 [1]。",
       "abstained": true,
       "expect_abstain": false,
       "abstain_correct": false,
       "usage": {
-        "completion_tokens": 237,
+        "completion_tokens": 657,
         "prompt_tokens": 687,
-        "total_tokens": 924,
+        "total_tokens": 1344,
         "completion_tokens_details": {
-          "reasoning_tokens": 104
+          "reasoning_tokens": 216
         },
         "prompt_tokens_details": {
-          "cached_tokens": 0
+          "cached_tokens": 640
         }
       },
       "finish_reason": "stop"
@@ -817,19 +831,19 @@
       ],
       "recall@5": 0,
       "mrr": 0.0,
-      "answer": "根据现有资料无法确定。提供的资料中没有关于 HelloAI 公司年会一等奖的任何信息。",
+      "answer": "根据现有资料无法确定。提供的资料中没有任何关于 HelloAI 公司年会或其一等奖设置的信息[1][2][3][4][5]。这些资料涉及 RAG 评估、MoE 与多模态模型架构、上下文工程、注意力机制以及 Tokenizer 与采样参数等技术主题，均未提及该公司的年会活动内容。",
       "abstained": true,
       "expect_abstain": true,
       "abstain_correct": true,
       "usage": {
-        "completion_tokens": 41,
+        "completion_tokens": 99,
         "prompt_tokens": 815,
-        "total_tokens": 856,
+        "total_tokens": 914,
         "completion_tokens_details": {
           "reasoning_tokens": 16
         },
         "prompt_tokens_details": {
-          "cached_tokens": 0
+          "cached_tokens": 768
         }
       },
       "finish_reason": "stop"
@@ -877,18 +891,20 @@
       ],
       "recall@5": 0,
       "mrr": 0.0,
-      "answer": "根据现有资料无法确定。提供的资料中没有关于 HelloAgent 学习仓库在 GitHub 上 star 数量的任何信息，因此无法回答该问题。[1][2][3][4][5]",
+      "answer": "根据现有资料无法确定。提供的五段资料分别涉及 RAG 流水线、MoE 与多模态、Transformer 架构、向量数据库和 RAG 评估指标，其中没有任何关于 HelloAgent 学习仓库或其 GitHub star 数量的信息。如需回答该问题，需要补充相关的资料来源。",
       "abstained": true,
       "expect_abstain": true,
       "abstain_correct": true,
       "usage": {
-        "completion_tokens": 59,
+        "completion_tokens": 84,
         "prompt_tokens": 757,
-        "total_tokens": 816,
+        "total_tokens": 841,
         "completion_tokens_details": {
-          "reasoning_tokens": 13
+          "reasoning_tokens": 11
         },
-        "prompt_tokens_details": null
+        "prompt_tokens_details": {
+          "cached_tokens": 704
+        }
       },
       "finish_reason": "stop"
     },
@@ -935,18 +951,20 @@
       ],
       "recall@5": 1,
       "mrr": 0.25,
-      "answer": "根据现有资料，以下几种场景不该上 RAG，直接把资料放进上下文更好 [4]：\n\n1. **知识库小且静态**——资料能整体放进上下文，就无需检索。\n2. **任务缺的是推理而不是知识**——模型需要的是推理能力，而非外部资料。\n3. **数据结构化且查询明确**——用 SQL/API 即可，不需要 RAG。\n4. **延迟极度敏感**——RAG 的检索环节会增加延迟。\n\n此外，资料建议先问一个前置问题：模型缺的到底是知识、推理、权限，还是实时性？再决定是否上 RAG [4]。从上下文工程的角度看，RAG 的本质是在有限 token 预算内做上下文的\"选材和排版\"，预算（token、注意力、成本/延迟）三者要一起算，不是窗口越大越好 [3]。",
+      "answer": "根据现有资料，以下场景不该上 RAG，直接把资料放进上下文更好 [4]：\n\n1. **知识库小且静态**：知识能整体放进上下文，无需检索。\n2. **任务缺的是推理而不是知识**：模型需要的是推理能力而非外部资料。\n3. **数据结构化且查询明确**：这类场景用 SQL/API 更合适。\n4. **延迟极度敏感**：RAG 的检索环节会增加延迟。\n\n资料还给出了一个通用的判断顺序：先问模型缺的到底是知识、推理、权限，还是实时性？[4]",
       "abstained": false,
       "expect_abstain": false,
       "abstain_correct": true,
       "usage": {
-        "completion_tokens": 203,
+        "completion_tokens": 136,
         "prompt_tokens": 756,
-        "total_tokens": 959,
+        "total_tokens": 892,
         "completion_tokens_details": {
           "reasoning_tokens": 8
         },
-        "prompt_tokens_details": null
+        "prompt_tokens_details": {
+          "cached_tokens": 704
+        }
       },
       "finish_reason": "stop"
     }
